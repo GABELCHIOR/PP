@@ -1,0 +1,613 @@
+/* ==========================================================================
+   PP_estudo — Montgomery, Design and Analysis of Experiments (9ª ed.)
+   Estrutura e layout das páginas de estudo. Offline, sem dependências.
+
+   Cores, fontes e medidas NÃO ficam aqui: estão em `tema.css`, que precisa
+   ser carregado antes deste arquivo. Ao acrescentar regras, use sempre
+   var(--…) — nunca uma cor literal — para que trocar de tema continue
+   sendo trocar um único <link>.
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--serif);
+  font-size: var(--corpo-tamanho);
+  line-height: var(--corpo-altura);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* --------------------------------------------------------------- layout --
+   Grade de "quebra de coluna": a prosa fica numa largura confortável de
+   leitura, mas figuras, tabelas, código e exercícios avançam para as bordas.
+   -------------------------------------------------------------------- */
+
+/* Os sufixos -start/-end são obrigatórios: só com eles o atalho
+   `grid-column: texto` resolve para texto-start / texto-end. */
+.pagina {
+  display: grid;
+  grid-template-columns:
+    [borda-start] minmax(var(--faixa-aba), 1fr)   /* faixa reservada para a aba lateral */
+    [larga-start] minmax(0, var(--largura-sangria))
+    [texto-start] minmax(0, var(--largura-leitura)) [texto-end]
+    minmax(0, var(--largura-sangria)) [larga-end]
+    minmax(1.25rem, 1fr) [borda-end];
+  padding: 2.5rem 0 6rem;
+}
+
+/* tudo cai na coluna de texto por padrão… */
+.pagina > * { grid-column: texto; }
+
+/* …e estes elementos avançam para as bordas */
+.pagina > .topo,
+.pagina > figure,
+.pagina > .rolagem,
+.pagina > pre,
+.pagina > .cartoes,
+.pagina > .exercicio,
+.pagina > .nav-rodape { grid-column: larga; }
+
+/* Dentro do exercício, a mesma ideia em miniatura: prosa e equações numa
+   coluna de leitura; código e tabelas ocupando a caixa inteira. */
+.exercicio {
+  display: grid;
+  grid-template-columns:
+    [ex-larga-start ex-texto-start] minmax(0, var(--largura-leitura)) [ex-texto-end]
+    minmax(0, 1fr) [ex-larga-end];
+}
+
+.exercicio > * { grid-column: ex-texto; }
+.exercicio > pre,
+.exercicio > .rolagem,
+.exercicio > .caixa { grid-column: ex-larga; }
+
+.recall .resposta { max-width: 54rem; }
+
+@media (max-width: 62rem) {
+  .pagina {
+    grid-template-columns: [borda-start larga-start texto-start] minmax(0, 1fr) [texto-end larga-end borda-end];
+    padding: 2rem 1.25rem 4rem 3.25rem;   /* a esquerda é da aba lateral */
+  }
+  .exercicio { display: block; }
+}
+
+/* --------------------------------------------------- aba lateral (menu) --
+   <details> puro: funciona sem JavaScript. O <summary> é a aba vertical
+   grudada na borda esquerda; o painel abre ao lado dela.
+   -------------------------------------------------------------------- */
+
+.menu-lateral {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+}
+
+.menu-lateral > summary {
+  list-style: none;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: var(--realce);
+  color: var(--menu-texto);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 1.3rem 0.6rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 14px rgb(0 0 0 / 22%);
+  user-select: none;
+  transition: padding 0.12s, filter 0.12s;
+}
+
+.menu-lateral > summary::-webkit-details-marker { display: none; }
+.menu-lateral > summary::marker { content: ""; }
+.menu-lateral > summary:hover { filter: brightness(1.15); padding-right: 0.85rem; }
+.menu-lateral > summary:focus-visible { outline: 2px solid var(--texto); outline-offset: 3px; }
+
+.menu-lateral > summary::before {
+  content: "☰  ";
+  letter-spacing: 0;
+}
+
+.menu-lateral[open] > summary::before { content: "✕  "; }
+
+.menu-lateral .painel {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(23rem, calc(100vw - 4.5rem));
+  max-height: 84vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--fundo-caixa);
+  border: 1px solid var(--linha);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 8px 36px rgb(0 0 0 / 28%);
+  padding: 1.1rem 1.3rem 1.2rem;
+  font-family: var(--sans);
+  font-size: 0.87rem;
+  line-height: 1.5;
+}
+
+.painel .painel-titulo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--linha);
+}
+
+.painel ol { margin: 0; padding-left: 1.4rem; }
+.painel li { margin-bottom: 0.42rem; }
+
+.painel a {
+  color: var(--texto);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.painel a:hover {
+  color: var(--realce);
+  border-bottom-color: var(--realce);
+}
+
+.painel .extras {
+  margin: 0.9rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--linha);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  font-size: 0.82rem;
+}
+
+.painel .extras a { color: var(--realce); }
+
+@media (max-width: 34rem) {
+  .menu-lateral > summary { padding: 1rem 0.5rem; font-size: 0.68rem; }
+  .menu-lateral .painel { font-size: 0.85rem; padding: 1rem; }
+}
+
+@media print { .menu-lateral { display: none; } }
+
+/* ----------------------------------------------------------- cabeçalho -- */
+
+.topo {
+  border-bottom: 2px solid var(--realce);
+  padding-bottom: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.migalha {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  margin: 0 0 0.6rem;
+}
+
+.migalha a { color: inherit; }
+
+h1 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 0 0 0.4rem;
+  color: var(--realce);
+  font-weight: 700;
+}
+
+.subtitulo {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--texto-fraco);
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 3.2rem 0 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--linha);
+  color: var(--realce);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.18rem;
+  margin: 2.2rem 0 0.7rem;
+  color: var(--texto);
+  font-weight: 700;
+}
+
+h4 {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  margin: 1.6rem 0 0.5rem;
+  color: var(--texto-fraco);
+  text-transform: uppercase;
+}
+
+p { margin: 0 0 1.1rem; }
+
+a { color: var(--realce); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+strong { font-weight: 700; }
+
+em.en {
+  font-style: italic;
+  color: var(--texto-fraco);
+}
+
+ul, ol { margin: 0 0 1.2rem; padding-left: 1.5rem; }
+li { margin-bottom: 0.5rem; }
+
+/* --------------------------------------------------------------- caixas -- */
+
+.caixa {
+  background: var(--fundo-caixa);
+  border: 1px solid var(--linha);
+  border-left: 4px solid var(--linha);
+  border-radius: 4px;
+  padding: 1.1rem 1.3rem 0.4rem;
+  margin: 1.6rem 0;
+}
+
+.caixa > :first-child { margin-top: 0; }
+
+.caixa .rotulo {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.objetivo   { border-left-color: var(--realce); background: var(--realce-fraco); }
+.objetivo .rotulo { color: var(--realce); }
+
+.definicao  { border-left-color: var(--azul); background: var(--azul-fraco); }
+.definicao .rotulo { color: var(--azul); }
+
+.aviso      { border-left-color: var(--ambar); background: var(--ambar-fraco); }
+.aviso .rotulo { color: var(--ambar); }
+
+.pratica    { border-left-color: var(--verde); background: var(--verde-fraco); }
+.pratica .rotulo { color: var(--verde); }
+
+/* ----------------------------------------------------------- matemática -- */
+
+math { font-size: 1.02em; }
+
+math[display="block"] {
+  display: block;
+  width: max-content;          /* encolhe até o conteúdo, para as margens auto centrarem */
+  max-width: 100%;             /* mas nunca estoura a coluna: aí rola no eixo x */
+  margin: 1.4rem auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.eq {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.4rem 0;
+}
+
+/* o espaçador espelha a largura do número, para a equação ficar centrada na coluna */
+.eq::before {
+  content: "";
+  flex: 0 0 4.5rem;
+}
+
+.eq math[display="block"] { margin: 0 auto; min-width: 0; flex: 1; }
+
+.eq .num {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--texto-fraco);
+  white-space: nowrap;
+  flex: 0 0 4.5rem;
+  text-align: right;
+}
+
+/* --------------------------------------------------------------- figuras -- */
+
+figure {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+figure img {
+  max-width: 100%;
+  max-height: 78vh;      /* impede que figuras altas dominem a tela */
+  width: auto;
+  height: auto;
+  border: 1px solid var(--linha);
+  border-radius: 3px;
+  background: var(--fundo-figura);
+  padding: 0.6rem;
+}
+
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--texto-fraco);
+  margin-top: 0.7rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+figcaption b { color: var(--texto); }
+
+/* --------------------------------------------------------------- tabelas -- */
+
+.rolagem { overflow-x: auto; margin: 1.6rem 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  background: var(--fundo-caixa);
+}
+
+caption {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--texto-fraco);
+  text-align: left;
+  padding-bottom: 0.6rem;
+}
+
+th, td {
+  border: 1px solid var(--linha);
+  padding: 0.45rem 0.7rem;
+  text-align: right;
+}
+
+th {
+  background: var(--realce-fraco);
+  color: var(--realce);
+  font-weight: 700;
+  text-align: center;
+}
+
+td:first-child, th:first-child { text-align: left; }
+
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--linha) 22%, transparent); }
+
+/* ---------------------------------------------------------------- código -- */
+
+pre {
+  background: var(--fundo-caixa);
+  border: 1px solid var(--linha);
+  border-left: 4px solid var(--verde);
+  border-radius: 4px;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 1.4rem 0;
+}
+
+pre .cmt { color: var(--texto-fraco); font-style: italic; }
+pre .out { color: var(--azul); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: color-mix(in srgb, var(--linha) 40%, transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+pre code { background: none; padding: 0; font-size: inherit; }
+
+/* ----------------------------------------------------- cartões de recall -- */
+
+.recall {
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  margin: 0.7rem 0;
+  background: var(--fundo-caixa);
+  overflow: hidden;
+}
+
+.recall > summary {
+  cursor: pointer;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+}
+
+.recall > summary::-webkit-details-marker { display: none; }
+
+.recall > summary::before {
+  content: "?";
+  font-weight: 700;
+  color: var(--realce);
+  flex: 0 0 auto;
+}
+
+.recall[open] > summary::before { content: "!"; color: var(--verde); }
+
+.recall > summary:hover { background: var(--realce-fraco); }
+
+.resposta {
+  padding: 0.3rem 1.1rem 0.6rem 2.4rem;
+  border-top: 1px solid var(--linha);
+  font-size: 0.97rem;
+}
+
+.resposta > :first-child { margin-top: 0.8rem; }
+
+/* ------------------------------------------------------------ exercícios -- */
+
+.exercicio {
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem 0.5rem;
+  margin: 1.8rem 0;
+  background: var(--fundo-caixa);
+}
+
+.exercicio > h3 {
+  margin-top: 0;
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: var(--realce);
+}
+
+.enunciado {
+  font-size: 0.95rem;
+  color: var(--texto-fraco);
+  border-left: 3px solid var(--linha);
+  padding-left: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.enunciado > :last-child { margin-bottom: 0; }
+
+/* ------------------------------------------------------------- navegação -- */
+
+.nav-rodape {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--realce);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.sumario {
+  background: var(--fundo-caixa);
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  margin: 2rem 0 3rem;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+}
+
+.sumario .rotulo {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-fraco);
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.sumario ol { margin: 0; padding-left: 1.3rem; }
+.sumario li { margin-bottom: 0.3rem; }
+
+/* -------------------------------------------------------------- índice -- */
+
+.cartoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.cartao {
+  display: block;
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 1.1rem 1.2rem;
+  background: var(--fundo-caixa);
+  text-decoration: none;
+  color: var(--texto);
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.cartao:hover { border-color: var(--realce); transform: translateY(-2px); }
+
+.cartao .cap {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--realce);
+  font-weight: 700;
+}
+
+.cartao .tit {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0.35rem 0;
+  line-height: 1.3;
+}
+
+.cartao .desc {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--texto-fraco);
+  line-height: 1.5;
+}
+
+.pendente {
+  opacity: 0.5;
+  border-style: dashed;
+  cursor: default;
+}
+
+.pendente:hover { border-color: var(--linha); transform: none; }
+
+/* ------------------------------------------------------------- utilidades -- */
+
+.nota {
+  font-size: 0.9rem;
+  color: var(--texto-fraco);
+  border-top: 1px solid var(--linha);
+  padding-top: 1rem;
+  margin-top: 2.5rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--linha);
+  margin: 2.5rem 0;
+}
+
+@media print {
+  body { background: #fff; font-size: 11pt; }   /* papel é branco, independe do tema */
+  .recall[open] .resposta, .recall .resposta { display: block; }
+  .nav-rodape { display: none; }
+}
+
+@media (max-width: 34rem) {
+  body { font-size: 17px; }
+  .pagina { padding: 1.5rem 1rem 4rem; }
+  h1 { font-size: 1.7rem; }
+  h2 { font-size: 1.3rem; }
+}

@@ -1,0 +1,29 @@
+# --------------------------------------------------------------------------
+# O PDF do livro NÃO vai para o repositório.
+# São 107 MB — acima do limite de 100 MB por arquivo do GitHub — e é obra
+# protegida por direitos autorais. Cada pessoa usa a sua própria cópia,
+# colocada na raiz da pasta; ferramentas/extrair.py a localiza sozinho.
+# --------------------------------------------------------------------------
+*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Saídas temporárias das ferramentas de extração
+saida/
+scratchpad/
+*.tmp.png
+
+# Sistema operacional
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~

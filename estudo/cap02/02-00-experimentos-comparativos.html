@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Montgomery, Wiley) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Cap. 2 — Experimentos Comparativos Simples</title>
+<link rel="stylesheet" href="../assets/tema.css?v=3">
+<link rel="stylesheet" href="../assets/estilo.css?v=3">
+</head>
+<body>
+
+<details class="menu-lateral">
+  <summary>Índice da aula</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Cap. 2 — Experimentos Comparativos</p>
+    <ol>
+      <li><a href="#s1">O problema do cimento Portland</a></li>
+      <li><a href="#s2">Erro experimental e descrição gráfica</a></li>
+      <li><a href="#s3">Esperança e variância</a></li>
+      <li><a href="#s4">Amostragem e estimadores não viesados</a></li>
+      <li><a href="#s5">Graus de liberdade</a></li>
+      <li><a href="#s6">As quatro distribuições amostrais</a></li>
+      <li><a href="#s7">Teste de hipóteses: a estrutura lógica</a></li>
+      <li><a href="#s8">O teste <em>t</em> de duas amostras</a></li>
+      <li><a href="#s9">O valor-P</a></li>
+      <li><a href="#s10">Intervalos de confiança</a></li>
+      <li><a href="#s11">Escolha do tamanho amostral</a></li>
+      <li><a href="#s12">Quando as variâncias são desiguais</a></li>
+      <li><a href="#s13">Comparar uma média com um valor</a></li>
+      <li><a href="#s14">Verificação das suposições</a></li>
+      <li><a href="#s15">Comparações pareadas: a primeira blocagem</a></li>
+      <li><a href="#s16">Inferência sobre variâncias</a></li>
+      <li><a href="#recall">Cartões de recall ativo</a></li>
+      <li><a href="#exercicios">Exercícios resolvidos</a></li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="../index.html">Percurso</a>
+      <a href="../cap01/01-00-introducao.html">← Cap. 1</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha"><a href="../index.html">Percurso</a> · Montgomery, 9ª ed. · Capítulo 2 · págs. 23–64</p>
+  <h1>Experimentos Comparativos Simples</h1>
+  <p class="subtitulo">Comparar dois tratamentos. Toda a maquinaria de inferência do curso nasce aqui — e o teste <em>t</em> pareado é a sua primeira blocagem.</p>
+</header>
+
+<div class="caixa objetivo">
+  <span class="rotulo">Ao final desta aula você deve saber</span>
+  <ul>
+    <li>Manipular os operadores esperança <math><mi>E</mi></math> e variância <math><mi>V</mi></math> com fluência — eles são usados em todos os capítulos seguintes.</li>
+    <li><strong>Demonstrar</strong> que <math><mover><mi>y</mi><mo>¯</mo></mover></math> e <math><msup><mi>S</mi><mn>2</mn></msup></math> são estimadores não viesados, e explicar de onde vem o <math><mi>n</mi><mo>−</mo><mn>1</mn></math>.</li>
+    <li>Reconhecer as quatro distribuições amostrais (normal, <math><msup><mi>χ</mi><mn>2</mn></msup></math>, <math><mi>t</mi></math>, <math><mi>F</mi></math>) e saber como cada uma se constrói a partir de normais.</li>
+    <li>Conduzir e interpretar o teste <math><mi>t</mi></math> de duas amostras, com e sem a hipótese de variâncias iguais.</li>
+    <li>Interpretar corretamente um <strong>valor-P</strong> e um <strong>intervalo de confiança</strong> — e saber o que eles <em>não</em> dizem.</li>
+    <li>Escolher o tamanho amostral a partir do poder do teste.</li>
+    <li>Verificar as suposições com um gráfico de probabilidade normal.</li>
+    <li>Reconhecer quando parear e mostrar <strong>numericamente</strong> por que a blocagem reduz o ruído.</li>
+  </ul>
+</div>
+
+<nav class="sumario">
+  <span class="rotulo">Roteiro da aula</span>
+  <ol>
+    <li><a href="#s1">O problema do cimento Portland</a></li>
+    <li><a href="#s2">Erro experimental e descrição gráfica</a></li>
+    <li><a href="#s3">Esperança e variância: as ferramentas de trabalho</a></li>
+    <li><a href="#s4">Amostragem e estimadores não viesados</a></li>
+    <li><a href="#s5">Graus de liberdade</a></li>
+    <li><a href="#s6">As quatro distribuições amostrais</a></li>
+    <li><a href="#s7">Teste de hipóteses: a estrutura lógica</a></li>
+    <li><a href="#s8">O teste <em>t</em> de duas amostras</a></li>
+    <li><a href="#s9">O valor-P</a></li>
+    <li><a href="#s10">Intervalos de confiança</a></li>
+    <li><a href="#s11">Escolha do tamanho amostral</a></li>
+    <li><a href="#s12">Quando as variâncias são desiguais</a></li>
+    <li><a href="#s13">Comparar uma média com um valor especificado</a></li>
+    <li><a href="#s14">Verificação das suposições</a></li>
+    <li><a href="#s15">Comparações pareadas: a primeira blocagem</a></li>
+    <li><a href="#s16">Inferência sobre variâncias</a></li>
+    <li><a href="#recall">Cartões de recall ativo</a></li>
+    <li><a href="#exercicios">Exercícios resolvidos</a></li>
+  </ol>
+</nav>
+
+
+<h2 id="s1">1. O problema do cimento Portland</h2>
+
+<p>Um engenheiro estuda a formulação de uma argamassa de cimento Portland. Ele acrescentou uma emulsão de látex polimérico durante a mistura, para ver se isso afeta o tempo de cura e a <strong>resistência de aderência à tração</strong> (<em class="en">tension bond strength</em>). Preparou 10 corpos de prova da formulação original e 10 da modificada.</p>
+
+<p>A modificação funcionou para o tempo de cura: houve grande redução. Mas se ela prejudicar a resistência, pode inviabilizar o uso. Daí a pergunta.</p>
+
+<div class="rolagem">
+<table>
+  <caption><b>Tabela 2.1</b> — Resistência de aderência à tração (kgf/cm²) nas duas formulações.</caption>
+  <thead><tr><th>j</th><th>Modificada <math><msub><mi>y</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub></math></th><th>Não modificada <math><msub><mi>y</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub></math></th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>16,85</td><td>16,62</td></tr>
+    <tr><td>2</td><td>16,40</td><td>16,75</td></tr>
+    <tr><td>3</td><td>17,21</td><td>17,37</td></tr>
+    <tr><td>4</td><td>16,35</td><td>17,12</td></tr>
+    <tr><td>5</td><td>16,52</td><td>16,98</td></tr>
+    <tr><td>6</td><td>17,04</td><td>16,87</td></tr>
+    <tr><td>7</td><td>16,96</td><td>17,34</td></tr>
+    <tr><td>8</td><td>17,15</td><td>17,02</td></tr>
+    <tr><td>9</td><td>16,59</td><td>17,08</td></tr>
+    <tr><td>10</td><td>16,57</td><td>17,27</td></tr>
+  </tbody>
+</table>
+</div>
+
+<figure>
+  <img src="img/fig-02-01.png" alt="Diagrama de pontos das duas amostras de resistência, com as médias 16,76 e 17,04 indicadas por setas.">
+  <figcaption><b>Figura 2.1</b> — Diagrama de pontos (<em class="en">dot diagram</em>) dos dados da Tabela 2.1. As duas formulações parecem diferir em média, mas produzem dispersão parecida.</figcaption>
+</figure>
+
+<p>As médias são <math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mn>16</mn><mo>,</mo><mn>76</mn></math> e <math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mn>17</mn><mo>,</mo><mn>04</mn></math> kgf/cm². Uma diferença de 0,28 — modesta. E aqui está a pergunta que funda a disciplina:</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">A pergunta</span>
+  <p>Essa diferença de 0,28 é grande o bastante para concluir que as formulações realmente diferem? Ou é apenas flutuação amostral — de modo que outras duas amostras poderiam perfeitamente inverter o resultado?</p>
+  <p>Sem uma resposta objetiva a essa pergunta, o engenheiro está apenas opinando. É para respondê-la que existe o <strong>teste de hipóteses</strong>.</p>
+</div>
+
+<p>Vamos construir a resposta do zero. Boa parte do que vem a seguir você talvez já tenha visto; o objetivo aqui não é revisar por revisar, e sim montar as peças <em>na ordem em que elas serão usadas</em> nos capítulos 3 em diante.</p>
+
+
+<h2 id="s2">2. Erro experimental e descrição gráfica</h2>
+
+<p>Cada observação da Tabela 2.1 é uma <strong>execução</strong> (<em class="en">run</em>). Duas execuções na mesma condição dão resultados diferentes. Essa flutuação é o <strong>erro experimental</strong> (<em class="en">experimental error</em>), ou simplesmente <strong>erro</strong>.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Cuidado com a palavra "erro"</span>
+  <p>"Erro" aqui <strong>não</strong> significa engano, descuido ou medição errada. É um <em>erro estatístico</em>: variação que não é controlada e que é, em geral, inevitável. Um experimento perfeitamente executado tem erro experimental. O que a estatística faz é medi-lo e usá-lo como referência.</p>
+</div>
+
+<p>A existência de erro implica que a resposta é uma <strong>variável aleatória</strong>. Ela é <em>discreta</em> se o conjunto de valores possíveis é finito ou enumerável, e <em>contínua</em> se é um intervalo. Resistência de aderência é contínua.</p>
+
+<h3>Três ferramentas gráficas, e quando usar cada uma</h3>
+
+<ul>
+  <li><strong>Diagrama de pontos</strong> (<em class="en">dot diagram</em>) — para conjuntos pequenos, até cerca de 20 observações. Mostra localização e dispersão, e preserva cada dado individual. É o que a Figura 2.1 faz.</li>
+  <li><strong>Histograma</strong> — mostra tendência central, dispersão e formato da distribuição. É ferramenta de <em>amostra grande</em>: com poucas observações, o formato depende demais do número de classes, da largura e do ponto inicial. <strong>Não use histogramas com menos de 75–100 observações.</strong></li>
+  <li><strong>Diagrama de caixa</strong> (<em class="en">box plot</em>) — mostra mínimo, primeiro quartil, mediana, terceiro quartil e máximo. Excelente para comparar grupos lado a lado.</li>
+</ul>
+
+<figure>
+  <img src="img/fig-02-03.png" alt="Dois diagramas de caixa lado a lado comparando a resistência das formulações modificada e não modificada.">
+  <figcaption><b>Figura 2.3</b> — Diagramas de caixa para o experimento do cimento Portland. Indicam alguma diferença de nível entre as formulações, distribuições razoavelmente simétricas e dispersões parecidas — informação que vamos precisar quando escolhermos a versão do teste <em>t</em>.</figcaption>
+</figure>
+
+<pre><code><span class="cmt"># --- Dados do cimento Portland (Tabela 2.1) ---</span>
+modificada     &lt;- c(16.85, 16.40, 17.21, 16.35, 16.52, 17.04, 16.96, 17.15, 16.59, 16.57)
+nao_modificada &lt;- c(16.62, 16.75, 17.37, 17.12, 16.98, 16.87, 17.34, 17.02, 17.08, 17.27)
+
+cimento &lt;- data.frame(
+  resistencia = c(modificada, nao_modificada),
+  formulacao  = rep(c("Modificada", "Não modificada"), each = 10)
+)
+
+boxplot(resistencia ~ formulacao, data = cimento,
+        ylab = "Resistência (kgf/cm²)", xlab = "Formulação da argamassa")
+stripchart(resistencia ~ formulacao, data = cimento,      <span class="cmt"># pontos por cima</span>
+           vertical = TRUE, method = "jitter", add = TRUE, pch = 1)
+</code></pre>
+
+
+<h2 id="s3">3. Esperança e variância: as ferramentas de trabalho</h2>
+
+<p>Esta seção parece revisão inofensiva. Não é: as doze regras abaixo são usadas para <em>deduzir</em> praticamente todo resultado dos capítulos 3 a 14. Vale ter fluência real com elas.</p>
+
+<p>A <strong>média</strong> <math><mi>μ</mi></math> de uma distribuição de probabilidade mede sua localização, e coincide com o <strong>valor esperado</strong>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>μ</mi><mo>=</mo><mi>E</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo>
+    <mrow>
+      <mo>{</mo>
+      <mtable columnalign="left left" columnspacing="1.5em">
+        <mtr><mtd><mrow><msubsup><mo>∫</mo><mrow><mo>−</mo><mi>∞</mi></mrow><mi>∞</mi></msubsup><mi>y</mi><mspace width="0.15em"/><mi>f</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mspace width="0.15em"/><mi>d</mi><mi>y</mi></mrow></mtd><mtd><mi>y</mi><mtext> contínua</mtext></mtd></mtr>
+        <mtr><mtd><mrow><munder><mo>∑</mo><mrow><mtext>todo </mtext><mi>y</mi></mrow></munder><mi>y</mi><mspace width="0.15em"/><mi>p</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow></mtd><mtd><mi>y</mi><mtext> discreta</mtext></mtd></mtr>
+      </mtable>
+    </mrow>
+  </mrow>
+</math>
+<span class="num">(2.1–2.2)</span>
+</div>
+
+<p>A <strong>variância</strong> mede a dispersão, e pode ser escrita inteiramente em termos de esperança:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mi>V</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo>
+    <mi>E</mi><mrow><mo>[</mo><msup><mrow><mo>(</mo><mi>y</mi><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo></mrow>
+  </mrow>
+</math>
+<span class="num">(2.4–2.5)</span>
+</div>
+
+<h3>As doze regras</h3>
+
+<p>Com <math><mi>y</mi></math> variável aleatória de média <math><mi>μ</mi></math> e variância <math><msup><mi>σ</mi><mn>2</mn></msup></math>, e <math><mi>c</mi></math> constante:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Propriedades dos operadores esperança e variância.</caption>
+  <thead><tr><th>#</th><th>Regra</th><th>Comentário</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><math><mi>E</mi><mo stretchy="false">(</mo><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mi>c</mi></math></td><td rowspan="3">Linearidade de <math><mi>E</mi></math></td></tr>
+    <tr><td>2</td><td><math><mi>E</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>μ</mi></math></td></tr>
+    <tr><td>3</td><td><math><mi>E</mi><mo stretchy="false">(</mo><mi>c</mi><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>c</mi><mi>μ</mi></math></td></tr>
+    <tr><td>4</td><td><math><mi>V</mi><mo stretchy="false">(</mo><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></math></td><td rowspan="3">Note o <math><msup><mi>c</mi><mn>2</mn></msup></math> na regra 6 — <math><mi>V</mi></math> <strong>não</strong> é linear</td></tr>
+    <tr><td>5</td><td><math><mi>V</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup></math></td></tr>
+    <tr><td>6</td><td><math><mi>V</mi><mo stretchy="false">(</mo><mi>c</mi><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><msup><mi>σ</mi><mn>2</mn></msup></math></td></tr>
+    <tr><td>7</td><td><math><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>μ</mi><mn>2</mn></msub></math></td><td>Vale <strong>sempre</strong>, mesmo com dependência</td></tr>
+    <tr><td>8</td><td><math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>+</mo><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>+</mo><mn>2</mn><mtext>Cov</mtext><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo></math></td><td rowspan="2">O termo de covariância é o que <em>desaparece</em> sob independência</td></tr>
+    <tr><td>9</td><td><math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>+</mo><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mn>2</mn><mtext>Cov</mtext><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo></math></td></tr>
+    <tr><td>10</td><td><math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>±</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math></td><td><strong>Só se independentes.</strong> Note o sinal <math><mo>+</mo></math> mesmo na diferença</td></tr>
+    <tr><td>11</td><td><math><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>⋅</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>μ</mi><mn>1</mn></msub><msub><mi>μ</mi><mn>2</mn></msub></math></td><td>Só se independentes</td></tr>
+    <tr><td>12</td><td><math><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>/</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>≠</mo><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>/</mo><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo></math></td><td><strong>Em geral</strong>, independentes ou não</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>onde a <strong>covariância</strong> é</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mtext>Cov</mtext><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo>
+    <mi>E</mi><mrow><mo>[</mo><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo stretchy="false">(</mo><msub><mi>y</mi><mn>2</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>]</mo></mrow>
+  </mrow>
+</math>
+<span class="num">(2.6)</span>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Duas armadilhas clássicas</span>
+  <p><strong>Regra 10.</strong> Muita gente escreve <math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math>. Errado: variâncias <strong>somam</strong> na diferença. Faz sentido — subtrair duas quantidades incertas produz algo <em>mais</em> incerto, não menos. Essa é a fórmula que vai gerar o denominador do teste <em>t</em>.</p>
+  <p><strong>Covariância zero não implica independência.</strong> A recíproca da regra "independentes ⟹ Cov = 0" é falsa: pode-se ter <math><mtext>Cov</mtext><mo>=</mo><mn>0</mn></math> com forte dependência não linear. Covariância mede associação <em>linear</em>.</p>
+</div>
+
+<h2 id="s4">4. Amostragem e estimadores não viesados</h2>
+
+<p>O objetivo da inferência é tirar conclusões sobre uma <strong>população</strong> a partir de uma <strong>amostra</strong>. Quase tudo o que faremos supõe amostras aleatórias.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definições</span>
+  <p>Uma <strong>amostra aleatória</strong> é selecionada de modo que toda amostra possível tenha igual probabilidade de ser escolhida.</p>
+  <p>Uma <strong>estatística</strong> é qualquer função das observações da amostra que <em>não contenha parâmetros desconhecidos</em>.</p>
+</div>
+
+<p>As duas estatísticas fundamentais são a média e a variância amostrais:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mover><mi>y</mi><mo>¯</mo></mover><mo>=</mo>
+    <mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>y</mi><mi>i</mi></msub></mrow><mi>n</mi></mfrac>
+    <mspace width="2.5em"/>
+    <msup><mi>S</mi><mn>2</mn></msup><mo>=</mo>
+    <mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac>
+  </mrow>
+</math>
+<span class="num">(2.7–2.8)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">Estimador × estimativa</span>
+  <p>Um <strong>estimador</strong> é uma estatística que corresponde a um parâmetro — é uma <em>variável aleatória</em>. Uma <strong>estimativa</strong> é o valor numérico particular que o estimador assume nos dados que você tem. <math><mover><mi>y</mi><mo>¯</mo></mover></math> é estimador; 16,76 kgf/cm² é estimativa.</p>
+</div>
+
+<p>Duas propriedades desejáveis de um bom estimador pontual:</p>
+
+<ol>
+  <li><strong>Não viesado</strong> (<em class="en">unbiased</em>): o valor esperado do estimador é igual ao parâmetro estimado. Ausência de viés é desejável, mas sozinha não faz um bom estimador.</li>
+  <li><strong>Variância mínima</strong>: entre os não viesados, aquele com a menor variância.</li>
+</ol>
+
+<h3>4.1 Demonstração: <math><mover><mi>y</mi><mo>¯</mo></mover></math> é não viesado</h3>
+
+<p>Aplicação direta da linearidade de <math><mi>E</mi></math> (regras 3 e 7):</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>E</mi><mo stretchy="false">(</mo><mover><mi>y</mi><mo>¯</mo></mover><mo stretchy="false">)</mo><mo>=</mo>
+    <mi>E</mi><mrow><mo>(</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>y</mi><mi>i</mi></msub></mrow><mi>n</mi></mfrac><mo>)</mo></mrow>
+    <mo>=</mo>
+    <mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false">)</mo>
+    <mo>=</mo>
+    <mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>μ</mi>
+    <mo>=</mo><mfrac><mrow><mi>n</mi><mi>μ</mi></mrow><mi>n</mi></mfrac><mo>=</mo><mi>μ</mi>
+  </mrow>
+</math>
+</div>
+
+<h3>4.2 Demonstração: <math><msup><mi>S</mi><mn>2</mn></msup></math> é não viesado — e a origem do <math><mi>n</mi><mo>−</mo><mn>1</mn></math></h3>
+
+<p>Esta é a demonstração que explica por que se divide por <math><mi>n</mi><mo>−</mo><mn>1</mn></math> e não por <math><mi>n</mi></math>. Vale acompanhar cada passo.</p>
+
+<p>Escreva a <strong>soma de quadrados corrigida</strong> <math><mtext>SQ</mtext><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><msup><mrow><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math>. Então <math><msup><mi>S</mi><mn>2</mn></msup><mo>=</mo><mtext>SQ</mtext><mo>/</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></math> e basta achar <math><mi>E</mi><mo stretchy="false">(</mo><mtext>SQ</mtext><mo stretchy="false">)</mo></math>.</p>
+
+<p><strong>Passo 1 — expandir a soma de quadrados.</strong> Uma identidade algébrica útil:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mtext>SQ</mtext><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup>
+    <mo>=</mo>
+    <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>y</mi><mi>i</mi><mn>2</mn></msubsup><mo>−</mo><mi>n</mi><msup><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msup>
+  </mrow>
+</math>
+</div>
+
+<p><strong>Passo 2 — usar <math><mi>E</mi><mo stretchy="false">(</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>=</mo><mi>V</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>+</mo><msup><mrow><mo>[</mo><mi>E</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>]</mo></mrow><mn>2</mn></msup></math>.</strong> Para cada observação, <math><mi>E</mi><mo stretchy="false">(</mo><msubsup><mi>y</mi><mi>i</mi><mn>2</mn></msubsup><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><msup><mi>μ</mi><mn>2</mn></msup></math>. Para a média, como <math><mi>V</mi><mo stretchy="false">(</mo><mover><mi>y</mi><mo>¯</mo></mover><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mi>n</mi></math>, temos <math><mi>E</mi><mo stretchy="false">(</mo><msup><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msup><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mi>n</mi><mo>+</mo><msup><mi>μ</mi><mn>2</mn></msup></math>. Logo:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>E</mi><mo stretchy="false">(</mo><mtext>SQ</mtext><mo stretchy="false">)</mo>
+    <mo>=</mo>
+    <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo>(</mo><msup><mi>μ</mi><mn>2</mn></msup><mo>+</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>)</mo></mrow>
+    <mo>−</mo>
+    <mi>n</mi><mrow><mo>(</mo><msup><mi>μ</mi><mn>2</mn></msup><mo>+</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mi>n</mi><mo>)</mo></mrow>
+    <mo>=</mo>
+    <mi>n</mi><msup><mi>μ</mi><mn>2</mn></msup><mo>+</mo><mi>n</mi><msup><mi>σ</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi><msup><mi>μ</mi><mn>2</mn></msup><mo>−</mo><msup><mi>σ</mi><mn>2</mn></msup>
+    <mo>=</mo>
+    <mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>σ</mi><mn>2</mn></msup>
+  </mrow>
+</math>
+<span class="num">(2.9–2.10)</span>
+</div>
+
+<p><strong>Passo 3 — concluir.</strong></p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>E</mi><mo stretchy="false">(</mo><msup><mi>S</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>=</mo>
+    <mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mi>E</mi><mo stretchy="false">(</mo><mtext>SQ</mtext><mo stretchy="false">)</mo>
+    <mo>=</mo>
+    <mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>σ</mi><mn>2</mn></msup></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac>
+    <mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup>
+  </mrow>
+</math>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">A moral da demonstração</span>
+  <p>O <math><mi>n</mi><mo>−</mo><mn>1</mn></math> não é convenção nem correção <em>ad hoc</em>. Ele aparece porque <math><mi>E</mi><mo stretchy="false">(</mo><mtext>SQ</mtext><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>σ</mi><mn>2</mn></msup></math> — a soma de quadrados em torno de <math><mover><mi>y</mi><mo>¯</mo></mover></math> é sistematicamente <em>menor</em> do que seria em torno de <math><mi>μ</mi></math>, porque <math><mover><mi>y</mi><mo>¯</mo></mover></math> foi escolhido justamente para minimizá-la. Dividir por <math><mi>n</mi></math> subestimaria <math><msup><mi>σ</mi><mn>2</mn></msup></math>.</p>
+</div>
+
+
+<h2 id="s5">5. Graus de liberdade</h2>
+
+<p>A quantidade <math><mi>n</mi><mo>−</mo><mn>1</mn></math> chama-se <strong>número de graus de liberdade</strong> da soma de quadrados. O resultado é geral: se <math><mtext>SQ</mtext></math> tem <math><mi>v</mi></math> graus de liberdade, então</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><mi>E</mi><mrow><mo>(</mo><mfrac><mtext>SQ</mtext><mi>v</mi></mfrac><mo>)</mo></mrow><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup></mrow>
+</math>
+<span class="num">(2.11)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">A definição que interessa</span>
+  <p>O número de graus de liberdade de uma soma de quadrados é o número de <strong>elementos independentes</strong> naquela soma.</p>
+</div>
+
+<p>Veja como isso funciona concretamente. A soma <math><mtext>SQ</mtext><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><msup><mrow><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></math> é formada pelos <math><mi>n</mi></math> desvios <math><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>y</mi><mi>n</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover></math>. Mas eles não são todos independentes, porque satisfazem uma restrição:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></mrow>
+</math>
+</div>
+
+<p>Conhecidos <math><mi>n</mi><mo>−</mo><mn>1</mn></math> desvios, o último está determinado. Só <math><mi>n</mi><mo>−</mo><mn>1</mn></math> são livres. Daí o nome.</p>
+
+<p><strong>Guarde este raciocínio</strong> — "quantas restrições lineares os elementos satisfazem?" — porque no capítulo 3 vamos contar graus de liberdade para várias somas de quadrados ao mesmo tempo, e a contagem será sempre esta.</p>
+
+
+<h2 id="s6">6. As quatro distribuições amostrais</h2>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>A distribuição de probabilidade de uma <em>estatística</em> chama-se <strong>distribuição amostral</strong> (<em class="en">sampling distribution</em>).</p>
+</div>
+
+<p>São quatro, e o ponto que importa é que <strong>as três últimas são construídas a partir da primeira</strong>. Entender essa árvore genealógica é o que faz a ANOVA do capítulo 3 parecer natural em vez de mágica.</p>
+
+<h3>6.1 Normal</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>f</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo>
+    <mfrac><mn>1</mn><mrow><mi>σ</mi><msqrt><mrow><mn>2</mn><mi>π</mi></mrow></msqrt></mrow></mfrac>
+    <msup><mi>e</mi><mrow><mo>−</mo><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mn>2</mn><mo stretchy="false">)</mo><msup><mrow><mo>[</mo><mo stretchy="false">(</mo><mi>y</mi><mo>−</mo><mi>μ</mi><mo stretchy="false">)</mo><mo>/</mo><mi>σ</mi><mo>]</mo></mrow><mn>2</mn></msup></mrow></msup>
+    <mspace width="1.5em"/><mo>−</mo><mi>∞</mi><mo>&lt;</mo><mi>y</mi><mo>&lt;</mo><mi>∞</mi>
+  </mrow>
+</math>
+<span class="num">(2.12)</span>
+</div>
+
+<p>Notação: <math><mi>y</mi><mo>∼</mo><mi>N</mi><mo stretchy="false">(</mo><mi>μ</mi><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false">)</mo></math>. O caso <math><mi>μ</mi><mo>=</mo><mn>0</mn><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> é a <strong>normal padrão</strong>, obtida por <strong>padronização</strong>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><mi>z</mi><mo>=</mo><mfrac><mrow><mi>y</mi><mo>−</mo><mi>μ</mi></mrow><mi>σ</mi></mfrac><mo>∼</mo><mi>N</mi><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>
+</math>
+<span class="num">(2.13)</span>
+</div>
+
+<p>Por que a normal domina? Porque o erro experimental costuma ser a soma de muitas contribuições pequenas e independentes — e aí entra o <strong>Teorema Central do Limite</strong>:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Teorema 2.1 — Teorema Central do Limite</span>
+  <p>Se <math><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>y</mi><mi>n</mi></msub></math> são independentes e identicamente distribuídas com <math><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mi>μ</mi></math> e <math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup></math> (ambos finitos), e <math><mi>x</mi><mo>=</mo><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>y</mi><mi>n</mi></msub></math>, então a distribuição de</p>
+  <math display="block"><mrow><msub><mi>z</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>n</mi><mi>μ</mi></mrow><msqrt><mrow><mi>n</mi><msup><mi>σ</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mrow></math>
+  <p>tende à normal padrão quando <math><mi>n</mi><mo>→</mo><mi>∞</mi></math>.</p>
+</div>
+
+<p>Na prática, a aproximação às vezes é boa já com <math><mi>n</mi><mo>&lt;</mo><mn>10</mn></math>; em outros casos exige <math><mi>n</mi><mo>&gt;</mo><mn>100</mn></math>. Depende de quão assimétrica é a distribuição original.</p>
+
+<h3>6.2 Qui-quadrado — a distribuição das somas de quadrados</h3>
+
+<p>Se <math><msub><mi>z</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>z</mi><mi>k</mi></msub></math> são NID(0,1), então <math><mi>x</mi><mo>=</mo><msubsup><mi>z</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mo>⋯</mo><mo>+</mo><msubsup><mi>z</mi><mi>k</mi><mn>2</mn></msubsup></math> segue a distribuição <strong>qui-quadrado com <math><mi>k</mi></math> graus de liberdade</strong>. É assimétrica, com <math><mi>μ</mi><mo>=</mo><mi>k</mi></math> e <math><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>k</mi></math>.</p>
+
+<p>O resultado que <em>de fato</em> vamos usar o curso inteiro é este:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">O resultado-chave de todo o livro</span>
+  <math display="block">
+    <mrow>
+      <mfrac><mtext>SQ</mtext><msup><mi>σ</mi><mn>2</mn></msup></mfrac><mo>=</mo>
+      <mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow><msup><mi>σ</mi><mn>2</mn></msup></mfrac>
+      <mo>∼</mo><msubsup><mi>χ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup>
+    </mrow>
+  </math>
+  <p style="margin-top:0.8rem"><strong>Uma soma de quadrados de variáveis normais, dividida por <math><msup><mi>σ</mi><mn>2</mn></msup></math>, segue qui-quadrado.</strong> Montgomery escreve, com todas as letras, que esse resultado "é extremamente importante e ocorre repetidamente".</p>
+</div>
+
+<p>Consequência imediata: como <math><msup><mi>S</mi><mn>2</mn></msup><mo>=</mo><mtext>SQ</mtext><mo>/</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></math>, a distribuição amostral da variância amostral é uma constante vezes uma qui-quadrado: <math><msup><mi>S</mi><mn>2</mn></msup><mo>∼</mo><mo stretchy="false">[</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">]</mo><msubsup><mi>χ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></math>.</p>
+
+<h3>6.3 <em>t</em> de Student — quando <math><mi>σ</mi></math> é desconhecido</h3>
+
+<p>Se <math><mi>z</mi><mo>∼</mo><mi>N</mi><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></math> e <math><msubsup><mi>χ</mi><mi>k</mi><mn>2</mn></msubsup></math> são <em>independentes</em>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><mfrac><mi>z</mi><msqrt><mrow><msubsup><mi>χ</mi><mi>k</mi><mn>2</mn></msubsup><mo>/</mo><mi>k</mi></mrow></msqrt></mfrac></mrow>
+</math>
+<span class="num">(2.17)</span>
+</div>
+
+<p>com média 0 e variância <math><mi>k</mi><mo>/</mo><mo stretchy="false">(</mo><mi>k</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></math> para <math><mi>k</mi><mo>&gt;</mo><mn>2</mn></math>. Quando <math><mi>k</mi><mo>→</mo><mi>∞</mi></math>, a <math><mi>t</mi></math> vira a normal padrão — as caudas mais pesadas da <math><mi>t</mi></math> são exatamente o preço de estimar <math><mi>σ</mi></math>.</p>
+
+<p>A aplicação prática:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><mi>t</mi><mo>=</mo><mfrac><mrow><mover><mi>y</mi><mo>¯</mo></mover><mo>−</mo><mi>μ</mi></mrow><mrow><mi>S</mi><mo>/</mo><msqrt><mi>n</mi></msqrt></mrow></mfrac><mo>∼</mo><msub><mi>t</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow>
+</math>
+<span class="num">(2.19)</span>
+</div>
+
+<h3>6.4 <em>F</em> — a razão de duas variâncias</h3>
+
+<p>Se <math><msubsup><mi>χ</mi><mi>u</mi><mn>2</mn></msubsup></math> e <math><msubsup><mi>χ</mi><mi>v</mi><mn>2</mn></msubsup></math> são independentes:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>F</mi><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow></msub><mo>=</mo><mfrac><mrow><msubsup><mi>χ</mi><mi>u</mi><mn>2</mn></msubsup><mo>/</mo><mi>u</mi></mrow><mrow><msubsup><mi>χ</mi><mi>v</mi><mn>2</mn></msubsup><mo>/</mo><mi>v</mi></mrow></mfrac></mrow>
+</math>
+<span class="num">(2.20)</span>
+</div>
+
+<p>com <math><mi>u</mi></math> graus de liberdade no <em>numerador</em> e <math><mi>v</mi></math> no <em>denominador</em> — a ordem importa. Combinando com o resultado da seção 6.2, se duas amostras independentes vêm de normais com a mesma variância <math><msup><mi>σ</mi><mn>2</mn></msup></math>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><mfrac><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup></mfrac><mo>∼</mo><msub><mi>F</mi><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="0.2em"/><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn></mrow></msub></mrow>
+</math>
+<span class="num">(2.22)</span>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">A árvore genealógica — memorize assim</span>
+  <ul style="margin-bottom:0.6rem">
+    <li><strong>Normal</strong> → o bloco de construção.</li>
+    <li><strong>χ²</strong> = soma de normais padrão ao quadrado → <em>toda soma de quadrados</em>.</li>
+    <li><strong>t</strong> = normal ÷ raiz de (χ²/gl) → comparar <em>médias</em> com <math><mi>σ</mi></math> desconhecido.</li>
+    <li><strong>F</strong> = razão de duas χ² reescaladas → comparar <em>variâncias</em>, e portanto comparar somas de quadrados entre si.</li>
+  </ul>
+  <p>É por isso que a ANOVA usa <math><mi>F</mi></math>: ela decompõe a variação total em somas de quadrados (cada uma <math><msup><mi>χ</mi><mn>2</mn></msup></math> ao ser dividida por <math><msup><mi>σ</mi><mn>2</mn></msup></math>) e compara duas delas por meio de uma razão.</p>
+</div>
+
+<h2 id="s7">7. Teste de hipóteses: a estrutura lógica</h2>
+
+<p>Voltamos ao cimento. Vamos supor um <strong>delineamento completamente aleatorizado</strong> (<em class="en">completely randomized design</em>): os dados são vistos como amostra aleatória de uma distribuição normal. A suposição de amostragem aleatória é decisiva — é ela que a aleatorização do capítulo 1 comprou para nós.</p>
+
+<h3>7.1 O modelo para os dados</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub>
+    <mspace width="1.5em"/>
+    <mrow><mo>{</mo><mtable columnalign="left"><mtr><mtd><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn></mtd></mtr><mtr><mtd><mi>j</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>n</mi><mi>i</mi></msub></mtd></mtr></mtable></mrow>
+  </mrow>
+</math>
+<span class="num">(2.23)</span>
+</div>
+
+<p>onde <math><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math> é a <math><mi>j</mi></math>-ésima observação do nível <math><mi>i</mi></math>, <math><msub><mi>μ</mi><mi>i</mi></msub></math> é a média do nível <math><mi>i</mi></math>, e <math><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mtext>NID</mtext><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><msubsup><mi>σ</mi><mi>i</mi><mn>2</mn></msubsup><mo stretchy="false">)</mo></math> é o <strong>componente de erro aleatório</strong>.</p>
+
+<p>Habitue-se a escrever o modelo antes de qualquer teste. Todo capítulo do livro começa por um modelo desses, cada vez mais elaborado — e o teste é sempre uma consequência do modelo, não uma receita à parte.</p>
+
+<h3>7.2 Hipóteses, erros e poder</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow><mtable columnalign="left"><mtr><mtd><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>≠</mo><msub><mi>μ</mi><mn>2</mn></msub></mtd></mtr></mtable></mrow>
+</math>
+</div>
+
+<p><math><msub><mi>H</mi><mn>0</mn></msub></math> é a <strong>hipótese nula</strong>; <math><msub><mi>H</mi><mn>1</mn></msub></math> é a <strong>hipótese alternativa</strong>, aqui <em>bilateral</em> (seria verdadeira tanto se <math><msub><mi>μ</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>μ</mi><mn>2</mn></msub></math> quanto se <math><msub><mi>μ</mi><mn>1</mn></msub><mo>&gt;</mo><msub><mi>μ</mi><mn>2</mn></msub></math>). O conjunto de valores da estatística que leva à rejeição é a <strong>região crítica</strong> ou <strong>região de rejeição</strong>.</p>
+
+<div class="rolagem">
+<table>
+  <caption>Os dois tipos de erro. As linhas são a decisão; as colunas, a verdade desconhecida.</caption>
+  <thead><tr><th></th><th><math><msub><mi>H</mi><mn>0</mn></msub></math> verdadeira</th><th><math><msub><mi>H</mi><mn>0</mn></msub></math> falsa</th></tr></thead>
+  <tbody>
+    <tr><td>Rejeitar <math><msub><mi>H</mi><mn>0</mn></msub></math></td><td><strong>Erro tipo I</strong> — prob. <math><mi>α</mi></math></td><td>Decisão correta — prob. <math><mn>1</mn><mo>−</mo><mi>β</mi></math> (<strong>poder</strong>)</td></tr>
+    <tr><td>Não rejeitar <math><msub><mi>H</mi><mn>0</mn></msub></math></td><td>Decisão correta</td><td><strong>Erro tipo II</strong> — prob. <math><mi>β</mi></math></td></tr>
+  </tbody>
+</table>
+</div>
+
+<ul>
+  <li><math><mi>α</mi><mo>=</mo><mi>P</mi><mo stretchy="false">(</mo><mtext>rejeitar </mtext><msub><mi>H</mi><mn>0</mn></msub><mo>|</mo><msub><mi>H</mi><mn>0</mn></msub><mtext> verdadeira</mtext><mo stretchy="false">)</mo></math> — o <strong>nível de significância</strong>. Um "falso positivo".</li>
+  <li><math><mi>β</mi><mo>=</mo><mi>P</mi><mo stretchy="false">(</mo><mtext>não rejeitar </mtext><msub><mi>H</mi><mn>0</mn></msub><mo>|</mo><msub><mi>H</mi><mn>0</mn></msub><mtext> falsa</mtext><mo stretchy="false">)</mo></math> — um "falso negativo".</li>
+  <li><strong>Poder</strong> (<em class="en">power</em>) <math><mo>=</mo><mn>1</mn><mo>−</mo><mi>β</mi></math> — a probabilidade de detectar um efeito que existe.</li>
+</ul>
+
+<div class="caixa aviso">
+  <span class="rotulo">A assimetria do procedimento</span>
+  <p>O procedimento padrão fixa <math><mi>α</mi></math> e, <em>em seguida</em>, projeta o teste para que <math><mi>β</mi></math> tenha um valor suficientemente pequeno. Os dois erros não são tratados simetricamente. Isso tem uma consequência que muita gente ignora: <strong>"não rejeitar <math><msub><mi>H</mi><mn>0</mn></msub></math>" não é "aceitar <math><msub><mi>H</mi><mn>0</mn></msub></math>"</strong>. Pode simplesmente significar que o experimento não teve poder suficiente. Por isso todo resultado não significativo deveria vir acompanhado de uma análise de poder, ou de um intervalo de confiança que mostre <em>quão grande</em> o efeito ainda poderia ser.</p>
+</div>
+
+
+<h2 id="s8">8. O teste <em>t</em> de duas amostras</h2>
+
+<figure>
+  <img src="img/fig-02-11.png" alt="Gráficos de probabilidade normal das duas amostras de resistência, ambos aproximadamente lineares e com inclinações semelhantes." style="max-width:22rem">
+  <figcaption><b>Figura 2.11</b> — Gráficos de probabilidade normal das duas amostras. Retas ≈ normalidade; inclinações parecidas ≈ variâncias iguais. Voltaremos a essa figura na seção 14.</figcaption>
+</figure>
+
+<h3>8.1 A estatística de teste, e de onde ela vem</h3>
+
+<p>Suponha que possamos admitir <math><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup></math>. Construa o raciocínio em três passos.</p>
+
+<p><strong>Passo 1 — a distribuição da diferença.</strong> Pela regra 10 dos operadores, com amostras independentes:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>∼</mo><mi>N</mi><mrow><mo>[</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>,</mo><mspace width="0.4em"/><msup><mi>σ</mi><mn>2</mn></msup><mrow><mo>(</mo><mfrac><mn>1</mn><msub><mi>n</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><mn>1</mn><msub><mi>n</mi><mn>2</mn></msub></mfrac><mo>)</mo></mrow><mo>]</mo></mrow></mrow>
+</math>
+</div>
+
+<p><strong>Passo 2 — se <math><mi>σ</mi></math> fosse conhecido</strong>, padronizando sob <math><msub><mi>H</mi><mn>0</mn></msub></math> teríamos uma <math><mi>N</mi><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></math>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>Z</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub></mrow><mrow><mi>σ</mi><msqrt><mrow><mfrac><mn>1</mn><msub><mi>n</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><mn>1</mn><msub><mi>n</mi><mn>2</mn></msub></mfrac></mrow></msqrt></mrow></mfrac></mrow>
+</math>
+<span class="num">(2.26)</span>
+</div>
+
+<p><strong>Passo 3 — <math><mi>σ</mi></math> é desconhecido.</strong> Substituímos por uma estimativa. E aqui há uma escolha inteligente: como <em>ambas</em> as amostras informam sobre o mesmo <math><msup><mi>σ</mi><mn>2</mn></msup></math>, combina-se as duas variâncias amostrais numa <strong>variância combinada</strong> (<em class="en">pooled variance</em>):</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mn>1</mn></msub><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mo stretchy="false">(</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup></mrow><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></mrow></mfrac></mrow>
+</math>
+<span class="num">(2.25)</span>
+</div>
+
+<p>Repare que <math><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup></math> é uma <em>média ponderada</em> das duas variâncias, com pesos iguais aos graus de liberdade. É a estimativa que usa toda a informação disponível. Substituindo <math><mi>σ</mi></math> por <math><msub><mi>S</mi><mi>p</mi></msub></math> em (2.26), a distribuição deixa de ser normal e passa a ser <math><mi>t</mi></math> com <math><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></math> graus de liberdade:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub></mrow><mrow><msub><mi>S</mi><mi>p</mi></msub><msqrt><mrow><mfrac><mn>1</mn><msub><mi>n</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><mn>1</mn><msub><mi>n</mi><mn>2</mn></msub></mfrac></mrow></msqrt></mrow></mfrac></mrow>
+</math>
+<span class="num">(2.24)</span>
+</div>
+
+<p>O denominador <math><msub><mi>S</mi><mi>p</mi></msub><msqrt><mrow><mn>1</mn><mo>/</mo><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><mn>1</mn><mo>/</mo><msub><mi>n</mi><mn>2</mn></msub></mrow></msqrt></math> é o <strong>erro-padrão da diferença de médias</strong>, abreviado <math><mtext>ep</mtext><mo stretchy="false">(</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo stretchy="false">)</mo></math>.</p>
+
+<p>Rejeita-se <math><msub><mi>H</mi><mn>0</mn></msub></math> se <math><mrow><mo>|</mo><msub><mi>t</mi><mn>0</mn></msub><mo>|</mo></mrow><mo>&gt;</mo><msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mspace width="0.2em"/><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></mrow></msub></math>.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Leia a estatística <em>t</em> como uma razão sinal/ruído</span>
+  <p><math><msub><mi>t</mi><mn>0</mn></msub></math> é <em>(diferença observada) ÷ (incerteza dessa diferença)</em>. Ela responde: "quantos erros-padrão de distância há entre as duas médias?" Toda estatística de teste do livro terá essa forma. Se você entender <math><msub><mi>t</mi><mn>0</mn></msub></math> assim, o <math><msub><mi>F</mi><mn>0</mn></msub></math> do capítulo 3 não será surpresa.</p>
+</div>
+
+<h3>8.2 Resolvendo o problema do cimento à mão</h3>
+
+<p>Da Tabela 2.1:</p>
+
+<div class="rolagem">
+<table>
+  <thead><tr><th></th><th>Modificada</th><th>Não modificada</th></tr></thead>
+  <tbody>
+    <tr><td>Média <math><msub><mover><mi>y</mi><mo>¯</mo></mover><mi>i</mi></msub></math></td><td>16,76</td><td>17,04</td></tr>
+    <tr><td>Variância <math><msubsup><mi>S</mi><mi>i</mi><mn>2</mn></msubsup></math></td><td>0,100</td><td>0,061</td></tr>
+    <tr><td>Desvio-padrão <math><msub><mi>S</mi><mi>i</mi></msub></math></td><td>0,316</td><td>0,248</td></tr>
+    <tr><td>Tamanho <math><msub><mi>n</mi><mi>i</mi></msub></math></td><td>10</td><td>10</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Os desvios-padrão são razoavelmente parecidos (0,316 e 0,248), então admitir variâncias iguais é defensável. Com <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math> e <math><mn>10</mn><mo>+</mo><mn>10</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>18</mn></math> graus de liberdade, o valor crítico é <math><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>18</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>101</mn></math>.</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo>=</mo><mfrac><mrow><mn>9</mn><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>100</mn><mo stretchy="false">)</mo><mo>+</mo><mn>9</mn><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>061</mn><mo stretchy="false">)</mo></mrow><mn>18</mn></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>081</mn><mspace width="1.5em"/><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>284</mn></mrow>
+</math>
+</div>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>16</mn><mo>,</mo><mn>76</mn><mo>−</mo><mn>17</mn><mo>,</mo><mn>04</mn></mrow><mrow><mn>0</mn><mo>,</mo><mn>284</mn><msqrt><mrow><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>10</mn></mfrac></mrow></msqrt></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>−</mo><mn>0</mn><mo>,</mo><mn>28</mn></mrow><mrow><mn>0</mn><mo>,</mo><mn>127</mn></mrow></mfrac><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>20</mn></mrow>
+</math>
+</div>
+
+<figure>
+  <img src="img/fig-02-10.png" alt="Densidade da distribuição t com 18 graus de liberdade, com as regiões críticas sombreadas além de ±2,101.">
+  <figcaption><b>Figura 2.10</b> — A distribuição de referência (<math><mi>t</mi></math> com 18 g.l.) com a região crítica <math><mo>±</mo><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>18</mn></mrow></msub><mo>=</mo><mo>±</mo><mn>2</mn><mo>,</mo><mn>101</mn></math>. O valor observado, −2,20, cai na cauda esquerda.</figcaption>
+</figure>
+
+<p>Como <math><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>20</mn><mo>&lt;</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>101</mn></math>, <strong>rejeitamos <math><msub><mi>H</mi><mn>0</mn></msub></math></strong>: as resistências médias diferem.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">A conclusão de engenharia — que é o que importa</span>
+  <p>A mudança de formulação atingiu o objetivo (reduzir o tempo de cura), <em>mas</em> há evidência de que também reduziu a resistência de aderência. Se essa redução tiver importância prática (além da estatística), será preciso mais desenvolvimento e mais experimentação.</p>
+  <p>Note o padrão da conclusão: teste estatístico → conclusão de domínio → decisão sobre o próximo experimento. É assim que se fecha um relatório.</p>
+</div>
+
+<h3>8.3 O mesmo em R</h3>
+
+<pre><code><span class="cmt"># Teste t de duas amostras, variâncias iguais (Eq. 2.24)</span>
+t.test(modificada, nao_modificada, var.equal = TRUE)
+
+<span class="out">## 	Two Sample t-test</span>
+<span class="out">## </span>
+<span class="out">## data:  modificada and nao_modificada</span>
+<span class="out">## t = -2.1869, df = 18, p-value = 0.04216</span>
+<span class="out">## alternative hypothesis: true difference in means is not equal to 0</span>
+<span class="out">## 95 percent confidence interval:</span>
+<span class="out">##  -0.54507314 -0.01092686</span>
+<span class="out">## sample estimates:</span>
+<span class="out">## mean of x mean of y </span>
+<span class="out">##    16.764    17.042</span>
+</code></pre>
+
+<p>Leitura linha a linha da saída — vale fazer isso com cuidado uma vez:</p>
+
+<ul>
+  <li><code>t = -2.1869</code> — nossa conta manual deu −2,20; a diferença é só arredondamento de <math><msub><mi>S</mi><mi>p</mi></msub></math>.</li>
+  <li><code>df = 18</code> — <math><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></math>.</li>
+  <li><code>p-value = 0.04216</code> — menor que 0,05, logo rejeitamos. Mas por pouco: veja a seção 9.</li>
+  <li>O intervalo <math><mo stretchy="false">[</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>545</mn><mo>;</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>011</mn><mo stretchy="false">]</mo></math> <strong>não contém zero</strong> — coerente com a rejeição.</li>
+</ul>
+
+<p>Conferindo as contas intermediárias, para não tratar o R como caixa-preta:</p>
+
+<pre><code>n1 &lt;- length(modificada);  n2 &lt;- length(nao_modificada)
+S1 &lt;- var(modificada);     S2 &lt;- var(nao_modificada)
+
+Sp2 &lt;- ((n1 - 1) * S1 + (n2 - 1) * S2) / (n1 + n2 - 2)   <span class="cmt"># Eq. 2.25</span>
+Sp  &lt;- sqrt(Sp2)
+ep  &lt;- Sp * sqrt(1/n1 + 1/n2)                             <span class="cmt"># erro-padrão da diferença</span>
+t0  &lt;- (mean(modificada) - mean(nao_modificada)) / ep     <span class="cmt"># Eq. 2.24</span>
+
+c(Sp2 = Sp2, Sp = Sp, ep = ep, t0 = t0)
+<span class="out">##        Sp2         Sp         ep         t0 </span>
+<span class="out">##  0.0808000  0.2842534  0.1271219 -2.1869335</span>
+
+qt(0.975, df = 18)      <span class="cmt"># valor crítico bilateral</span>
+<span class="out">## [1] 2.100922</span>
+2 * pt(-abs(t0), df = 18)   <span class="cmt"># valor-P bilateral, "na mão"</span>
+<span class="out">## [1] 0.04216674</span>
+</code></pre>
+
+<h3>8.4 Uma justificativa alternativa: o teste de aleatorização</h3>
+
+<p>O teste <em>t</em> depende, em teoria, de as populações serem normais. Mas há um argumento independente que dispensa essa suposição.</p>
+
+<p>Se os tratamentos não têm efeito algum, então as 20 observações poderiam ter aparecido em qualquer das</p>
+
+<div class="eq">
+<math display="block"><mrow><mfrac><mrow><mn>20</mn><mo>!</mo></mrow><mrow><mn>10</mn><mo>!</mo><mspace width="0.2em"/><mn>10</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>184</mn><mspace width="0.15em"/><mn>756</mn></mrow></math></div>
+
+<p>repartições possíveis em dois grupos de 10, todas igualmente prováveis. A cada repartição corresponde um valor de <math><msub><mi>t</mi><mn>0</mn></msub></math>. Se o <math><msub><mi>t</mi><mn>0</mn></msub></math> efetivamente observado for extremo em relação a esse conjunto de 184 756 valores, isso é evidência de que <math><msub><mi>μ</mi><mn>1</mn></msub><mo>≠</mo><msub><mi>μ</mi><mn>2</mn></msub></math>.</p>
+
+<p>Isso é um <strong>teste de aleatorização</strong>, e não usa nenhuma suposição sobre a forma da distribuição. Mostra-se que o teste <em>t</em> é uma <em>boa aproximação</em> do teste de aleatorização — e é por isso que podemos usá-lo sem angústia excessiva quanto à normalidade, e por isso um simples gráfico de probabilidade normal basta como verificação.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Mas note a condição</span>
+  <p>Esse argumento só existe <em>porque o experimento foi aleatorizado</em>. A robustez do teste <em>t</em> à não normalidade é comprada pela aleatorização — não é uma propriedade gratuita da fórmula. Mais uma vez: o delineamento paga pela análise.</p>
+</div>
+
+
+<h2 id="s9">9. O valor-P</h2>
+
+<p>Reportar apenas "rejeitou-se <math><msub><mi>H</mi><mn>0</mn></msub></math> ao nível 0,05" é pobre: não diz se a estatística mal entrou na região crítica ou se entrou por uma larga margem, e impõe o seu <math><mi>α</mi></math> a quem lê.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>O <strong>valor-P</strong> é a probabilidade de a estatística de teste assumir um valor pelo menos tão extremo quanto o observado, <em>quando <math><msub><mi>H</mi><mn>0</mn></msub></math> é verdadeira</em>.</p>
+  <p>Equivalentemente: é o <strong>menor nível de significância que levaria à rejeição</strong> de <math><msub><mi>H</mi><mn>0</mn></msub></math>.</p>
+</div>
+
+<p>Vamos aproximá-lo à mão para o cimento, como o livro faz — o exercício ensina a ler tabelas e a raciocinar por limites. Sabemos que <math><mrow><mo>|</mo><msub><mi>t</mi><mn>0</mn></msub><mo>|</mo></mrow><mo>=</mo><mn>2</mn><mo>,</mo><mn>20</mn><mo>&gt;</mo><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>18</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>101</mn></math>, logo <math><mi>P</mi><mo>&lt;</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. Da Tabela II do apêndice, <math><msub><mi>t</mi><mrow><mn>0,01</mn><mo>,</mo><mn>18</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>552</mn></math>, e como <math><mn>2</mn><mo>,</mo><mn>20</mn><mo>&lt;</mo><mn>2</mn><mo>,</mo><mn>552</mn></math>, temos <math><mi>P</mi><mo>&gt;</mo><mn>2</mn><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>01</mn><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>02</mn></math> (o fator 2 porque o teste é bilateral). Portanto <math><mn>0</mn><mo>,</mo><mn>02</mn><mo>&lt;</mo><mi>P</mi><mo>&lt;</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. O valor exato é <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>0422</mn></math>.</p>
+
+<p>Interpretação: <math><msub><mi>H</mi><mn>0</mn></msub></math> seria rejeitada a qualquer nível <math><mi>α</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mn>0422</mn></math>. A 0,05, rejeita-se; a 0,01, não. A evidência é <em>moderada</em>, não esmagadora — e essa nuance se perde num relatório que diz apenas "significativo".</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">O que o valor-P NÃO é</span>
+  <ul style="margin-bottom:0.6rem">
+    <li><strong>Não</strong> é a probabilidade de <math><msub><mi>H</mi><mn>0</mn></msub></math> ser verdadeira. A definição condiciona <em>em</em> <math><msub><mi>H</mi><mn>0</mn></msub></math> ser verdadeira; inverter o condicionamento é erro lógico.</li>
+    <li><strong>Não</strong> mede o tamanho do efeito. Um valor-P minúsculo com <math><mi>n</mi><mo>=</mo><mn>10</mn><mspace width="0.15em"/><mn>000</mn></math> pode corresponder a uma diferença sem nenhuma importância prática. É por isso que o conselho 3 do capítulo 1 existe, e é exatamente o que o exercício 2.53 do livro demonstra numericamente.</li>
+    <li><strong>Não</strong> é a probabilidade de errar ao rejeitar. Essa é <math><mi>α</mi></math>, fixada antes.</li>
+  </ul>
+  <p><strong>Sempre acompanhe o valor-P de um intervalo de confiança.</strong> Ele responde "quão grande é o efeito?", que é a pergunta que o gestor realmente tem.</p>
+</div>
+
+
+<h2 id="s10">10. Intervalos de confiança</h2>
+
+<p>Um teste responde "sim ou não". Frequentemente a pergunta útil é "quanto?". Em muitos experimentos industriais o experimentador <em>já sabe</em> que as médias diferem — testar <math><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub></math> é pouco interessante; ele quer saber <em>de quanto</em>.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Se <math><mi>L</mi></math> e <math><mi>U</mi></math> são estatísticas tais que <math><mi>P</mi><mo stretchy="false">(</mo><mi>L</mi><mo>⩽</mo><mi>θ</mi><mo>⩽</mo><mi>U</mi><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mo>−</mo><mi>α</mi></math>, então <math><mi>L</mi><mo>⩽</mo><mi>θ</mi><mo>⩽</mo><mi>U</mi></math> é um <strong>intervalo de confiança de <math><mn>100</mn><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo></math>%</strong> para <math><mi>θ</mi></math>.</p>
+</div>
+
+<p><strong>A derivação</strong> é uma inversão do teste. Partimos de que</p>
+
+<div class="eq">
+<math display="block"><mrow><mfrac><mrow><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>−</mo><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow><mrow><msub><mi>S</mi><mi>p</mi></msub><msqrt><mrow><mn>1</mn><mo>/</mo><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><mn>1</mn><mo>/</mo><msub><mi>n</mi><mn>2</mn></msub></mrow></msqrt></mrow></mfrac><mo>∼</mo><msub><mi>t</mi><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></mrow></msub></mrow></math></div>
+
+<p>Colocamos essa quantidade entre <math><mo>−</mo><msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn></mrow></msub></math> e <math><msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn></mrow></msub></math> com probabilidade <math><mn>1</mn><mo>−</mo><mi>α</mi></math> e isolamos <math><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>∓</mo>
+    <msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mspace width="0.2em"/><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></mrow></msub>
+    <msub><mi>S</mi><mi>p</mi></msub><msqrt><mrow><mfrac><mn>1</mn><msub><mi>n</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><mn>1</mn><msub><mi>n</mi><mn>2</mn></msub></mfrac></mrow></msqrt>
+  </mrow>
+</math>
+<span class="num">(2.30)</span>
+</div>
+
+<p>Para o cimento:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><mn>16</mn><mo>,</mo><mn>76</mn><mo>−</mo><mn>17</mn><mo>,</mo><mn>04</mn><mo>±</mo><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>101</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>284</mn><mo stretchy="false">)</mo><msqrt><mrow><mfrac><mn>1</mn><mn>10</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>10</mn></mfrac></mrow></msqrt><mo>⟹</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>55</mn><mo>⩽</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>⩽</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>01</mn></mrow>
+</math>
+</div>
+
+<p>Ou, na forma mais informativa: <math><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>28</mn><mo>±</mo><mn>0</mn><mo>,</mo><mn>27</mn></math> kgf/cm² — a diferença estimada é −0,28 e a precisão dessa estimativa é ±0,27.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Interpretação frequentista — leia com atenção</span>
+  <p>O intervalo <strong>não</strong> significa "há 95% de probabilidade de <math><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math> estar entre −0,55 e −0,01". O parâmetro é fixo; ou está no intervalo ou não está.</p>
+  <p>O significado é sobre o <em>método</em>: se repetíssemos a amostragem muitas vezes e construíssemos um intervalo a cada vez, 95% deles conteriam o valor verdadeiro. Não sabemos se <em>este</em> contém — sabemos que o procedimento acerta 95% das vezes.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">A dualidade teste ↔ intervalo</span>
+  <p>Como o intervalo não contém 0, os dados não sustentam <math><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub></math> ao nível 5% — a mesma conclusão do teste, e não por acaso: o IC de <math><mn>100</mn><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo></math>% contém exatamente os valores de <math><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math> que <em>não</em> seriam rejeitados ao nível <math><mi>α</mi></math>.</p>
+  <p>Repare também em quão perto de zero está o limite superior (−0,011). Isso diz algo que o valor-P sozinho não diz: a diferença pode ser tão pequena quanto 0,01 kgf/cm², o que provavelmente não teria importância prática nenhuma. <strong>Acompanhe todo teste de um intervalo de confiança sempre que possível.</strong></p>
+</div>
+
+<h2 id="s11">11. Escolha do tamanho amostral</h2>
+
+<p>Montgomery chama isso de "uma das partes mais importantes de qualquer problema de delineamento experimental". Há dois caminhos, e vale conhecer os dois.</p>
+
+<h3>11.1 Pela precisão do intervalo</h3>
+
+<p>O comprimento do IC (2.30) é determinado por <math><msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><msub><mi>S</mi><mi>p</mi></msub><msqrt><mrow><mn>2</mn><mo>/</mo><mi>n</mi></mrow></msqrt></math>, tomando <math><msub><mi>n</mi><mn>1</mn></msub><mo>=</mo><msub><mi>n</mi><mn>2</mn></msub><mo>=</mo><mi>n</mi></math>. Sobre <math><msub><mi>S</mi><mi>p</mi></msub></math> não temos controle; sobre <math><msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn></mrow></msub><msqrt><mrow><mn>2</mn><mo>/</mo><mi>n</mi></mrow></msqrt></math> temos, escolhendo <math><mi>n</mi></math>.</p>
+
+<pre><code><span class="cmt"># Como o fator t*sqrt(2/n) cai com n (Figura 2.12 do livro)</span>
+n &lt;- 3:20
+fator &lt;- qt(0.975, df = 2 * n - 2) * sqrt(2 / n)
+plot(n, fator, type = "b", pch = 19,
+     xlab = "n por população", ylab = expression(t[alpha/2] * sqrt(2/n)))
+round(fator[n %in% c(3, 5, 10, 12, 15, 20)], 3)
+<span class="out">## [1] 2.539 1.316 0.939 0.851 0.760 0.658</span>
+</code></pre>
+
+<p>A curva despenca até cerca de <math><mi>n</mi><mo>=</mo><mn>10</mn></math> e depois cai devagar. Daí a regra prática do livro: <strong>com <math><mi>n</mi><mo>=</mo><mn>10</mn></math> ou 12 por população, obtém-se praticamente a melhor precisão possível</strong> dada a variabilidade inerente. Dobrar de 10 para 20 melhora pouco — retorno decrescente, exatamente o <math><msqrt><mi>n</mi></msqrt></math> da seção 7.2 do capítulo 1.</p>
+
+<h3>11.2 Pelo poder do teste</h3>
+
+<p>O erro tipo II <math><mi>β</mi></math> depende da diferença verdadeira <math><mi>δ</mi><mo>=</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math>. Gráficos de <math><mi>β</mi></math> contra <math><mi>δ</mi></math> chamam-se <strong>curvas características de operação</strong> (curvas OC); a versão moderna são as <strong>curvas de poder</strong>:</p>
+
+<figure>
+  <img src="img/fig-02-13.png" alt="Curvas de poder contra tamanho amostral total, para delta = 1, 1,5 e 2." style="max-width:22rem">
+  <figcaption><b>Figura 2.13</b> — Curvas de poder para o teste <em>t</em> de duas amostras com variâncias iguais e <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. A diferença é expressa em unidades de desvio-padrão, <math><mi>δ</mi><mo>=</mo><mo>|</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>|</mo><mo>/</mo><mi>σ</mi></math>. <strong>Atenção:</strong> o eixo horizontal é o tamanho amostral <em>total</em>; por população use metade.</figcaption>
+</figure>
+
+<p>Duas leituras que a figura torna óbvias:</p>
+<ol>
+  <li>Quanto maior a diferença real, maior o poder. Diferenças grandes são fáceis de detectar.</li>
+  <li>Quanto maior a amostra, maior o poder. Para detectar uma diferença especificada, aumenta-se <math><mi>n</mi></math>.</li>
+</ol>
+
+<p><strong>Aplicando ao cimento.</strong> Suponha que uma diferença de 0,5 kgf/cm² tenha impacto prático, e queiramos detectá-la com poder 0,95 a <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. O parâmetro é <math><mi>δ</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>5</mn><mo>/</mo><mi>σ</mi></math>, mas <math><mi>σ</mi></math> é desconhecido. Da experiência passada, é improvável que <math><mi>σ</mi></math> passe de 0,25, o que dá <math><mi>δ</mi><mo>=</mo><mn>2</mn></math>. Pela Figura 2.13, o tamanho total é ≈16, ou seja, <strong><math><mi>n</mi><mo>=</mo><mn>8</mn></math> por população</strong>. O experimentador usou 10 — uma margem sensata contra a possibilidade de <math><mi>σ</mi></math> ser maior que o estimado.</p>
+
+<pre><code><span class="cmt"># Em R, sem precisar de curvas: power.t.test resolve para o argumento omitido</span>
+power.t.test(delta = 0.5, sd = 0.25, sig.level = 0.05, power = 0.95)
+<span class="out">##      Two-sample t test power calculation </span>
+<span class="out">##               n = 7.279<span class="cmt">   # arredonde para cima: n = 8 por grupo</span></span>
+<span class="out">##           delta = 0.5</span>
+<span class="out">##              sd = 0.25</span>
+<span class="out">##       sig.level = 0.05</span>
+<span class="out">##           power = 0.95</span>
+<span class="out">## NOTE: n is number in *each* group</span>
+
+<span class="cmt"># E se a diferença de interesse fosse menor, 0.25 kgf/cm², com n = 10?</span>
+power.t.test(n = 10, delta = 0.25, sd = 0.25, sig.level = 0.05)$power
+<span class="out">## [1] 0.5620</span>
+<span class="cmt"># Poder de apenas 56% — para chegar a 90% seria preciso n = 23 por grupo.</span>
+</code></pre>
+
+<div class="caixa pratica">
+  <span class="rotulo">A lição que fica</span>
+  <p>Note como o <math><mi>n</mi></math> exigido explode quando a diferença de interesse encolhe: 8 por grupo para detectar 0,5; <strong>23 por grupo</strong> para detectar 0,25 com poder 0,9. Fazer essa conta <em>antes</em> do experimento é o que separa um experimento que responde à pergunta de um que gasta recursos e termina inconclusivo. Um resultado "não significativo" com poder de 30% não informa nada.</p>
+</div>
+
+
+<h2 id="s12">12. Quando as variâncias são desiguais</h2>
+
+<p>Se não for razoável admitir <math><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math>, não se combina as variâncias. Usa-se</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>−</mo><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub></mrow><msqrt><mrow><mfrac><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><msub><mi>n</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup><msub><mi>n</mi><mn>2</mn></msub></mfrac></mrow></msqrt></mfrac></mrow>
+</math>
+<span class="num">(2.31)</span>
+</div>
+
+<p>Essa estatística <em>não</em> segue exatamente uma <math><mi>t</mi></math>. A aproximação de <strong>Satterthwaite</strong> usa graus de liberdade fracionários:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><mi>v</mi><mo>=</mo><mfrac>
+    <msup><mrow><mo>(</mo><mfrac><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><msub><mi>n</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup><msub><mi>n</mi><mn>2</mn></msub></mfrac><mo>)</mo></mrow><mn>2</mn></msup>
+    <mrow><mfrac><msup><mrow><mo>(</mo><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>/</mo><msub><mi>n</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>−</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><msup><mrow><mo>(</mo><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup><mo>/</mo><msub><mi>n</mi><mn>2</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mrow><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn></mrow></mfrac></mrow>
+  </mfrac></mrow>
+</math>
+<span class="num">(2.32)</span>
+</div>
+
+<p>Ao consultar tabela, <strong>arredonde <math><mi>v</mi></math> para baixo</strong> (conservador). Softwares interpolam.</p>
+
+<h3>Exemplo 2.1 — preservação de nervos em cirurgia</h3>
+
+<p>Um artigo da <em>Nature Biotechnology</em> (2011) descreve um peptídeo marcado com fluorescência que se liga a nervos, para ajudar a identificá-los durante a cirurgia. Mediu-se a fluorescência normalizada após duas horas em tecido nervoso e muscular de 12 camundongos. Quer-se testar <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub></math> contra <math><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>&gt;</mo><msub><mi>μ</mi><mn>2</mn></msub></math>.</p>
+
+<div class="rolagem">
+<table>
+  <thead><tr><th></th><th>n</th><th>Média</th><th>Desvio-padrão</th></tr></thead>
+  <tbody>
+    <tr><td>Nervo</td><td>12</td><td>4228</td><td>1918</td></tr>
+    <tr><td>Músculo</td><td>12</td><td>2534</td><td>961</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Os desvios-padrão diferem por um fator de 2 — combinar variâncias seria inadequado. Aplicando (2.31) e (2.32):</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>4228</mn><mo>−</mo><mn>2534</mn></mrow><msqrt><mrow><mfrac><msup><mn>1918</mn><mn>2</mn></msup><mn>12</mn></mfrac><mo>+</mo><mfrac><msup><mn>961</mn><mn>2</mn></msup><mn>12</mn></mfrac></mrow></msqrt></mfrac><mo>=</mo><mn>2</mn><mo>,</mo><mn>7354</mn><mspace width="1.5em"/><mi>v</mi><mo>=</mo><mn>16</mn><mo>,</mo><mn>1955</mn></mrow></math></div>
+
+<p>Com <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>007</mn></math>, rejeita-se <math><msub><mi>H</mi><mn>0</mn></msub></math>: a fluorescência média é maior no tecido nervoso.</p>
+
+<pre><code>nervo   &lt;- c(6625, 6000, 5450, 5200, 5175, 4900, 4750, 4500, 3985, 900, 450, 2800)
+musculo &lt;- c(3900, 3500, 3450, 3200, 2980, 2800, 2500, 2400, 2200, 1200, 1150, 1130)
+
+<span class="cmt"># var.equal = FALSE é o PADRÃO em R — o teste de Welch</span>
+t.test(nervo, musculo, alternative = "greater")
+<span class="out">## 	Welch Two Sample t-test</span>
+<span class="out">## t = 2.7353, df = 16.191, p-value = 0.007303</span>
+<span class="out">## alternative hypothesis: true difference in means is greater than 0</span>
+<span class="out">## 95 percent confidence interval:</span>
+<span class="out">##  613.1     Inf</span>
+</code></pre>
+
+<div class="caixa aviso">
+  <span class="rotulo">Detalhe do R que confunde muita gente</span>
+  <p>No R, <code>t.test()</code> usa <code>var.equal = FALSE</code> por <strong>padrão</strong> — ou seja, entrega o teste de Welch, não o teste combinado do livro. Para reproduzir a Equação 2.24 é preciso escrever <code>var.equal = TRUE</code> explicitamente. Isso explica por que os números do R às vezes não batem com os do Montgomery. (A escolha do R é defensável: Welch é robusto e perde muito pouco quando as variâncias de fato são iguais.)</p>
+</div>
+
+
+<h2 id="s13">13. Comparar uma média com um valor especificado</h2>
+
+<p>Às vezes há uma só população, e a comparação é com um valor <math><msub><mi>μ</mi><mn>0</mn></msub></math> — vindo de experiência passada, de teoria, ou de <strong>especificação contratual</strong>.</p>
+
+<p><strong>Variância conhecida</strong> (teste <em>Z</em> de uma amostra):</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>Z</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mover><mi>y</mi><mo>¯</mo></mover><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><mrow><mi>σ</mi><mo>/</mo><msqrt><mi>n</mi></msqrt></mrow></mfrac><mspace width="2em"/><mtext>IC:</mtext><mspace width="0.5em"/><mover><mi>y</mi><mo>¯</mo></mover><mo>±</mo><msub><mi>Z</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn></mrow></msub><mi>σ</mi><mo>/</mo><msqrt><mi>n</mi></msqrt></mrow></math>
+<span class="num">(2.35–2.36)</span>
+</div>
+
+<p><strong>Variância desconhecida</strong> (teste <em>t</em> de uma amostra — exige normalidade, embora desvios moderados não sejam graves):</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mover><mi>y</mi><mo>¯</mo></mover><mo>−</mo><msub><mi>μ</mi><mn>0</mn></msub></mrow><mrow><mi>S</mi><mo>/</mo><msqrt><mi>n</mi></msqrt></mrow></mfrac><mspace width="2em"/><mtext>IC:</mtext><mspace width="0.5em"/><mover><mi>y</mi><mo>¯</mo></mover><mo>±</mo><msub><mi>t</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mi>S</mi><mo>/</mo><msqrt><mi>n</mi></msqrt></mrow></math>
+<span class="num">(2.37–2.38)</span>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Erro de digitação no Exemplo 2.2 do livro</span>
+  <p>No exemplo do lote de tecido (<math><mover><mi>y</mi><mo>¯</mo></mover><mo>=</mo><mn>214</mn></math> psi, <math><msub><mi>μ</mi><mn>0</mn></msub><mo>=</mo><mn>200</mn></math>, <math><mi>σ</mi><mo>=</mo><mn>10</mn></math>, <math><mi>n</mi><mo>=</mo><mn>4</mn></math>), o livro escreve <math><msub><mi>Z</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false">(</mo><mn>124</mn><mo>−</mo><mn>200</mn><mo stretchy="false">)</mo><mo>/</mo><mo stretchy="false">(</mo><mn>10</mn><mo>/</mo><msqrt><mn>4</mn></msqrt><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn><mo>,</mo><mn>80</mn></math>. O "124" é erro tipográfico: o correto é <math><mo stretchy="false">(</mo><mn>214</mn><mo>−</mo><mn>200</mn><mo stretchy="false">)</mo><mo>/</mo><mn>5</mn><mo>=</mo><mn>2</mn><mo>,</mo><mn>80</mn></math>, que é o resultado apresentado.</p>
+  <p>Registro isso não por pedantismo: <strong>confira as contas de qualquer texto</strong>, inclusive deste material. Refazer os cálculos é parte do aprendizado, e livros têm erratas.</p>
+</div>
+
+
+<h2 id="s14">14. Verificação das suposições</h2>
+
+<p>O teste <em>t</em> pressupõe: (i) amostras aleatórias, (ii) populações independentes, (iii) normalidade, (iv) variâncias iguais (na versão combinada). Elas não têm o mesmo peso:</p>
+
+<div class="rolagem">
+<table>
+  <thead><tr><th>Suposição</th><th>Gravidade se violada</th><th>Como verificar / o que fazer</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Independência</strong></td><td><strong>Crítica</strong></td><td>Garantida pela aleatorização da ordem e da alocação. Falhas aqui não se consertam na análise.</td></tr>
+    <tr><td>Normalidade</td><td>Moderada</td><td>Gráfico de probabilidade normal. Desvios pequenos e moderados não preocupam; forte não normalidade exige transformação (cap. 15) ou método não paramétrico.</td></tr>
+    <tr><td>Variâncias iguais</td><td>Moderada</td><td>Comparar as inclinações no gráfico de probabilidade normal, ou o teste <em>F</em> da seção 16. Se violada, use (2.31)–(2.32).</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>O gráfico de probabilidade normal</h3>
+
+<p><strong>Como se constrói:</strong> ordenam-se as observações, <math><msub><mi>y</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msub><mo>⩽</mo><mo>⋯</mo><mo>⩽</mo><msub><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msub></math>, e plota-se <math><msub><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msub></math> contra a frequência acumulada <math><mo stretchy="false">(</mo><mi>j</mi><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn><mo stretchy="false">)</mo><mo>/</mo><mi>n</mi></math>, numa escala vertical distorcida de modo que <strong>uma amostra normal caia sobre uma reta</strong>.</p>
+
+<p><strong>Como se lê</strong> (veja a Figura 2.11, na seção 8):</p>
+<ul>
+  <li><strong>Teste do lápis gordo</strong> (<em class="en">fat pencil test</em>): imagine um lápis grosso deitado sobre a reta. Se ele cobre todos os pontos, a normal descreve bem os dados. Ao traçar a reta, dê mais peso aos pontos <em>centrais</em> — uma boa regra é ajustá-la aproximadamente entre os percentis 25 e 75. Pontos extremos oscilam muito e enganam.</li>
+  <li>A <strong>média</strong> é estimada pelo percentil 50; o <strong>desvio-padrão</strong>, pela diferença entre os percentis 84 e 50.</li>
+  <li>Consequência elegante: <strong>a inclinação da reta é proporcional ao desvio-padrão</strong>. Comparar as inclinações de duas amostras é comparar suas variâncias visualmente. Na Figura 2.11 as inclinações são muito parecidas — a hipótese de variâncias iguais no cimento é razoável.</li>
+</ul>
+
+<pre><code><span class="cmt"># Gráfico de probabilidade normal das duas amostras (Figura 2.11)</span>
+qqnorm(modificada,     main = "Modificada");     qqline(modificada)
+qqnorm(nao_modificada, main = "Não modificada"); qqline(nao_modificada)
+
+<span class="cmt"># Verificação numérica complementar (use como apoio, nunca como substituto do gráfico)</span>
+shapiro.test(modificada)$p.value
+<span class="out">## [1] 0.4587</span>
+shapiro.test(nao_modificada)$p.value
+<span class="out">## [1] 0.9214</span>
+</code></pre>
+
+<div class="caixa aviso">
+  <span class="rotulo">Sobre testes formais de normalidade</span>
+  <p>Testes como Shapiro–Wilk têm um defeito estrutural: com <math><mi>n</mi></math> pequeno quase nunca rejeitam (falta poder, justo quando você mais precisaria saber); com <math><mi>n</mi></math> grande rejeitam por desvios triviais e irrelevantes (e é justo aí que o TCL protegeria você). <strong>O gráfico é a ferramenta principal</strong>; o teste é um apoio secundário. Montgomery constrói o argumento inteiro sobre o gráfico, e não por acaso.</p>
+</div>
+
+<h2 id="s15">15. Comparações pareadas: a primeira blocagem</h2>
+
+<p>Esta seção é a mais importante do capítulo do ponto de vista do delineamento. É aqui que o princípio de blocagem do capítulo 1 aparece pela primeira vez com números.</p>
+
+<h3>15.1 O problema</h3>
+
+<p>Uma máquina de teste de dureza pressiona uma ponta contra um corpo de prova metálico com força conhecida; a profundidade da marca determina a dureza. Há duas pontas disponíveis. A precisão das duas parece igual, mas suspeita-se que uma produza leituras médias diferentes da outra.</p>
+
+<p><strong>Delineamento ingênuo:</strong> sortear 20 corpos de prova, 10 para cada ponta, e aplicar o teste <em>t</em> da seção 8. É um delineamento completamente aleatorizado, e é <em>válido</em>. Mas é ruim, e vale entender por quê.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">O defeito</span>
+  <p>Se os corpos de prova vierem de barras diferentes, produzidas em corridas diferentes, ou não forem homogêneos por qualquer outro motivo, essa heterogeneidade entra na variabilidade das leituras e <strong>infla o erro experimental</strong>. Com o erro inflado, uma diferença real entre as pontas fica mais difícil de detectar. O experimento perde poder por um motivo que nada tem a ver com a pergunta.</p>
+</div>
+
+<p><strong>Delineamento pareado:</strong> se cada corpo de prova for grande o bastante para duas medições, divide-se cada um em duas partes e sorteia-se qual ponta vai em qual metade (e em que ordem). Agora <strong>as duas pontas são comparadas dentro do mesmo corpo de prova</strong>. Cada corpo de prova é um <strong>bloco</strong>.</p>
+
+<div class="rolagem">
+<table>
+  <caption><b>Tabela 2.6</b> — Dados (codificados) do experimento de dureza.</caption>
+  <thead><tr><th>Corpo de prova</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+  <tbody>
+    <tr><td>Ponta 1</td><td>7</td><td>3</td><td>3</td><td>4</td><td>8</td><td>3</td><td>2</td><td>9</td><td>5</td><td>4</td></tr>
+    <tr><td>Ponta 2</td><td>6</td><td>3</td><td>5</td><td>3</td><td>8</td><td>2</td><td>4</td><td>9</td><td>4</td><td>5</td></tr>
+    <tr><td><strong>Diferença <math><msub><mi>d</mi><mi>j</mi></msub></math></strong></td><td>1</td><td>0</td><td>−2</td><td>1</td><td>0</td><td>1</td><td>−2</td><td>0</td><td>1</td><td>−1</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>15.2 Por que o pareamento funciona — a álgebra</h3>
+
+<p>O modelo agora tem um termo a mais, para o bloco:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>+</mo><msub><mi>β</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mspace width="1.5em"/><mrow><mo>{</mo><mtable columnalign="left"><mtr><mtd><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn></mtd></mtr><mtr><mtd><mi>j</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>10</mn></mtd></mtr></mtable></mrow></mrow>
+</math>
+<span class="num">(2.39)</span>
+</div>
+
+<p>onde <math><msub><mi>β</mi><mi>j</mi></msub></math> é o efeito do <math><mi>j</mi></math>-ésimo corpo de prova. Agora tome a diferença dentro de cada bloco, <math><msub><mi>d</mi><mi>j</mi></msub><mo>=</mo><msub><mi>y</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub></math>, e observe o que acontece:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow><msub><mi>μ</mi><mi>d</mi></msub><mo>=</mo><mi>E</mi><mo stretchy="false">(</mo><msub><mi>d</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo stretchy="false">)</mo><mo>−</mo><mi>E</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>+</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></mrow>
+</math>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">O ponto inteiro da blocagem, numa linha</span>
+  <p>O efeito aditivo do bloco, <math><msub><mi>β</mi><mi>j</mi></msub></math>, <strong>cancela-se na diferença</strong>. Toda a variação entre corpos de prova — a que inflaria o erro no delineamento ingênuo — simplesmente desaparece. Restam apenas <math><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math> e o erro.</p>
+</div>
+
+<p>Testar <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub></math> vira testar <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mi>d</mi></msub><mo>=</mo><mn>0</mn></math> — um teste <em>t</em> de <strong>uma</strong> amostra sobre as diferenças, chamado <strong>teste <em>t</em> pareado</strong>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mover><mi>d</mi><mo>¯</mo></mover><mrow><msub><mi>S</mi><mi>d</mi></msub><mo>/</mo><msqrt><mi>n</mi></msqrt></mrow></mfrac></mrow></math>
+<span class="num">(2.41)</span>
+</div>
+
+<h3>15.3 Os números</h3>
+
+<p>Das diferenças na Tabela 2.6: <math><mover><mi>d</mi><mo>¯</mo></mover><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>10</mn></math> e <math><msub><mi>S</mi><mi>d</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>20</mn></math>. Com <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math> e 9 graus de liberdade, o crítico é <math><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>9</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>262</mn></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mo>−</mo><mn>0</mn><mo>,</mo><mn>10</mn></mrow><mrow><mn>1</mn><mo>,</mo><mn>20</mn><mo>/</mo><msqrt><mn>10</mn></msqrt></mrow></mfrac><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>26</mn></mrow></math></div>
+
+<p>Como <math><mrow><mo>|</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>26</mn><mo>|</mo></mrow><mo>&lt;</mo><mn>2</mn><mo>,</mo><mn>262</mn></math>, <strong>não se rejeita</strong> <math><msub><mi>H</mi><mn>0</mn></msub></math> (<math><mi>P</mi><mo>≈</mo><mn>0</mn><mo>,</mo><mn>80</mn></math>). Não há evidência de que as pontas produzam leituras diferentes.</p>
+
+<pre><code>ponta1 &lt;- c(7, 3, 3, 4, 8, 3, 2, 9, 5, 4)
+ponta2 &lt;- c(6, 3, 5, 3, 8, 2, 4, 9, 4, 5)
+
+t.test(ponta1, ponta2, paired = TRUE)          <span class="cmt"># equivale a t.test(ponta1 - ponta2)</span>
+<span class="out">## 	Paired t-test</span>
+<span class="out">## t = -0.26414, df = 9, p-value = 0.7976</span>
+<span class="out">## 95 percent confidence interval:</span>
+<span class="out">##  -0.9564 0.7564</span>
+<span class="out">## sample estimates:</span>
+<span class="out">## mean difference </span>
+<span class="out">##            -0.1</span>
+</code></pre>
+
+<h3>15.4 Quanto se ganhou? A demonstração numérica</h3>
+
+<p>Aqui está o argumento que convence. Compare a medida de ruído dos dois delineamentos:</p>
+
+<div class="rolagem">
+<table>
+  <thead><tr><th>Delineamento</th><th>Medida de ruído</th><th>g.l.</th><th>IC 95% para <math><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math></th><th>Semiamplitude</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Pareado</strong> (blocado)</td><td><math><msub><mi>S</mi><mi>d</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>20</mn></math></td><td>9</td><td><math><mo>−</mo><mn>0</mn><mo>,</mo><mn>10</mn><mo>±</mo><mn>0</mn><mo>,</mo><mn>86</mn></math></td><td><strong>0,86</strong></td></tr>
+    <tr><td>Independente (não blocado)</td><td><math><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>32</mn></math></td><td>18</td><td><math><mo>−</mo><mn>0</mn><mo>,</mo><mn>10</mn><mo>±</mo><mn>2</mn><mo>,</mo><mn>18</mn></math></td><td>2,18</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>O pareamento reduziu a estimativa de variabilidade em quase 50%</strong> (de 2,32 para 1,20), e o intervalo de confiança ficou <strong>2,5 vezes mais estreito</strong>. Mesmos dados, mesma pergunta — delineamento diferente.</p>
+
+<p>E isso não é coincidência amostral. Demonstra-se que, sob o modelo (2.39), se você <em>não</em> parear e tratar as observações como duas amostras independentes:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>E</mi><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>β</mi><mi>j</mi><mn>2</mn></msubsup></mrow></math></div>
+
+<p>Ou seja, <math><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup></math> é um estimador <strong>viesado para cima</strong> de <math><msup><mi>σ</mi><mn>2</mn></msup></math> — os efeitos de bloco <em>inflam</em> a estimativa de variância. Já <math><msubsup><mi>S</mi><mi>d</mi><mn>2</mn></msubsup></math> é não viesado, porque os <math><msub><mi>β</mi><mi>j</mi></msub></math> se cancelaram. <strong>É exatamente por isso que a blocagem é chamada de técnica de redução de ruído.</strong></p>
+
+<h3>15.5 O preço, e quando não vale a pena</h3>
+
+<p>Foram tomadas <math><mn>2</mn><mi>n</mi><mo>=</mo><mn>20</mn></math> observações, mas o teste tem apenas <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>9</mn></math> graus de liberdade — contra 18 no delineamento não pareado. <strong>Blocar custa graus de liberdade.</strong> Como a distribuição <math><mi>t</mi></math> fica menos sensível com poucos g.l. (valor crítico 2,262 contra 2,101), há um preço real.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Blocar nem sempre é a melhor estratégia</span>
+  <p>Se a variabilidade <em>dentro</em> dos blocos for igual à variabilidade <em>entre</em> blocos — isto é, se os <math><msub><mi>β</mi><mi>j</mi></msub></math> forem essencialmente nulos —, não há ruído para remover. Nesse caso, blocar só custa os <math><mi>n</mi><mo>−</mo><mn>1</mn></math> graus de liberdade e produz um intervalo de confiança <strong>mais largo</strong>. Blocar sem necessidade é uma escolha ruim de delineamento.</p>
+  <p>A decisão é técnica, não estatística: <em>você acredita que as unidades experimentais são heterogêneas de um modo que afeta a resposta?</em> Se sim, bloque. Isso volta em detalhe no capítulo 4.</p>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">Vocabulário para o capítulo 4</span>
+  <p>O delineamento usado aqui chama-se <strong>delineamento de comparações pareadas</strong>, e é caso particular do <strong>delineamento em blocos aleatorizados</strong> (<em class="en">randomized block design</em>). O termo <strong>bloco</strong> designa uma unidade experimental relativamente homogênea, e representa uma <em>restrição à aleatorização completa</em>: os tratamentos são sorteados apenas <em>dentro</em> de cada bloco.</p>
+</div>
+
+
+<h2 id="s16">16. Inferência sobre variâncias</h2>
+
+<p>Nem sempre a média é o alvo. Na indústria de alimentos e bebidas, a variabilidade do equipamento de envase precisa ser pequena para que todas as embalagens fiquem próximas do volume nominal. Em laboratórios, compara-se a variabilidade de dois métodos analíticos.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Um alerta antes das fórmulas</span>
+  <p>Diferentemente dos testes sobre médias, <strong>os procedimentos para variâncias são bastante sensíveis à suposição de normalidade</strong>. Não há o efeito protetor do TCL nem a justificativa via teste de aleatorização. Verifique a normalidade com cuidado antes de confiar nestes testes — e desconfie de resultados que dependam criticamente deles.</p>
+</div>
+
+<h3>16.1 Uma variância contra um valor especificado</h3>
+
+<p>Para <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><msubsup><mi>σ</mi><mn>0</mn><mn>2</mn></msubsup></math>, a estatística vem direto do resultado-chave da seção 6.2:</p>
+
+<div class="eq">
+<math display="block"><mrow><msubsup><mi>χ</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><mfrac><mtext>SQ</mtext><msubsup><mi>σ</mi><mn>0</mn><mn>2</mn></msubsup></mfrac><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>S</mi><mn>2</mn></msup></mrow><msubsup><mi>σ</mi><mn>0</mn><mn>2</mn></msubsup></mfrac><mo>∼</mo><msubsup><mi>χ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></mrow></math>
+<span class="num">(2.45)</span>
+</div>
+
+<p>Rejeita-se se <math><msubsup><mi>χ</mi><mn>0</mn><mn>2</mn></msubsup><mo>&gt;</mo><msubsup><mi>χ</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></math> ou <math><msubsup><mi>χ</mi><mn>0</mn><mn>2</mn></msubsup><mo>&lt;</mo><msubsup><mi>χ</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></math>. O intervalo de confiança:</p>
+
+<div class="eq">
+<math display="block"><mrow><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>S</mi><mn>2</mn></msup></mrow><msubsup><mi>χ</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></mfrac><mo>⩽</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>⩽</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>S</mi><mn>2</mn></msup></mrow><msubsup><mi>χ</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mo>/</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></mfrac></mrow></math>
+<span class="num">(2.46)</span>
+</div>
+
+<p>Note que o intervalo é <strong>assimétrico</strong> em torno de <math><msup><mi>S</mi><mn>2</mn></msup></math>, porque a qui-quadrado é assimétrica.</p>
+
+<h3>16.2 Duas variâncias</h3>
+
+<p>Para <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math>, a estatística é a razão das variâncias amostrais, <math><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>/</mo><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup></math>, com <math><msub><mi>n</mi><mn>1</mn></msub><mo>−</mo><mn>1</mn></math> e <math><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn></math> graus de liberdade.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Truque de tabela que você vai usar muito</span>
+  <p>A Tabela IV do apêndice traz apenas pontos percentuais da <strong>cauda superior</strong> da <math><mi>F</mi></math>. Os da cauda inferior obtêm-se por</p>
+  <math display="block"><mrow><msub><mi>F</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mo>,</mo><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><msub><mi>v</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac><mn>1</mn><msub><mi>F</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>v</mi><mn>2</mn></msub><mo>,</mo><msub><mi>v</mi><mn>1</mn></msub></mrow></msub></mfrac></mrow></math>
+  <p style="margin-top:0.8rem"><strong>Repare que os graus de liberdade trocam de posição.</strong> É o erro mais comum nessa conta.</p>
+</div>
+
+<h3>Exemplo 2.3</h3>
+
+<p>Um engenheiro químico suspeita que o equipamento antigo (tipo 1) tenha variância maior que o novo. Testa <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math> contra <math><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>&gt;</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math>, com <math><msub><mi>n</mi><mn>1</mn></msub><mo>=</mo><mn>12</mn></math>, <math><msub><mi>n</mi><mn>2</mn></msub><mo>=</mo><mn>10</mn></math>, <math><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><mn>14</mn><mo>,</mo><mn>5</mn></math> e <math><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup><mo>=</mo><mn>10</mn><mo>,</mo><mn>8</mn></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>14</mn><mo>,</mo><mn>5</mn></mrow><mrow><mn>10</mn><mo>,</mo><mn>8</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>,</mo><mn>34</mn></mrow></math></div>
+
+<p>Como <math><msub><mi>F</mi><mrow><mn>0,05</mn><mo>,</mo><mn>11</mn><mo>,</mo><mn>9</mn></mrow></msub><mo>=</mo><mn>3</mn><mo>,</mo><mn>10</mn></math>, não se rejeita: não há evidência suficiente de que a variância do equipamento antigo seja maior.</p>
+
+<pre><code><span class="cmt"># Teste F para igualdade de variâncias, nos dados do cimento</span>
+var.test(modificada, nao_modificada)
+<span class="out">## 	F test to compare two variances</span>
+<span class="out">## F = 1.6293, num df = 9, denom df = 9, p-value = 0.4785</span>
+<span class="out">## alternative hypothesis: true ratio of variances is not equal to 1</span>
+<span class="out">## 95 percent confidence interval:</span>
+<span class="out">##  0.4046845 6.5593806</span>
+<span class="cmt"># P = 0.48: nada contra a hipótese de variâncias iguais — o que justifica</span>
+<span class="cmt"># o var.equal = TRUE que usamos na seção 8.3.</span>
+<span class="cmt"># Note a largura do IC para a razão: [0.40; 6.56]. Com n = 10 por grupo,</span>
+<span class="cmt"># praticamente não se sabe nada sobre a razão de variâncias. Estimar</span>
+<span class="cmt"># variâncias exige MUITO mais dados do que estimar médias.</span>
+</code></pre>
+
+<h2 id="recall">Cartões de recall ativo</h2>
+
+<p>Responda <em>antes</em> de abrir. Se travar, volte à seção — a dificuldade é o mecanismo, não o obstáculo.</p>
+
+<details class="recall">
+  <summary>Por que <math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math> e não <math><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math>?</summary>
+  <div class="resposta">
+    <p>Pela regra geral <math><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>=</mo><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>+</mo><mi>V</mi><mo stretchy="false">(</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>−</mo><mn>2</mn><mtext>Cov</mtext></math>. Sob independência a covariância é zero e sobram as duas variâncias <em>somadas</em>.</p>
+    <p>Intuitivamente: variância mede incerteza, e subtrair duas quantidades incertas produz um resultado <em>mais</em> incerto do que qualquer uma delas. Formalmente, o sinal negativo de <math><msub><mi>y</mi><mn>2</mn></msub></math> entra elevado ao quadrado, por causa da regra <math><mi>V</mi><mo stretchy="false">(</mo><mi>c</mi><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><mi>V</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></math> com <math><mi>c</mi><mo>=</mo><mo>−</mo><mn>1</mn></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>De onde vem o <math><mi>n</mi><mo>−</mo><mn>1</mn></math> no denominador de <math><msup><mi>S</mi><mn>2</mn></msup></math>?</summary>
+  <div class="resposta">
+    <p>Do fato de que <math><mi>E</mi><mo stretchy="false">(</mo><mtext>SQ</mtext><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>σ</mi><mn>2</mn></msup></math>, e não <math><mi>n</mi><msup><mi>σ</mi><mn>2</mn></msup></math>. A soma de quadrados em torno de <math><mover><mi>y</mi><mo>¯</mo></mover></math> é sistematicamente menor do que seria em torno de <math><mi>μ</mi></math>, porque <math><mover><mi>y</mi><mo>¯</mo></mover></math> é justamente o valor que a minimiza. Dividir por <math><mi>n</mi></math> subestimaria <math><msup><mi>σ</mi><mn>2</mn></msup></math>.</p>
+    <p>Do ponto de vista de graus de liberdade: os <math><mi>n</mi></math> desvios <math><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover></math> satisfazem a restrição <math><mo>∑</mo><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></math>; só <math><mi>n</mi><mo>−</mo><mn>1</mn></math> são livres.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual é o resultado que liga somas de quadrados à distribuição qui-quadrado, e por que ele é o mais importante do capítulo?</summary>
+  <div class="resposta">
+    <math display="block"><mrow><mfrac><mtext>SQ</mtext><msup><mi>σ</mi><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mrow><mo>∑</mo><msup><mrow><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow><msup><mi>σ</mi><mn>2</mn></msup></mfrac><mo>∼</mo><msubsup><mi>χ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></mrow></math>
+    <p>Importa porque o livro inteiro consiste em <em>decompor</em> a variação total em somas de quadrados (entre tratamentos, entre blocos, resíduo, …). Cada uma delas, dividida por <math><msup><mi>σ</mi><mn>2</mn></msup></math>, é uma qui-quadrado; razões entre elas são <math><mi>F</mi></math>. Toda a ANOVA sai daí.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Como se constroem <math><mi>t</mi></math> e <math><mi>F</mi></math> a partir de normais e qui-quadrados?</summary>
+  <div class="resposta">
+    <p><math><mi>t</mi><mo>=</mo></math> normal padrão dividida pela raiz de uma qui-quadrado sobre seus g.l., as duas independentes: <math><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><mi>z</mi><mo>/</mo><msqrt><mrow><msubsup><mi>χ</mi><mi>k</mi><mn>2</mn></msubsup><mo>/</mo><mi>k</mi></mrow></msqrt></math>. Serve para <strong>médias</strong> com <math><mi>σ</mi></math> desconhecido.</p>
+    <p><math><mi>F</mi><mo>=</mo></math> razão de duas qui-quadrados independentes, cada uma dividida por seus g.l.: <math><msub><mi>F</mi><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow></msub><mo>=</mo><mo stretchy="false">(</mo><msubsup><mi>χ</mi><mi>u</mi><mn>2</mn></msubsup><mo>/</mo><mi>u</mi><mo stretchy="false">)</mo><mo>/</mo><mo stretchy="false">(</mo><msubsup><mi>χ</mi><mi>v</mi><mn>2</mn></msubsup><mo>/</mo><mi>v</mi><mo stretchy="false">)</mo></math>. Serve para <strong>variâncias</strong> — e portanto para comparar somas de quadrados.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Escreva <math><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup></math> e explique por que se combinam as variâncias.</summary>
+  <div class="resposta">
+    <math display="block"><mrow><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mn>1</mn></msub><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mo stretchy="false">(</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup></mrow><mrow><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></mrow></mfrac></mrow></math>
+    <p>Se as duas populações têm a mesma variância <math><msup><mi>σ</mi><mn>2</mn></msup></math>, então <math><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup></math> e <math><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup></math> estimam o <em>mesmo</em> parâmetro. Combiná-las (média ponderada pelos graus de liberdade) usa toda a informação disponível e produz uma estimativa mais precisa, com <math><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo>−</mo><mn>2</mn></math> graus de liberdade em vez de apenas <math><msub><mi>n</mi><mi>i</mi></msub><mo>−</mo><mn>1</mn></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Defina valor-P. Cite três coisas que ele <strong>não</strong> é.</summary>
+  <div class="resposta">
+    <p><strong>É:</strong> a probabilidade de a estatística de teste assumir valor pelo menos tão extremo quanto o observado, <em>dado que <math><msub><mi>H</mi><mn>0</mn></msub></math> é verdadeira</em>. Equivalentemente, o menor <math><mi>α</mi></math> que levaria à rejeição.</p>
+    <p><strong>Não é:</strong> (1) a probabilidade de <math><msub><mi>H</mi><mn>0</mn></msub></math> ser verdadeira — isso inverteria o condicionamento; (2) uma medida do tamanho do efeito — com <math><mi>n</mi></math> grande, efeitos triviais dão valores-P minúsculos; (3) a probabilidade de errar ao rejeitar — essa é <math><mi>α</mi></math>, fixada de antemão.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Interprete corretamente "IC 95% = [−0,55; −0,01]".</summary>
+  <div class="resposta">
+    <p><strong>Errado:</strong> "há 95% de probabilidade de o parâmetro estar nesse intervalo". O parâmetro é fixo; ou está ou não está.</p>
+    <p><strong>Certo:</strong> o <em>procedimento</em> que gerou este intervalo acerta 95% das vezes, em amostragens repetidas. Além disso: como o intervalo não contém 0, rejeita-se <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></math> ao nível 5% — o IC contém exatamente os valores que <em>não</em> seriam rejeitados. E o limite superior perto de zero avisa que a diferença pode ser pequena demais para ter importância prática.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que "não rejeitar <math><msub><mi>H</mi><mn>0</mn></msub></math>" não é "aceitar <math><msub><mi>H</mi><mn>0</mn></msub></math>"?</summary>
+  <div class="resposta">
+    <p>Porque o procedimento controla <math><mi>α</mi></math> de forma explícita, mas <math><mi>β</mi></math> só indiretamente, via tamanho amostral. Um resultado não significativo pode significar "não há efeito" <em>ou</em> "o experimento não teve poder para detectá-lo". Sem saber o poder, não se distingue um caso do outro.</p>
+    <p>Por isso todo resultado não significativo deve vir com uma análise de poder ou, melhor, com um intervalo de confiança — que mostra <em>quão grande</em> o efeito ainda poderia ser e continuar compatível com os dados.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Quando usar (2.31)–(2.32) em vez de (2.24), e qual é o padrão do R?</summary>
+  <div class="resposta">
+    <p>Quando não for razoável supor <math><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math> — indicado por desvios-padrão amostrais muito diferentes, por inclinações claramente distintas no gráfico de probabilidade normal, ou por um teste <math><mi>F</mi></math> significativo. Não se combinam as variâncias; usa-se <math><msqrt><mrow><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>/</mo><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup><mo>/</mo><msub><mi>n</mi><mn>2</mn></msub></mrow></msqrt></math> no denominador e graus de liberdade de Satterthwaite (arredondados <em>para baixo</em> ao usar tabela).</p>
+    <p><strong>No R, <code>var.equal = FALSE</code> é o padrão</strong> — <code>t.test()</code> entrega Welch. Para reproduzir a Equação 2.24 do livro é preciso <code>var.equal = TRUE</code>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Como se lê um gráfico de probabilidade normal, e como ele revela variâncias desiguais?</summary>
+  <div class="resposta">
+    <p>Plota-se <math><msub><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msub></math> contra <math><mo stretchy="false">(</mo><mi>j</mi><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn><mo stretchy="false">)</mo><mo>/</mo><mi>n</mi></math> numa escala tal que uma amostra normal caia sobre uma reta. Aplica-se o <strong>teste do lápis gordo</strong>: se um lápis grosso deitado sobre a reta cobre todos os pontos, a normal serve. A reta deve ser guiada pelos pontos centrais (entre os percentis 25 e 75), não pelos extremos.</p>
+    <p>Como o desvio-padrão é estimado pela diferença entre os percentis 84 e 50, a <strong>inclinação da reta é proporcional a <math><mi>σ</mi></math></strong>. Duas amostras com inclinações parecidas têm variâncias parecidas.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Mostre algebricamente por que o pareamento remove a variabilidade entre unidades experimentais.</summary>
+  <div class="resposta">
+    <p>Sob o modelo <math><msub><mi>y</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>+</mo><msub><mi>β</mi><mi>j</mi></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math>, a diferença dentro do bloco <math><mi>j</mi></math> é</p>
+    <math display="block"><mrow><msub><mi>d</mi><mi>j</mi></msub><mo>=</mo><msub><mi>y</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mo stretchy="false">(</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>+</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>+</mo><mo stretchy="false">(</mo><msub><mi>ϵ</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>ϵ</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub><mo stretchy="false">)</mo></mrow></math>
+    <p>O termo <math><msub><mi>β</mi><mi>j</mi></msub></math> aparece nos dois e <strong>cancela</strong>. Logo <math><mi>E</mi><mo stretchy="false">(</mo><msub><mi>d</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></math>, livre do efeito de bloco.</p>
+    <p>Se, em vez disso, tratarmos as observações como duas amostras independentes, <math><mi>E</mi><mo stretchy="false">(</mo><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mo>∑</mo><msubsup><mi>β</mi><mi>j</mi><mn>2</mn></msubsup></math>: os efeitos de bloco <em>inflam</em> a estimativa de variância. É por isso que blocar é uma técnica de redução de ruído.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual é o custo de blocar, e em que situação blocar é uma <em>má</em> escolha?</summary>
+  <div class="resposta">
+    <p><strong>Custo:</strong> graus de liberdade. No experimento de dureza, 20 observações rendem só 9 g.l. no teste pareado, contra 18 no não pareado. Menos g.l. significa valor crítico maior (2,262 contra 2,101) e teste menos sensível.</p>
+    <p><strong>Quando é má escolha:</strong> quando a variabilidade dentro dos blocos é igual à variabilidade entre blocos — ou seja, quando os <math><msub><mi>β</mi><mi>j</mi></msub></math> são desprezíveis. Aí não há ruído a remover, e blocar só custa os graus de liberdade, produzindo um IC <em>mais largo</em>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que os testes sobre variâncias exigem mais cuidado que os testes sobre médias?</summary>
+  <div class="resposta">
+    <p>Porque são <strong>bastante sensíveis à suposição de normalidade</strong>. Os testes sobre médias contam com duas proteções que não existem aqui: o Teorema Central do Limite (que aproxima a distribuição de <math><mover><mi>y</mi><mo>¯</mo></mover></math> da normal mesmo quando as observações não são normais) e a justificativa via teste de aleatorização. Nenhuma das duas se aplica a <math><msup><mi>χ</mi><mn>2</mn></msup></math> e <math><mi>F</mi></math> para variâncias.</p>
+    <p>Some-se a isso que estimar variância exige muito mais dados: com <math><mi>n</mi><mo>=</mo><mn>10</mn></math> por grupo, o IC 95% para a razão de variâncias do cimento vai de 0,40 a 6,56 — praticamente nenhuma informação.</p>
+  </div>
+</details>
+
+<h2 id="exercicios">Exercícios resolvidos</h2>
+
+<p>Selecionei oito exercícios que, juntos, cobrem <em>todas</em> as técnicas do capítulo: teste <em>t</em> de uma amostra, teste <em>Z</em> com variâncias conhecidas, sequência teste&nbsp;<em>F</em>&nbsp;→&nbsp;teste&nbsp;<em>t</em>, poder e tamanho amostral, inferência sobre variância e teste pareado. Todos os números foram calculados, não copiados.</p>
+
+<div class="exercicio">
+  <h3>2.22 — Prazo de validade de bebida gaseificada <span style="font-weight:400;color:var(--texto-fraco)">· teste <em>t</em> de uma amostra</span></h3>
+  <div class="enunciado">
+    <p>Dez garrafas são selecionadas ao acaso e testadas, obtendo-se (em dias): 108, 138, 124, 163, 124, 159, 106, 134, 115, 139.</p>
+    <p>(a) Queremos demonstrar que o prazo médio excede 120 dias. Formule as hipóteses. (b) Teste com <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>01</mn></math>. (c) Encontre o valor-P. (d) Construa um IC de 99%.</p>
+  </div>
+
+  <h4>(a) Hipóteses</h4>
+  <p>"Demonstrar que excede 120" pede alternativa <strong>unilateral à direita</strong>. Como <math><mi>σ</mi></math> é desconhecido, é teste <em>t</em>:</p>
+  <math display="block"><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>μ</mi><mo>=</mo><mn>120</mn><mspace width="2em"/><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><mi>μ</mi><mo>&gt;</mo><mn>120</mn></mrow></math>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Por que a alternativa vai onde vai</span>
+    <p>A afirmação que se <em>quer demonstrar</em> vai sempre em <math><msub><mi>H</mi><mn>1</mn></msub></math>, nunca em <math><msub><mi>H</mi><mn>0</mn></msub></math>. O motivo é a assimetria da seção 7.2: só rejeitando <math><msub><mi>H</mi><mn>0</mn></msub></math> obtemos uma conclusão forte, com risco controlado em <math><mi>α</mi></math>. E a direção precisa ser escolhida <strong>antes</strong> de olhar os dados — escolhê-la depois é fraude estatística, ainda que involuntária.</p>
+  </div>
+
+  <h4>(b) O teste</h4>
+  <p><math><mover><mi>y</mi><mo>¯</mo></mover><mo>=</mo><mn>131</mn><mo>,</mo><mn>00</mn></math>, <math><mi>S</mi><mo>=</mo><mn>19</mn><mo>,</mo><mn>545</mn></math>, <math><mi>n</mi><mo>=</mo><mn>10</mn></math>:</p>
+  <math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>131</mn><mo>,</mo><mn>00</mn><mo>−</mo><mn>120</mn></mrow><mrow><mn>19</mn><mo>,</mo><mn>545</mn><mo>/</mo><msqrt><mn>10</mn></msqrt></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>11</mn><mo>,</mo><mn>00</mn></mrow><mrow><mn>6</mn><mo>,</mo><mn>181</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>,</mo><mn>7798</mn></mrow></math>
+  <p>O valor crítico é <math><msub><mi>t</mi><mrow><mn>0,01</mn><mo>,</mo><mn>9</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>8214</mn></math>. Como <math><mn>1</mn><mo>,</mo><mn>78</mn><mo>&lt;</mo><mn>2</mn><mo>,</mo><mn>82</mn></math>, <strong>não se rejeita <math><msub><mi>H</mi><mn>0</mn></msub></math></strong>. Não há evidência, ao nível de 1%, de que o prazo médio exceda 120 dias.</p>
+
+  <h4>(c) Valor-P</h4>
+  <p><math><mi>P</mi><mo>=</mo><mi>P</mi><mo stretchy="false">(</mo><msub><mi>t</mi><mn>9</mn></msub><mo>&gt;</mo><mn>1</mn><mo>,</mo><mn>7798</mn><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>0544</mn></math>. Unilateral — <em>não</em> se dobra.</p>
+
+  <h4>(d) IC de 99% (bilateral)</h4>
+  <math display="block"><mrow><mn>131</mn><mo>±</mo><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>2498</mn><mo stretchy="false">)</mo><mfrac><mrow><mn>19</mn><mo>,</mo><mn>545</mn></mrow><msqrt><mn>10</mn></msqrt></mfrac><mo>⟹</mo><mn>110</mn><mo>,</mo><mn>91</mn><mo>⩽</mo><mi>μ</mi><mo>⩽</mo><mn>151</mn><mo>,</mo><mn>09</mn></mrow></math>
+
+<pre><code>dias &lt;- c(108, 138, 124, 163, 124, 159, 106, 134, 115, 139)
+t.test(dias, mu = 120, alternative = "greater", conf.level = 0.99)
+<span class="out">## 	One Sample t-test</span>
+<span class="out">## t = 1.7798, df = 9, p-value = 0.05438</span>
+<span class="out">## alternative hypothesis: true mean is greater than 120</span>
+<span class="out">## 99 percent confidence interval:</span>
+<span class="out">##  113.5619      Inf</span>
+<span class="out">## sample estimates: mean of x = 131</span>
+
+t.test(dias, mu = 120, conf.level = 0.99)$conf.int   <span class="cmt"># IC bilateral do item (d)</span>
+<span class="out">## [1] 110.9141 151.0859</span>
+</code></pre>
+
+  <div class="caixa pratica">
+    <span class="rotulo">O que ensinar a partir deste resultado</span>
+    <p>Repare que <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>054</mn></math>: a <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>01</mn></math> não se rejeita, e a <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math> também não — mas por muito pouco. O caso ilustra bem por que reportar o valor-P é superior a dizer só "não significativo": quem lê enxerga que a evidência é <em>quase</em> suficiente, e que mais dados provavelmente resolveriam a questão. Note ainda a largura do IC (110,9 a 151,1): com <math><mi>n</mi><mo>=</mo><mn>10</mn></math>, sabe-se muito pouco sobre <math><mi>μ</mi></math>.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>2.26 — Enchimento de garrafas <span style="font-weight:400;color:var(--texto-fraco)">· teste <em>Z</em>, variâncias conhecidas</span></h3>
+  <div class="enunciado">
+    <p>Duas máquinas enchem garrafas com volume nominal de 16,0 onças. Os processos são normais, com <math><msub><mi>σ</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>015</mn></math> e <math><msub><mi>σ</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>018</mn></math>. Suspeita-se que ambas enchem ao mesmo volume médio, <em>seja ele 16,0 ou não</em>.</p>
+    <p><strong>Máquina 1:</strong> 16,03 · 16,04 · 16,05 · 16,05 · 16,02 · 16,01 · 15,96 · 15,98 · 16,02 · 15,99<br>
+       <strong>Máquina 2:</strong> 16,02 · 15,97 · 15,96 · 16,01 · 15,99 · 16,03 · 16,04 · 16,02 · 16,01 · 16,00</p>
+    <p>(a) Hipóteses. (b) Teste com <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. (c) Valor-P. (d) IC de 95% para a diferença.</p>
+  </div>
+
+  <h4>(a) Hipóteses</h4>
+  <math display="block"><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub><mspace width="2em"/><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>≠</mo><msub><mi>μ</mi><mn>2</mn></msub></mrow></math>
+  <p>Bilateral: a frase "seja ele 16,0 ou não" deixa claro que interessa <em>qualquer</em> diferença entre as máquinas, em qualquer direção. As variâncias são <strong>conhecidas</strong> — logo é teste <em>Z</em> (Eq. 2.33), não <em>t</em>.</p>
+
+  <h4>(b) O teste</h4>
+  <p><math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mn>16</mn><mo>,</mo><mn>015</mn></math> e <math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mn>16</mn><mo>,</mo><mn>005</mn></math>:</p>
+  <math display="block"><mrow><msub><mi>Z</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>16</mn><mo>,</mo><mn>015</mn><mo>−</mo><mn>16</mn><mo>,</mo><mn>005</mn></mrow><msqrt><mrow><mfrac><msup><mrow><mo>(</mo><mn>0,015</mn><mo>)</mo></mrow><mn>2</mn></msup><mn>10</mn></mfrac><mo>+</mo><mfrac><msup><mrow><mo>(</mo><mn>0,018</mn><mo>)</mo></mrow><mn>2</mn></msup><mn>10</mn></mfrac></mrow></msqrt></mfrac><mo>=</mo><mfrac><mrow><mn>0</mn><mo>,</mo><mn>010</mn></mrow><mrow><mn>0</mn><mo>,</mo><mn>00741</mn></mrow></mfrac><mo>=</mo><mn>1</mn><mo>,</mo><mn>3496</mn></mrow></math>
+  <p>Como <math><mrow><mo>|</mo><mn>1</mn><mo>,</mo><mn>35</mn><mo>|</mo></mrow><mo>&lt;</mo><msub><mi>Z</mi><mn>0,025</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>96</mn></math>, <strong>não se rejeita</strong>. Não há evidência de que as máquinas difiram no volume médio.</p>
+
+  <h4>(c) Valor-P</h4>
+  <math display="block"><mrow><mi>P</mi><mo>=</mo><mn>2</mn><mrow><mo>[</mo><mn>1</mn><mo>−</mo><mi>Φ</mi><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>3496</mn><mo stretchy="false">)</mo><mo>]</mo></mrow><mo>=</mo><mn>0</mn><mo>,</mo><mn>1771</mn></mrow></math>
+
+  <h4>(d) IC de 95%</h4>
+  <math display="block"><mrow><mn>0</mn><mo>,</mo><mn>010</mn><mo>±</mo><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>96</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>00741</mn><mo stretchy="false">)</mo><mo>⟹</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>0045</mn><mo>⩽</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>⩽</mo><mn>0</mn><mo>,</mo><mn>0245</mn></mrow></math>
+  <p>Contém zero — coerente com a não rejeição.</p>
+
+<pre><code>maq1 &lt;- c(16.03, 16.04, 16.05, 16.05, 16.02, 16.01, 15.96, 15.98, 16.02, 15.99)
+maq2 &lt;- c(16.02, 15.97, 15.96, 16.01, 15.99, 16.03, 16.04, 16.02, 16.01, 16.00)
+
+<span class="cmt"># O R não traz teste Z pronto: com sigma conhecido, escreve-se a fórmula (Eq. 2.33)</span>
+s1 &lt;- 0.015; s2 &lt;- 0.018; n1 &lt;- 10; n2 &lt;- 10
+ep &lt;- sqrt(s1^2/n1 + s2^2/n2)
+z0 &lt;- (mean(maq1) - mean(maq2)) / ep
+c(dif = mean(maq1) - mean(maq2), ep = ep, Z0 = z0, P = 2 * (1 - pnorm(abs(z0))))
+<span class="out">##         dif          ep          Z0           P </span>
+<span class="out">## 0.010000000 0.007408778 1.349636    0.177127</span>
+
+(mean(maq1) - mean(maq2)) + c(-1, 1) * qnorm(0.975) * ep    <span class="cmt"># IC 95%</span>
+<span class="out">## [1] -0.004520 0.024520</span>
+</code></pre>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Não confunda as duas perguntas</span>
+    <p>O enunciado pergunta se as máquinas enchem <em>igualmente entre si</em> — não se enchem 16,0 onças. São perguntas diferentes, com hipóteses diferentes. Para a segunda seria preciso um teste de uma amostra contra <math><msub><mi>μ</mi><mn>0</mn></msub><mo>=</mo><mn>16</mn><mo>,</mo><mn>0</mn></math> em cada máquina. Ler o enunciado com precisão é metade do trabalho.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>2.28 — Sinalizadores químicos <span style="font-weight:400;color:var(--texto-fraco)">· teste <em>F</em> seguido de teste <em>t</em></span></h3>
+  <div class="enunciado">
+    <p>Tempos de queima (min) de duas formulações. Os engenheiros interessam-se tanto pela média quanto pela variância.</p>
+    <p><strong>Tipo 1:</strong> 65 · 81 · 57 · 66 · 82 · 82 · 67 · 59 · 75 · 70<br>
+       <strong>Tipo 2:</strong> 64 · 71 · 83 · 59 · 65 · 56 · 69 · 74 · 82 · 79</p>
+    <p>(a) Teste se as variâncias são iguais (<math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>). (b) Usando o resultado de (a), teste se as médias são iguais. Valor-P? (c) Discuta o papel da suposição de normalidade.</p>
+  </div>
+
+  <div class="caixa pratica">
+    <span class="rotulo">A sequência importa</span>
+    <p>Este exercício ensina o <strong>fluxo de trabalho</strong> correto: primeiro decidir <em>qual versão</em> do teste <em>t</em> usar (variâncias iguais ou não), e só depois testar as médias. A ordem não é decorativa — o resultado de (a) determina a fórmula de (b).</p>
+  </div>
+
+  <h4>(a) Igualdade de variâncias</h4>
+  <p><math><msubsup><mi>S</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><mn>85</mn><mo>,</mo><mn>822</mn></math>, <math><msubsup><mi>S</mi><mn>2</mn><mn>2</mn></msubsup><mo>=</mo><mn>87</mn><mo>,</mo><mn>733</mn></math>:</p>
+  <math display="block"><mrow><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>85</mn><mo>,</mo><mn>822</mn></mrow><mrow><mn>87</mn><mo>,</mo><mn>733</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>9782</mn></mrow></math>
+  <p>Região crítica bilateral com 9 e 9 g.l.: rejeita-se se <math><msub><mi>F</mi><mn>0</mn></msub><mo>&gt;</mo><msub><mi>F</mi><mrow><mn>0,025</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>9</mn></mrow></msub><mo>=</mo><mn>4</mn><mo>,</mo><mn>026</mn></math> ou <math><msub><mi>F</mi><mn>0</mn></msub><mo>&lt;</mo><msub><mi>F</mi><mrow><mn>0,975</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>9</mn></mrow></msub><mo>=</mo><mn>1</mn><mo>/</mo><mn>4</mn><mo>,</mo><mn>026</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>2484</mn></math>. Como <math><mn>0</mn><mo>,</mo><mn>9782</mn></math> está confortavelmente dentro, <strong>não se rejeita</strong> (<math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>974</mn></math>). As variâncias podem ser tratadas como iguais.</p>
+
+  <h4>(b) Igualdade de médias — versão combinada</h4>
+  <p><math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mn>70</mn><mo>,</mo><mn>4</mn></math>, <math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mn>70</mn><mo>,</mo><mn>2</mn></math>:</p>
+  <math display="block"><mrow><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo>=</mo><mfrac><mrow><mn>9</mn><mo stretchy="false">(</mo><mn>85</mn><mo>,</mo><mn>822</mn><mo stretchy="false">)</mo><mo>+</mo><mn>9</mn><mo stretchy="false">(</mo><mn>87</mn><mo>,</mo><mn>733</mn><mo stretchy="false">)</mo></mrow><mn>18</mn></mfrac><mo>=</mo><mn>86</mn><mo>,</mo><mn>778</mn><mspace width="1.2em"/><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>9</mn><mo>,</mo><mn>3155</mn></mrow></math>
+  <math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>70</mn><mo>,</mo><mn>4</mn><mo>−</mo><mn>70</mn><mo>,</mo><mn>2</mn></mrow><mrow><mn>9</mn><mo>,</mo><mn>3155</mn><msqrt><mrow><mn>1</mn><mo>/</mo><mn>10</mn><mo>+</mo><mn>1</mn><mo>/</mo><mn>10</mn></mrow></msqrt></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow><mrow><mn>4</mn><mo>,</mo><mn>166</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>0480</mn></mrow></math>
+  <p>Contra <math><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>18</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>101</mn></math>: <strong>não se rejeita</strong>, com <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>962</mn></math> — um dos valores-P mais altos que se pode obter. As formulações são indistinguíveis, tanto em média quanto em variabilidade.</p>
+
+<pre><code>tipo1 &lt;- c(65, 81, 57, 66, 82, 82, 67, 59, 75, 70)
+tipo2 &lt;- c(64, 71, 83, 59, 65, 56, 69, 74, 82, 79)
+
+var.test(tipo1, tipo2)                                <span class="cmt"># (a)</span>
+<span class="out">## F = 0.97822, num df = 9, denom df = 9, p-value = 0.9744</span>
+<span class="out">## 95 percent confidence interval: 0.2429805 3.9383006</span>
+
+t.test(tipo1, tipo2, var.equal = TRUE)                <span class="cmt"># (b)</span>
+<span class="out">## 	Two Sample t-test</span>
+<span class="out">## t = 0.048005, df = 18, p-value = 0.9622</span>
+<span class="out">## 95 percent confidence interval: -8.552441  8.952441</span>
+
+par(mfrow = c(1, 2))                                  <span class="cmt"># (c)</span>
+qqnorm(tipo1, main = "Tipo 1"); qqline(tipo1)
+qqnorm(tipo2, main = "Tipo 2"); qqline(tipo2)
+</code></pre>
+
+  <h4>(c) O papel da normalidade — a parte conceitual</h4>
+  <p>Aqui a resposta precisa distinguir os dois testes, e é isso que o exercício está cobrando:</p>
+  <ul>
+    <li><strong>No teste <em>t</em> (item b):</strong> a normalidade importa pouco. Há duas proteções — o Teorema Central do Limite atua sobre as médias amostrais, e o argumento do teste de aleatorização (seção 8.4) dá validade sem suposição distribucional. Desvios moderados não comprometem a conclusão.</li>
+    <li><strong>No teste <em>F</em> (item a):</strong> a normalidade importa <strong>muito</strong>. Os procedimentos para variâncias são notoriamente sensíveis a ela, e nenhuma das duas proteções acima se aplica. Caudas mais pesadas que a normal inflam a taxa de erro tipo I do teste <em>F</em> de forma substancial.</li>
+  </ul>
+  <p>Os gráficos de probabilidade normal das duas amostras passam no teste do lápis gordo, então as conclusões se sustentam. Mas note a ironia prática: o teste <em>F</em>, usado como <em>pré-teste</em> para decidir sobre o teste <em>t</em>, é justamente o menos confiável dos dois. Por isso muitos estatísticos preferem simplesmente usar Welch sempre — que é, não por acaso, o padrão do R.</p>
+
+  <p>Observe também a largura do IC para a razão de variâncias: <math><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>24</mn><mo>;</mo><mn>3</mn><mo>,</mo><mn>94</mn><mo stretchy="false">]</mo></math>. Com <math><mi>n</mi><mo>=</mo><mn>10</mn></math>, o teste <em>F</em> só detectaria diferenças enormes de variância. "Não rejeitar" aqui significa sobretudo <em>falta de poder</em>, não evidência de igualdade — exatamente o ponto do cartão de recall sobre <math><msub><mi>H</mi><mn>0</mn></msub></math>.</p>
+</div>
+
+<div class="exercicio">
+  <h3>2.31 — Espessura de fotorresiste <span style="font-weight:400;color:var(--texto-fraco)">· teste <em>t</em> unilateral, poder e tamanho amostral</span></h3>
+  <div class="enunciado">
+    <p>Fotorresiste é aplicado a bolachas de silício e depois assado. Espessuras (em kÅ) de oito bolachas assadas a duas temperaturas:</p>
+    <p><strong>95 °C:</strong> 11,176 · 7,089 · 8,097 · 11,739 · 11,291 · 10,759 · 6,467 · 8,315<br>
+       <strong>100 °C:</strong> 5,263 · 6,748 · 7,461 · 7,015 · 8,133 · 7,418 · 3,772 · 8,963</p>
+    <p>(a) Há evidência de que a temperatura mais alta produz espessura média menor? <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. (b) Valor-P. (c) IC de 95% para a diferença, com interpretação prática. (f) Poder para detectar diferença real de 2,5 kÅ. (g) <math><mi>n</mi></math> necessário para detectar 1,5 kÅ com poder ⩾ 0,9.</p>
+  </div>
+
+  <h4>(a) e (b) O teste</h4>
+  <p><math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>95</mn></msub><mo>=</mo><mn>9</mn><mo>,</mo><mn>3666</mn></math> (<math><msub><mi>S</mi><mn>1</mn></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>0996</mn></math>), <math><msub><mover><mi>y</mi><mo>¯</mo></mover><mn>100</mn></msub><mo>=</mo><mn>6</mn><mo>,</mo><mn>8466</mn></math> (<math><msub><mi>S</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>6404</mn></math>). Desvios-padrão parecidos ⟹ variâncias iguais é aceitável.</p>
+  <math display="block"><mrow><msubsup><mi>S</mi><mi>p</mi><mn>2</mn></msubsup><mo>=</mo><mn>3</mn><mo>,</mo><mn>5496</mn><mspace width="1.2em"/><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>8840</mn><mspace width="1.2em"/><mtext>ep</mtext><mo>=</mo><mn>1</mn><mo>,</mo><mn>8840</mn><msqrt><mrow><mn>2</mn><mo>/</mo><mn>8</mn></mrow></msqrt><mo>=</mo><mn>0</mn><mo>,</mo><mn>9420</mn></mrow></math>
+  <math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>9</mn><mo>,</mo><mn>3666</mn><mo>−</mo><mn>6</mn><mo>,</mo><mn>8466</mn></mrow><mrow><mn>0</mn><mo>,</mo><mn>9420</mn></mrow></mfrac><mo>=</mo><mn>2</mn><mo>,</mo><mn>6751</mn></mrow></math>
+  <p>Com <math><msub><mi>t</mi><mrow><mn>0,05</mn><mo>,</mo><mn>14</mn></mrow></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>7613</mn></math> e <math><mn>2</mn><mo>,</mo><mn>6751</mn><mo>&gt;</mo><mn>1</mn><mo>,</mo><mn>7613</mn></math>: <strong>rejeita-se <math><msub><mi>H</mi><mn>0</mn></msub></math></strong> (<math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>0091</mn></math>). Há evidência de que assar a 100 °C produz espessura média menor.</p>
+
+  <h4>(c) IC de 95% e a interpretação prática</h4>
+  <math display="block"><mrow><mn>2</mn><mo>,</mo><mn>52</mn><mo>±</mo><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1448</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>9420</mn><mo stretchy="false">)</mo><mo>⟹</mo><mn>0</mn><mo>,</mo><mn>50</mn><mo>⩽</mo><msub><mi>μ</mi><mn>95</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>100</mn></msub><mo>⩽</mo><mn>4</mn><mo>,</mo><mn>54</mn></mrow></math>
+  <p>A leitura útil não é "não contém zero". É esta: <strong>a diferença está estimada em 2,5 kÅ, mas com incerteza enorme</strong> — pode ser tão pequena quanto 0,5 ou tão grande quanto 4,5, um fator de nove. Para uma decisão de engenharia, isso pode ser insuficiente. É exatamente o tipo de informação que o valor-P (0,009, aparentemente conclusivo) esconde.</p>
+
+  <h4>(f) e (g) Poder e tamanho amostral</h4>
+  <p>Usando <math><mi>σ</mi><mo>≈</mo><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>884</mn></math>:</p>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th>Cenário</th><th><math><mi>δ</mi><mo>=</mo><mtext>dif</mtext><mo>/</mo><mi>σ</mi></math></th><th><math><mi>n</mi></math> por grupo</th><th>Poder</th></tr></thead>
+    <tbody>
+      <tr><td>(f) detectar 2,5 kÅ</td><td>1,327</td><td>8</td><td><strong>0,695</strong></td></tr>
+      <tr><td>(g) detectar 1,5 kÅ com poder ⩾ 0,9</td><td>0,796</td><td><strong>35</strong></td><td>0,907</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+<pre><code>t95  &lt;- c(11.176, 7.089, 8.097, 11.739, 11.291, 10.759, 6.467, 8.315)
+t100 &lt;- c( 5.263, 6.748, 7.461,  7.015,  8.133,  7.418, 3.772, 8.963)
+
+t.test(t95, t100, alternative = "greater", var.equal = TRUE)   <span class="cmt"># (a) (b)</span>
+<span class="out">## t = 2.6751, df = 14, p-value = 0.009058</span>
+t.test(t95, t100, var.equal = TRUE)$conf.int                    <span class="cmt"># (c)</span>
+<span class="out">## [1] 0.4996 4.5404</span>
+
+Sp &lt;- sqrt(((7 * var(t95)) + (7 * var(t100))) / 14)
+power.t.test(n = 8, delta = 2.5, sd = Sp, sig.level = 0.05)$power        <span class="cmt"># (f)</span>
+<span class="out">## [1] 0.6946</span>
+power.t.test(delta = 1.5, sd = Sp, sig.level = 0.05, power = 0.90)$n     <span class="cmt"># (g)</span>
+<span class="out">## [1] 34.15   # arredonde para cima: 35 por grupo</span>
+</code></pre>
+
+  <div class="caixa aviso">
+    <span class="rotulo">A lição mais importante deste exercício</span>
+    <p>O teste <strong>rejeitou</strong> <math><msub><mi>H</mi><mn>0</mn></msub></math>, mas o poder para detectar 2,5 kÅ era de apenas <strong>69%</strong>. Ou seja: <em>mesmo que a diferença real fosse 2,5 kÅ, este experimento tinha quase 1/3 de chance de não detectá-la</em>. Deu certo desta vez.</p>
+    <p>E para detectar 1,5 kÅ com segurança seriam necessárias 35 bolachas por grupo — mais de quatro vezes o experimento realizado. Fazer essa conta <strong>antes</strong> é o que evita experimentos que não conseguem responder à pergunta que motivou sua realização.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>2.33 — Uniformidade de ataque químico <span style="font-weight:400;color:var(--texto-fraco)">· inferência sobre a variância</span></h3>
+  <div class="enunciado">
+    <p>Vinte observações de uniformidade de ataque em bolachas de silício: 5,34 · 6,00 · 5,97 · 5,25 · 6,65 · 7,55 · 7,35 · 6,35 · 4,76 · 5,54 · 5,44 · 4,61 · 5,98 · 5,62 · 4,39 · 6,00 · 7,25 · 6,21 · 4,98 · 5,32.</p>
+    <p>(a) IC de 95% para <math><msup><mi>σ</mi><mn>2</mn></msup></math>. (b) Teste <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>,</mo><mn>0</mn></math> com <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. (c) Discuta a suposição de normalidade.</p>
+  </div>
+
+  <p><math><mi>n</mi><mo>=</mo><mn>20</mn></math>, <math><mover><mi>y</mi><mo>¯</mo></mover><mo>=</mo><mn>5</mn><mo>,</mo><mn>828</mn></math>, <math><msup><mi>S</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn><mo>,</mo><mn>7904</mn></math>, com 19 g.l.</p>
+
+  <h4>(a) IC de 95% para <math><msup><mi>σ</mi><mn>2</mn></msup></math></h4>
+  <p>Pela Equação 2.46, com <math><msubsup><mi>χ</mi><mrow><mn>0,025</mn><mo>,</mo><mn>19</mn></mrow><mn>2</mn></msubsup><mo>=</mo><mn>32</mn><mo>,</mo><mn>852</mn></math> e <math><msubsup><mi>χ</mi><mrow><mn>0,975</mn><mo>,</mo><mn>19</mn></mrow><mn>2</mn></msubsup><mo>=</mo><mn>8</mn><mo>,</mo><mn>907</mn></math>:</p>
+  <math display="block"><mrow><mfrac><mrow><mn>19</mn><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>7904</mn><mo stretchy="false">)</mo></mrow><mrow><mn>32</mn><mo>,</mo><mn>852</mn></mrow></mfrac><mo>⩽</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>⩽</mo><mfrac><mrow><mn>19</mn><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>7904</mn><mo stretchy="false">)</mo></mrow><mrow><mn>8</mn><mo>,</mo><mn>907</mn></mrow></mfrac><mo>⟹</mo><mn>0</mn><mo>,</mo><mn>457</mn><mo>⩽</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>⩽</mo><mn>1</mn><mo>,</mo><mn>686</mn></mrow></math>
+  <p>Em termos de desvio-padrão: <math><mn>0</mn><mo>,</mo><mn>676</mn><mo>⩽</mo><mi>σ</mi><mo>⩽</mo><mn>1</mn><mo>,</mo><mn>299</mn></math>.</p>
+  <p><strong>Note a assimetria</strong>: a estimativa pontual é 0,790, e o intervalo vai de 0,457 a 1,686 — muito mais espaço acima do que abaixo. Isso é consequência direta da assimetria da distribuição qui-quadrado, e distingue este IC dos intervalos simétricos para médias.</p>
+
+  <h4>(b) O teste</h4>
+  <math display="block"><mrow><msubsup><mi>χ</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><mfrac><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>S</mi><mn>2</mn></msup></mrow><msubsup><mi>σ</mi><mn>0</mn><mn>2</mn></msubsup></mfrac><mo>=</mo><mfrac><mrow><mn>19</mn><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>7904</mn><mo stretchy="false">)</mo></mrow><mrow><mn>1</mn><mo>,</mo><mn>0</mn></mrow></mfrac><mo>=</mo><mn>15</mn><mo>,</mo><mn>019</mn></mrow></math>
+  <p>Como <math><mn>8</mn><mo>,</mo><mn>907</mn><mo>&lt;</mo><mn>15</mn><mo>,</mo><mn>019</mn><mo>&lt;</mo><mn>32</mn><mo>,</mo><mn>852</mn></math>, <strong>não se rejeita</strong>. Não há evidência de que <math><msup><mi>σ</mi><mn>2</mn></msup></math> difira de 1,0. Coerente com (a): o valor 1,0 está dentro do IC — a dualidade teste↔intervalo funcionando outra vez.</p>
+
+<pre><code>unif &lt;- c(5.34, 6.00, 5.97, 5.25, 6.65, 7.55, 7.35, 6.35, 4.76, 5.54,
+          5.44, 4.61, 5.98, 5.62, 4.39, 6.00, 7.25, 6.21, 4.98, 5.32)
+n &lt;- length(unif); S2 &lt;- var(unif)
+
+<span class="cmt"># (a) IC 95% para sigma^2 -- Eq. 2.46. O R não traz isso pronto.</span>
+c(inferior = (n-1)*S2 / qchisq(0.975, n-1),
+  superior = (n-1)*S2 / qchisq(0.025, n-1))
+<span class="out">##  inferior  superior </span>
+<span class="out">## 0.4572047 1.6862118</span>
+
+<span class="cmt"># (b) teste qui-quadrado -- Eq. 2.45</span>
+chi0 &lt;- (n-1) * S2 / 1.0
+c(S2 = S2, chi0 = chi0, crit_inf = qchisq(0.025, n-1), crit_sup = qchisq(0.975, n-1))
+<span class="out">##         S2       chi0   crit_inf   crit_sup </span>
+<span class="out">##  0.7904484 15.0185200  8.9065165 32.8523269</span>
+
+qqnorm(unif); qqline(unif)                      <span class="cmt"># (c) (d)</span>
+</code></pre>
+
+  <h4>(c) Papel da normalidade</h4>
+  <p><strong>Crítico</strong>, aqui mais do que em qualquer outro procedimento do capítulo. Toda a construção depende de <math><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><msup><mi>S</mi><mn>2</mn></msup><mo>/</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>∼</mo><msubsup><mi>χ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mn>2</mn></msubsup></math>, resultado que <em>só vale sob normalidade</em>. Não há TCL para socorrer: <math><msup><mi>S</mi><mn>2</mn></msup></math> depende dos quartos momentos, e caudas mais pesadas que a normal inflam substancialmente a taxa real de erro tipo I. O gráfico de probabilidade normal destes dados é aceitável, mas com <math><mi>n</mi><mo>=</mo><mn>20</mn></math> a verificação é fraca. Conclusões sobre variância a partir de amostras pequenas devem sempre ser tratadas com reserva.</p>
+</div>
+
+<div class="exercicio">
+  <h3>2.34 — Paquímetros <span style="font-weight:400;color:var(--texto-fraco)">· teste <em>t</em> pareado</span></h3>
+  <div class="enunciado">
+    <p>O diâmetro de um rolamento foi medido por 12 inspetores, cada um usando dois tipos de paquímetro:</p>
+    <p><strong>Paquímetro 1:</strong> 0,265 · 0,265 · 0,266 · 0,267 · 0,267 · 0,265 · 0,267 · 0,267 · 0,265 · 0,268 · 0,268 · 0,265<br>
+       <strong>Paquímetro 2:</strong> 0,264 · 0,265 · 0,264 · 0,266 · 0,267 · 0,268 · 0,264 · 0,265 · 0,265 · 0,267 · 0,268 · 0,269</p>
+    <p>(a) Há diferença significativa entre as médias? <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. (b) Valor-P. (c) IC de 95% para a diferença.</p>
+  </div>
+
+  <div class="caixa definicao">
+    <span class="rotulo">Reconhecer o pareamento — a primeira decisão</span>
+    <p>Antes de qualquer conta: <strong>por que este é um problema pareado?</strong> Porque <em>o mesmo inspetor</em> usou os dois paquímetros. Inspetores diferem entre si — pressão da mão, técnica de leitura, acuidade visual — e essa variação afeta as duas medições do mesmo inspetor <em>da mesma forma</em>. O inspetor é o bloco. Tratar as 24 medições como duas amostras independentes jogaria a variação entre inspetores dentro do erro experimental, exatamente o erro que a seção 15 explica.</p>
+  </div>
+
+  <h4>(a) e (b) O teste</h4>
+  <p>Diferenças <math><msub><mi>d</mi><mi>j</mi></msub></math> (×10⁻³): 1 · 0 · 2 · 1 · 0 · −3 · 3 · 2 · 0 · 1 · 0 · −4.</p>
+  <p><math><mover><mi>d</mi><mo>¯</mo></mover><mo>=</mo><mn>0</mn><mo>,</mo><mn>000250</mn></math>, <math><msub><mi>S</mi><mi>d</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>002006</mn></math>, <math><mi>n</mi><mo>=</mo><mn>12</mn></math>:</p>
+  <math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>0</mn><mo>,</mo><mn>000250</mn></mrow><mrow><mn>0</mn><mo>,</mo><mn>002006</mn><mo>/</mo><msqrt><mn>12</mn></msqrt></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>4318</mn></mrow></math>
+  <p>Contra <math><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>11</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>2010</mn></math>: <strong>não se rejeita</strong>, <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>674</mn></math>. Não há diferença detectável entre os paquímetros.</p>
+
+  <h4>(c) IC de 95%</h4>
+  <math display="block"><mrow><mo>−</mo><mn>0</mn><mo>,</mo><mn>001024</mn><mo>⩽</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>⩽</mo><mn>0</mn><mo>,</mo><mn>001524</mn></mrow></math>
+  <p>Contém zero, coerente com o teste. E o intervalo é estreito em termos absolutos (±0,0013 polegada), o que reforça a conclusão prática: se existe diferença entre os paquímetros, ela é pequena demais para importar.</p>
+
+<pre><code>paq1 &lt;- c(0.265, 0.265, 0.266, 0.267, 0.267, 0.265, 0.267, 0.267, 0.265, 0.268, 0.268, 0.265)
+paq2 &lt;- c(0.264, 0.265, 0.264, 0.266, 0.267, 0.268, 0.264, 0.265, 0.265, 0.267, 0.268, 0.269)
+
+t.test(paq1, paq2, paired = TRUE)
+<span class="out">## 	Paired t-test</span>
+<span class="out">## t = 0.43179, df = 11, p-value = 0.6742</span>
+<span class="out">## 95 percent confidence interval:</span>
+<span class="out">##  -0.001023 0.001523</span>
+<span class="out">## sample estimates: mean difference = 0.00025</span>
+
+<span class="cmt"># Verifique a normalidade DAS DIFERENÇAS -- é essa a suposição do teste pareado,</span>
+<span class="cmt"># não a normalidade de cada amostra separadamente.</span>
+qqnorm(paq1 - paq2); qqline(paq1 - paq2)
+</code></pre>
+
+  <div class="caixa aviso">
+    <span class="rotulo">A suposição correta do teste pareado</span>
+    <p>O teste <em>t</em> pareado é um teste de <strong>uma</strong> amostra aplicado às diferenças. Logo, a suposição de normalidade recai sobre <math><msub><mi>d</mi><mi>j</mi></msub></math>, não sobre <math><msub><mi>y</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub></math> e <math><msub><mi>y</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub></math> individualmente. É comum ver gente verificando a suposição errada. (E é uma exigência mais branda: diferenças tendem a ser mais simétricas que os dados originais, porque a subtração cancela assimetrias comuns aos dois membros do par.)</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>2.36 — Vigas de aço <span style="font-weight:400;color:var(--texto-fraco)">· teste pareado, e quanto o pareamento rende</span></h3>
+  <div class="enunciado">
+    <p>Razões entre carga prevista e carga observada, para nove vigas, por dois métodos de previsão:</p>
+    <div class="rolagem">
+    <table>
+      <thead><tr><th>Viga</th><th>S1/1</th><th>S2/1</th><th>S3/1</th><th>S4/1</th><th>S5/1</th><th>S2/1</th><th>S2/2</th><th>S2/3</th><th>S2/4</th></tr></thead>
+      <tbody>
+        <tr><td>Karlsruhe</td><td>1,186</td><td>1,151</td><td>1,322</td><td>1,339</td><td>1,200</td><td>1,402</td><td>1,365</td><td>1,537</td><td>1,559</td></tr>
+        <tr><td>Lehigh</td><td>1,061</td><td>0,992</td><td>1,063</td><td>1,062</td><td>1,065</td><td>1,178</td><td>1,037</td><td>1,086</td><td>1,052</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>(a) Há diferença de desempenho médio entre os métodos? <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. (b) Valor-P. (c) IC de 95%. (d)–(f) Normalidade e seu papel no teste pareado.</p>
+  </div>
+
+  <p><strong>Por que pareado:</strong> ambos os métodos preveem a carga <em>da mesma viga</em>. Vigas diferem em geometria, material e condições de ensaio, e essa variação afeta as duas previsões simultaneamente. A viga é o bloco.</p>
+
+  <h4>(a), (b) e (c)</h4>
+  <p>Diferenças <math><msub><mi>d</mi><mi>j</mi></msub></math>: 0,125 · 0,159 · 0,259 · 0,277 · 0,135 · 0,224 · 0,328 · 0,451 · 0,507.<br>
+  <math><mover><mi>d</mi><mo>¯</mo></mover><mo>=</mo><mn>0</mn><mo>,</mo><mn>27389</mn></math>, <math><msub><mi>S</mi><mi>d</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>13510</mn></math>, <math><mi>n</mi><mo>=</mo><mn>9</mn></math>:</p>
+  <math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>0</mn><mo>,</mo><mn>27389</mn></mrow><mrow><mn>0</mn><mo>,</mo><mn>13510</mn><mo>/</mo><msqrt><mn>9</mn></msqrt></mrow></mfrac><mo>=</mo><mn>6</mn><mo>,</mo><mn>0819</mn></mrow></math>
+  <p>Muito além de <math><msub><mi>t</mi><mrow><mn>0,025</mn><mo>,</mo><mn>8</mn></mrow></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>306</mn></math>: <strong>rejeita-se</strong>, com <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>0003</mn></math>. Os métodos diferem — o método de Karlsruhe produz razões previsto/observado sistematicamente maiores.</p>
+  <math display="block"><mrow><mtext>IC 95%:</mtext><mspace width="0.6em"/><mn>0</mn><mo>,</mo><mn>170</mn><mo>⩽</mo><msub><mi>μ</mi><mi>d</mi></msub><mo>⩽</mo><mn>0</mn><mo>,</mo><mn>378</mn></mrow></math>
+
+<pre><code>karlsruhe &lt;- c(1.186, 1.151, 1.322, 1.339, 1.200, 1.402, 1.365, 1.537, 1.559)
+lehigh    &lt;- c(1.061, 0.992, 1.063, 1.062, 1.065, 1.178, 1.037, 1.086, 1.052)
+
+t.test(karlsruhe, lehigh, paired = TRUE)
+<span class="out">## 	Paired t-test</span>
+<span class="out">## t = 6.0819, df = 8, p-value = 0.0002953</span>
+<span class="out">## 95 percent confidence interval: 0.1700423 0.3777355</span>
+<span class="out">## sample estimates: mean difference = 0.2738889</span>
+
+<span class="cmt"># Quanto o pareamento rendeu? Compare com a análise (incorreta) não pareada:</span>
+t.test(karlsruhe, lehigh, var.equal = TRUE)
+<span class="out">## t = 5.3302, df = 16, p-value = 6.554e-05</span>
+</code></pre>
+
+  <h4>(d)–(f) Normalidade, e o que o pareamento rendeu</h4>
+  <p>Os itens (d) e (e) pedem para investigar a normalidade das <em>amostras</em> e das <em>diferenças</em>, e (f) pergunta qual delas importa. A resposta: <strong>só a das diferenças</strong>, pelo motivo do exercício anterior. Aqui isso fica visível: as razões de Karlsruhe têm <math><mi>S</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>146</mn></math> e as de Lehigh <math><mi>S</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>049</mn></math> — <strong>variâncias muito diferentes</strong>, o que já desqualificaria o teste combinado de duas amostras. O teste pareado não se importa: ele só olha as diferenças.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">O ganho, em números</span>
+    <div class="rolagem">
+    <table>
+      <thead><tr><th>Análise</th><th>Medida de ruído</th><th>g.l.</th><th><math><msub><mi>t</mi><mn>0</mn></msub></math></th></tr></thead>
+      <tbody>
+        <tr><td><strong>Pareada</strong> (correta)</td><td><math><msub><mi>S</mi><mi>d</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>135</mn></math></td><td>8</td><td><strong>6,08</strong></td></tr>
+        <tr><td>Não pareada</td><td><math><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>109</mn></math></td><td>16</td><td>5,33</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Aqui a diferença entre os métodos é tão grande que <em>ambas</em> as análises rejeitam. Mas note que a análise pareada dá <math><msub><mi>t</mi><mn>0</mn></msub></math> maior <strong>mesmo com metade dos graus de liberdade</strong> — porque as vigas com maior razão em Karlsruhe também tendem a ter maior razão em Lehigh, e o pareamento aproveita essa correlação positiva. Compare com o experimento de dureza da seção 15, onde o ganho foi de <math><msub><mi>S</mi><mi>p</mi></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>32</mn></math> para <math><msub><mi>S</mi><mi>d</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>20</mn></math>: o tamanho do ganho depende de quão forte é o efeito de bloco.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>2.24 e 2.25 — Tempo de reparo <span style="font-weight:400;color:var(--texto-fraco)">· teste <em>t</em> unilateral e verificação de modelo</span></h3>
+  <div class="enunciado">
+    <p>Tempos de reparo (h) de 16 instrumentos eletrônicos: 159 · 280 · 101 · 212 · 224 · 379 · 179 · 264 · 222 · 362 · 168 · 250 · 149 · 260 · 485 · 170.</p>
+    <p>(a) Você quer saber se o tempo médio de reparo excede 225 h. Formule as hipóteses. (b) Teste-as com <math><mi>α</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>05</mn></math>. (c) Valor-P. (d) IC de 95%. <strong>2.25:</strong> o tempo de reparo pode ser adequadamente modelado por uma normal?</p>
+  </div>
+
+  <h4>(a)–(d)</h4>
+  <p><math><mover><mi>y</mi><mo>¯</mo></mover><mo>=</mo><mn>241</mn><mo>,</mo><mn>50</mn></math>, <math><mi>S</mi><mo>=</mo><mn>98</mn><mo>,</mo><mn>726</mn></math>, <math><mi>n</mi><mo>=</mo><mn>16</mn></math>. Hipóteses: <math><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>μ</mi><mo>=</mo><mn>225</mn></math> contra <math><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><mi>μ</mi><mo>&gt;</mo><mn>225</mn></math>.</p>
+  <math display="block"><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mfrac><mrow><mn>241</mn><mo>,</mo><mn>50</mn><mo>−</mo><mn>225</mn></mrow><mrow><mn>98</mn><mo>,</mo><mn>726</mn><mo>/</mo><msqrt><mn>16</mn></msqrt></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>16</mn><mo>,</mo><mn>50</mn></mrow><mrow><mn>24</mn><mo>,</mo><mn>68</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>6685</mn></mrow></math>
+  <p>Contra <math><msub><mi>t</mi><mrow><mn>0,05</mn><mo>,</mo><mn>15</mn></mrow></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>7531</mn></math>: <strong>não se rejeita</strong>, <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>257</mn></math>. IC 95% bilateral: <math><mo stretchy="false">[</mo><mn>188</mn><mo>,</mo><mn>89</mn><mo>;</mo><mn>294</mn><mo>,</mo><mn>11</mn><mo stretchy="false">]</mo></math>, que contém 225.</p>
+
+<pre><code>reparo &lt;- c(159, 280, 101, 212, 224, 379, 179, 264, 222, 362, 168, 250, 149, 260, 485, 170)
+t.test(reparo, mu = 225, alternative = "greater")
+<span class="out">## t = 0.66852, df = 15, p-value = 0.257</span>
+t.test(reparo, mu = 225)$conf.int
+<span class="out">## [1] 188.8933 294.1067</span>
+qqnorm(reparo); qqline(reparo)
+</code></pre>
+
+  <h4>2.25 — A suposição de normalidade</h4>
+  <p>Aqui vale um comentário que vai além da conta. Tempos até um evento (reparo, falha, atendimento) são <strong>intrinsecamente assimétricos à direita</strong>: são limitados inferiormente por zero e não têm limite superior, e alguns reparos são muito demorados. Nesta amostra, a média (241,5) é bem maior que a mediana (223), e há uma observação em 485 h que puxa a cauda — sintomas típicos de assimetria positiva.</p>
+  <p>Distribuições habituais para esses dados são a lognormal, a gama e a Weibull, não a normal. <strong>Mas a conclusão do teste sobrevive</strong>, por dois motivos: (i) o TCL protege a média amostral, e com <math><mi>n</mi><mo>=</mo><mn>16</mn></math> a proteção já é razoável; (ii) o valor-P (0,257) está tão longe de qualquer fronteira de decisão que nenhum desvio moderado de normalidade inverteria a conclusão.</p>
+  <p>É uma boa ilustração de um princípio geral: <strong>a violação de suposições preocupa em proporção à proximidade da decisão</strong>. Um <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>048</mn></math> com dados suspeitos exige muito mais cuidado que um <math><mi>P</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>26</mn></math>.</p>
+</div>
+
+<div class="caixa objetivo" style="margin-top:3rem">
+  <span class="rotulo">Síntese — o quadro de decisão do capítulo</span>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th>Pergunta</th><th>Situação</th><th>Procedimento</th><th>R</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2">Uma média vs. valor</td><td><math><mi>σ</mi></math> conhecido</td><td><math><mi>Z</mi></math>, Eq. 2.35</td><td>fórmula manual</td></tr>
+      <tr><td><math><mi>σ</mi></math> desconhecido</td><td><math><mi>t</mi></math>, Eq. 2.37</td><td><code>t.test(x, mu=)</code></td></tr>
+      <tr><td rowspan="3">Duas médias, amostras independentes</td><td><math><mi>σ</mi></math>s conhecidos</td><td><math><mi>Z</mi></math>, Eq. 2.33</td><td>fórmula manual</td></tr>
+      <tr><td><math><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math></td><td><math><mi>t</mi></math> combinado, Eq. 2.24</td><td><code>t.test(..., var.equal=TRUE)</code></td></tr>
+      <tr><td><math><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>≠</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></math></td><td>Welch, Eqs. 2.31–2.32</td><td><code>t.test(...)</code> <em>(padrão)</em></td></tr>
+      <tr><td>Duas médias, unidades pareadas</td><td>blocos naturais</td><td><math><mi>t</mi></math> pareado, Eq. 2.41</td><td><code>t.test(..., paired=TRUE)</code></td></tr>
+      <tr><td>Uma variância vs. valor</td><td>normalidade <strong>essencial</strong></td><td><math><msup><mi>χ</mi><mn>2</mn></msup></math>, Eq. 2.45</td><td>fórmula manual</td></tr>
+      <tr><td>Duas variâncias</td><td>normalidade <strong>essencial</strong></td><td><math><mi>F</mi></math>, Eq. 2.48</td><td><code>var.test(x, y)</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:1rem">E a pergunta que fica para o capítulo 3: <strong>e quando houver três, quatro ou dez tratamentos para comparar?</strong> Fazer todos os testes <em>t</em> dois a dois não funciona — a probabilidade de pelo menos um falso positivo cresce rápido com o número de comparações. A resposta é a análise de variância.</p>
+</div>
+
+
+<div class="nota">
+  <p><strong>Fonte:</strong> Montgomery, D. C. <em>Design and Analysis of Experiments</em>, 9ª ed., Wiley, 2017 — capítulo 2, págs. 23–64. Figuras 2.1, 2.3, 2.10, 2.11 e 2.13 reproduzidas do original. Todos os resultados numéricos dos exercícios foram recalculados de forma independente; os do texto conferem com os do livro.</p>
+</div>
+
+<nav class="nav-rodape">
+  <span><a href="../cap01/01-00-introducao.html">← Cap. 1 — Introdução</a></span>
+  <span><a href="../index.html">Percurso</a></span>
+</nav>
+
+</div>
+<script>
+/* Fecha a aba lateral ao escolher uma seção. O menu funciona sem isto —
+   é só conveniência; nada aqui depende de rede ou de biblioteca externa. */
+document.querySelectorAll(".menu-lateral .painel a").forEach(function (a) {
+  a.addEventListener("click", function () {
+    var d = a.closest("details");
+    if (d) d.open = false;
+  });
+});
+</script>
+</body>
+</html>

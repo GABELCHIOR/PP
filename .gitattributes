@@ -1,0 +1,8 @@
+# Normaliza as quebras de linha: LF no repositório, nativo no disco.
+# Sem isto, editar no Windows e no Linux gera diffs de arquivo inteiro.
+* text=auto eol=lf
+
+# Binários — nunca converter nem tentar diff textual.
+*.png binary
+*.jpg binary
+*.pdf binary

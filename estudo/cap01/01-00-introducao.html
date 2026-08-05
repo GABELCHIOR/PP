@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Montgomery, Wiley) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Cap. 1 — Introdução ao Delineamento de Experimentos</title>
+<link rel="stylesheet" href="../assets/tema.css?v=3">
+<link rel="stylesheet" href="../assets/estilo.css?v=3">
+</head>
+<body>
+
+<details class="menu-lateral">
+  <summary>Índice da aula</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Cap. 1 — Introdução</p>
+    <ol>
+      <li><a href="#s1">Observar não é experimentar</a></li>
+      <li><a href="#s2">O processo como modelo entrada–saída</a></li>
+      <li><a href="#s3">Três estratégias de experimentação</a></li>
+      <li><a href="#s4">O experimento fatorial, com as contas</a></li>
+      <li><a href="#s5">Interação: o conceito central do curso</a></li>
+      <li><a href="#s6">Quando o fatorial completo fica grande demais</a></li>
+      <li><a href="#s7">Os três princípios básicos</a></li>
+      <li><a href="#s8">As sete etapas do planejamento</a></li>
+      <li><a href="#s9">Modelos empíricos</a></li>
+      <li><a href="#s10">Um pouco de história</a></li>
+      <li><a href="#s11">Quatro conselhos que valem a carreira</a></li>
+      <li><a href="#recall">Cartões de recall ativo</a></li>
+      <li><a href="#exercicios">Exercícios resolvidos</a></li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="../index.html">Percurso</a>
+      <a href="../cap02/02-00-experimentos-comparativos.html">Cap. 2 →</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha"><a href="../index.html">Percurso</a> · Montgomery, 9ª ed. · Capítulo 1 · págs. 1–22</p>
+  <h1>Introdução ao Delineamento de Experimentos</h1>
+  <p class="subtitulo">Por que se experimenta, o que é um fator, e por que mudar uma variável de cada vez é um erro caro.</p>
+</header>
+
+<div class="caixa objetivo">
+  <span class="rotulo">Ao final desta aula você deve saber</span>
+  <ul>
+    <li>Explicar por que <strong>observar</strong> um processo não basta para estabelecer causa e efeito, e o que a intervenção deliberada acrescenta.</li>
+    <li>Descrever um processo pelo modelo entrada–saída e classificar suas variáveis.</li>
+    <li>Calcular <strong>efeitos principais</strong> e <strong>efeito de interação</strong> num experimento fatorial 2², à mão e em R.</li>
+    <li>Argumentar, com números, por que a estratégia "um fator de cada vez" é ineficiente <em>e</em> perigosa.</li>
+    <li>Definir e justificar os três princípios: <strong>aleatorização, replicação e blocagem</strong>.</li>
+    <li>Distinguir <strong>replicação</strong> de <strong>medidas repetidas</strong> — e dizer por que confundi-las invalida a análise.</li>
+    <li>Conduzir as sete etapas do planejamento de um experimento.</li>
+  </ul>
+</div>
+
+<nav class="sumario">
+  <span class="rotulo">Roteiro da aula</span>
+  <ol>
+    <li><a href="#s1">Observar não é experimentar</a></li>
+    <li><a href="#s2">O processo como modelo entrada–saída</a></li>
+    <li><a href="#s3">Três estratégias de experimentação</a></li>
+    <li><a href="#s4">O experimento fatorial, com as contas</a></li>
+    <li><a href="#s5">Interação: o conceito central do curso</a></li>
+    <li><a href="#s6">Quando o fatorial completo fica grande demais</a></li>
+    <li><a href="#s7">Os três princípios básicos</a></li>
+    <li><a href="#s8">As sete etapas do planejamento</a></li>
+    <li><a href="#s9">Modelos empíricos</a></li>
+    <li><a href="#s10">Um pouco de história (e por que ela importa)</a></li>
+    <li><a href="#s11">Quatro conselhos que valem a carreira</a></li>
+    <li><a href="#recall">Cartões de recall ativo</a></li>
+    <li><a href="#exercicios">Exercícios resolvidos</a></li>
+  </ol>
+</nav>
+
+
+<h2 id="s1">1. Observar não é experimentar</h2>
+
+<p>Vamos começar pelo ponto que separa a estatística experimental de quase todo o resto da estatística aplicada. Montgomery abre o livro citando Yogi Berra: <em>"dá para observar muita coisa só olhando"</em>. E em seguida diz que isso não basta.</p>
+
+<p>A diferença é esta. Quando você <strong>observa</strong> um processo, você registra os valores que as variáveis assumiram por conta própria. Quando você <strong>experimenta</strong>, você <em>impõe</em> os valores. Essa distinção parece trivial e não é: ela é exatamente o que separa correlação de causalidade.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Um <strong>experimento</strong> (<em class="en">experiment</em>) é um teste, ou uma série de execuções (<em class="en">runs</em>), em que se fazem mudanças propositais nas variáveis de entrada de um processo, de modo a observar e identificar as razões das mudanças observadas na resposta de saída.</p>
+</div>
+
+<p>Repare em cada pedaço dessa definição: <em>mudanças propositais</em> (não é o processo que varia sozinho — é você que mexe), nas <em>variáveis de entrada</em> (você escolhe quais), para <em>identificar as razões</em> (o objetivo é causal, não descritivo).</p>
+
+<p>Por que a intervenção resolve o problema causal? Porque quando <em>você</em> decide qual unidade experimental recebe qual tratamento — e decide por sorteio —, o valor do tratamento deixa de ser determinado por qualquer característica da unidade. Numa base observacional, se pacientes mais graves recebem o remédio novo, a comparação entre grupos mistura efeito do remédio com efeito da gravidade, e não há como separar. Isso tem nome, e o nome vai reaparecer o curso inteiro:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Dois efeitos estão <strong>confundidos</strong> (<em class="en">confounded</em>) quando o delineamento não permite estimá-los separadamente: qualquer diferença observada pode ser atribuída a um ou a outro, e os dados não decidem.</p>
+</div>
+
+<p>Montgomery dá o exemplo do engenheiro metalúrgico que compara têmpera em óleo com têmpera em salmoura. Se ele usar corpos de prova de uma corrida de fundição (<em class="en">heat</em>) no óleo e de outra corrida na salmoura, a diferença média de dureza pode ser do meio de têmpera ou da diferença entre as corridas. O experimento foi mal <em>planejado</em>, e nenhuma análise estatística posterior conserta isso. É a lição-mãe da disciplina: <strong>a forma como os dados foram coletados determina o que se pode concluir deles.</strong></p>
+
+<p>Há uma segunda razão para experimentar, mais silenciosa. Alguns fenômenos são bem entendidos o suficiente para serem descritos por um <strong>modelo mecanístico</strong> (<em class="en">mechanistic model</em>), deduzido da teoria física — a lei de Ohm, <math><mi>E</mi><mo>=</mo><mi>I</mi><mi>R</mi></math>, é o exemplo. Mas a maioria dos problemas reais em engenharia, biologia e negócios não tem essa teoria disponível. Nesses casos, constrói-se um <strong>modelo empírico</strong> (<em class="en">empirical model</em>): uma equação ajustada aos dados de um experimento planejado. O livro inteiro é, em boa parte, um manual de como obter modelos empíricos confiáveis com o menor número possível de execuções.</p>
+
+
+<h2 id="s2">2. O processo como modelo entrada–saída</h2>
+
+<p>Antes de planejar qualquer coisa, é preciso desenhar o sistema. Montgomery propõe um esquema que vai servir para todo experimento do livro.</p>
+
+<figure>
+  <img src="img/fig-01-01.png" alt="Diagrama de um processo com entradas, fatores controláveis x1..xp acima, fatores não controláveis z1..zq abaixo, e saída y.">
+  <figcaption><b>Figura 1.1</b> — Modelo geral de um processo ou sistema. O processo transforma entradas em uma resposta <math><mi>y</mi></math>. Sobre ele atuam fatores controláveis <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>p</mi></msub></math> e não controláveis <math><msub><mi>z</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>z</mi><mi>q</mi></msub></math>.</figcaption>
+</figure>
+
+<p>Os elementos são:</p>
+
+<ul>
+  <li>A <strong>resposta</strong> (<em class="en">response</em>) <math><mi>y</mi></math> — o que se mede. Pode haver mais de uma.</li>
+  <li>Os <strong>fatores controláveis</strong> <math><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>p</mi></msub></math> — variáveis que você consegue fixar no valor que quiser: temperatura, tempo, tipo de matéria-prima, dose.</li>
+  <li>Os <strong>fatores não controláveis</strong> <math><msub><mi>z</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>z</mi><mi>q</mi></msub></math> — umidade ambiente, variação entre operadores, propriedades do lote. Às vezes são controláveis <em>durante o teste</em> ainda que não na operação de rotina; essa observação é a semente do capítulo 12 (projeto robusto).</li>
+</ul>
+
+<p>Com esse esquema, os objetivos possíveis de um experimento ficam nítidos. Note que são quatro objetivos <em>diferentes</em>, e o delineamento adequado muda conforme o que se quer:</p>
+
+<ol>
+  <li><strong>Descobrir quais</strong> variáveis mais influenciam <math><mi>y</mi></math>. → experimentos de triagem (<em class="en">screening</em>).</li>
+  <li><strong>Onde fixar</strong> os <math><mi>x</mi></math> influentes para que <math><mi>y</mi></math> fique próximo de um valor-alvo. → otimização.</li>
+  <li><strong>Onde fixar</strong> os <math><mi>x</mi></math> para que a <em>variabilidade</em> de <math><mi>y</mi></math> seja pequena. → o alvo passa a ser a dispersão, não a média.</li>
+  <li><strong>Onde fixar</strong> os <math><mi>x</mi></math> para que o efeito dos <math><mi>z</mi></math> não controláveis seja minimizado. → projeto robusto.</li>
+</ol>
+
+<div class="caixa aviso">
+  <span class="rotulo">Guarde isto</span>
+  <p>Os objetivos 3 e 4 costumam passar despercebidos por quem aprendeu só ANOVA de médias. Um processo pode ter a média perfeita e ser inútil por ter variância alta. Boa parte do valor industrial do DOE está em reduzir dispersão — e isso exige delineamentos e análises diferentes das que comparam médias.</p>
+</div>
+
+
+<h2 id="s3">3. Três estratégias de experimentação</h2>
+
+<p>Montgomery introduz as estratégias com um exemplo deliberadamente banal — o próprio escore de golfe dele — porque a lógica fica visível sem que a física do problema atrapalhe. Os fatores em estudo são quatro, cada um com dois níveis:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Os quatro fatores do experimento de golfe, cada um com dois níveis.</caption>
+  <thead><tr><th>Fator</th><th>Nível −</th><th>Nível +</th></tr></thead>
+  <tbody>
+    <tr><td>Tipo de taco (<em class="en">driver</em>)</td><td>superdimensionado (O)</td><td>tamanho normal (R)</td></tr>
+    <tr><td>Tipo de bola</td><td>balata (B)</td><td>três peças (T)</td></tr>
+    <tr><td>Modo de deslocamento</td><td>caminhando (W)</td><td>de carrinho (R)</td></tr>
+    <tr><td>Bebida</td><td>água (W)</td><td>"outra coisa" (SE)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>O orçamento é fixo e apertado: <strong>oito rodadas de golfe</strong>. Guarde esse número — a comparação entre as estratégias só faz sentido a custo constante.</p>
+
+<h3>3.1 O palpite (<em class="en">best-guess</em>)</h3>
+
+<p>Escolhe-se uma combinação plausível, testa-se, olha-se o resultado e chuta-se a próxima combinação com base no que se viu. É de longe o mais usado na prática, e não é irracional: quem trabalha num processo há dez anos tem conhecimento técnico real, e esse conhecimento vale muito.</p>
+
+<p>Tem dois defeitos, e vale a pena entender por que são estruturais:</p>
+
+<ul>
+  <li><strong>Pode não terminar.</strong> Se o primeiro palpite falha, o segundo é outro palpite. Não há garantia de convergência nem estimativa de quanto falta.</li>
+  <li><strong>Pode terminar cedo demais.</strong> Se o primeiro palpite dá um resultado aceitável, a tentação é parar. Mas "aceitável" não é "ótimo", e você nunca saberá o quanto deixou na mesa.</li>
+</ul>
+
+<h3>3.2 Um fator de cada vez (OFAT)</h3>
+
+<p>A estratégia <strong>OFAT</strong> (<em class="en">one-factor-at-a-time</em>) é a que parece científica. Fixa-se uma linha de base para todos os fatores; varia-se um fator por vez, mantendo os demais na linha de base; ao final, monta-se um gráfico por fator.</p>
+
+<figure>
+  <img src="img/fig-01-02.png" alt="Quatro gráficos de escore contra os níveis de taco, bola, deslocamento e bebida, cada um variado isoladamente.">
+  <figcaption><b>Figura 1.2</b> — Resultados da estratégia OFAT no experimento de golfe. Cada gráfico varia um fator com os outros três fixos na linha de base (taco superdimensionado, bola balata, caminhando, água).</figcaption>
+</figure>
+
+<p>A leitura é direta: a inclinação negativa em "modo de deslocamento" sugere que andar de carrinho melhora o escore; o tipo de bola parece irrelevante. Concluiríamos: taco normal, de carrinho, bebendo água.</p>
+
+<p>O problema é que essa conclusão pode estar simplesmente errada — e o próximo tópico mostra por quê.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">O erro de raciocínio por trás do OFAT</span>
+  <p>OFAT é uma <em>projeção unidimensional</em> de uma superfície multidimensional, feita a partir de um único ponto. Ela só descreve o comportamento do sistema ao longo dos eixos que passam pela linha de base. Se a superfície tiver curvatura cruzada — isto é, se o efeito de um fator depender do nível do outro —, essas projeções não contêm a informação necessária, por mais dados que você colete ao longo delas.</p>
+</div>
+
+
+<h2 id="s4">4. O experimento fatorial, com as contas</h2>
+
+<p>A alternativa correta é o <strong>experimento fatorial</strong> (<em class="en">factorial experiment</em>): variam-se os fatores <em>em conjunto</em>, testando todas as combinações de níveis, em vez de um por vez.</p>
+
+<figure>
+  <img src="img/fig-01-04.png" alt="Quadrado com os quatro cantos representando as combinações de tipo de taco (O, R) e tipo de bola (B, T).">
+  <figcaption><b>Figura 1.4</b> — Um fatorial de dois fatores (tipo de taco × tipo de bola). As quatro execuções são os vértices de um quadrado. Este é o delineamento <math><msup><mn>2</mn><mn>2</mn></msup></math>: dois fatores, cada um em dois níveis.</figcaption>
+</figure>
+
+<p>Com oito rodadas disponíveis e quatro combinações, jogamos <strong>duas rodadas em cada canto</strong> — dizemos que o delineamento foi <strong>replicado duas vezes</strong>. Os escores obtidos:</p>
+
+<figure>
+  <img src="img/fig-01-05.png" alt="Quatro quadrados: (a) escores nos cantos; (b) comparação horizontal para o efeito do taco; (c) comparação vertical para o efeito da bola; (d) comparação diagonal para a interação.">
+  <figcaption><b>Figura 1.5</b> — (a) Os escores do experimento de golfe. (b), (c) e (d) mostram <em>quais</em> médias se subtraem para obter, respectivamente, o efeito do taco, o efeito da bola e a interação taco×bola. Repare que em cada painel <strong>todas as oito observações</strong> são usadas.</figcaption>
+</figure>
+
+<h3>4.1 Efeito principal</h3>
+
+<p>O <strong>efeito principal</strong> (<em class="en">main effect</em>) de um fator é a variação média da resposta ao passar do nível baixo para o nível alto daquele fator, tomando a média sobre todos os níveis dos demais fatores.</p>
+
+<p>Para o taco: média dos quatro escores do lado direito do quadrado (taco R) menos a média dos quatro do lado esquerdo (taco O):</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mtext>Efeito do taco</mtext><mo>=</mo>
+    <mfrac><mrow><mn>92</mn><mo>+</mo><mn>94</mn><mo>+</mo><mn>93</mn><mo>+</mo><mn>91</mn></mrow><mn>4</mn></mfrac>
+    <mo>−</mo>
+    <mfrac><mrow><mn>88</mn><mo>+</mo><mn>91</mn><mo>+</mo><mn>88</mn><mo>+</mo><mn>90</mn></mrow><mn>4</mn></mfrac>
+    <mo>=</mo><mn>92</mn><mo>,</mo><mn>50</mn><mo>−</mo><mn>89</mn><mo>,</mo><mn>25</mn><mo>=</mo><mn>3</mn><mo>,</mo><mn>25</mn>
+  </mrow>
+</math>
+</div>
+
+<p>Interpretação: trocar o taco superdimensionado pelo normal <em>piora</em> o escore em 3,25 tacadas por rodada, em média. (No golfe, escore alto é ruim.)</p>
+
+<p>Para a bola: média dos quatro escores de cima menos a média dos quatro de baixo:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mtext>Efeito da bola</mtext><mo>=</mo>
+    <mfrac><mrow><mn>88</mn><mo>+</mo><mn>91</mn><mo>+</mo><mn>92</mn><mo>+</mo><mn>94</mn></mrow><mn>4</mn></mfrac>
+    <mo>−</mo>
+    <mfrac><mrow><mn>88</mn><mo>+</mo><mn>90</mn><mo>+</mo><mn>93</mn><mo>+</mo><mn>91</mn></mrow><mn>4</mn></mfrac>
+    <mo>=</mo><mn>91</mn><mo>,</mo><mn>25</mn><mo>−</mo><mn>90</mn><mo>,</mo><mn>50</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>75</mn>
+  </mrow>
+</math>
+</div>
+
+<h3>4.2 Efeito de interação</h3>
+
+<p>O <strong>efeito de interação</strong> é a média das diagonais de um sentido menos a média das diagonais do outro:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mtext>Interação bola×taco</mtext><mo>=</mo>
+    <mfrac><mrow><mn>92</mn><mo>+</mo><mn>94</mn><mo>+</mo><mn>88</mn><mo>+</mo><mn>90</mn></mrow><mn>4</mn></mfrac>
+    <mo>−</mo>
+    <mfrac><mrow><mn>88</mn><mo>+</mo><mn>91</mn><mo>+</mo><mn>93</mn><mo>+</mo><mn>91</mn></mrow><mn>4</mn></mfrac>
+    <mo>=</mo><mn>91</mn><mo>,</mo><mn>00</mn><mo>−</mo><mn>90</mn><mo>,</mo><mn>75</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>25</mn>
+  </mrow>
+</math>
+</div>
+
+<p>Conclusão: o efeito do taco (3,25) é muito maior que o da bola (0,75) e que a interação (0,25). Um teste estatístico formal — que aprenderemos no capítulo 6 — mostraria que só o efeito do taco difere de zero. Recomendação prática: jogar sempre com o taco superdimensionado.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">A propriedade que faz o fatorial ganhar</span>
+  <p>Foram oito observações. E as <strong>oito</strong> foram usadas para calcular o efeito do taco, as <strong>oito</strong> para o efeito da bola e as <strong>oito</strong> para a interação. Nenhuma outra estratégia de experimentação usa os dados com essa eficiência. É por isso que fatoriais dão estimativas mais precisas com o mesmo orçamento — o que se chama de <strong>projeção oculta</strong> (<em class="en">hidden replication</em>): cada observação trabalha para vários efeitos ao mesmo tempo.</p>
+</div>
+
+<h3>4.3 Refazendo as contas em R</h3>
+
+<p>Vale reproduzir isso no computador desde já — não porque as contas sejam difíceis, mas para começar a criar o hábito de codificar o delineamento como uma tabela de níveis.</p>
+
+<pre><code><span class="cmt"># --- Experimento de golfe 2^2, duas réplicas (Montgomery, Fig. 1.5) ---</span>
+<span class="cmt"># Codificação padrão: -1 = nível baixo, +1 = nível alto</span>
+golfe &lt;- data.frame(
+  taco  = c(-1, +1, -1, +1, -1, +1, -1, +1),   <span class="cmt"># O = -1, R = +1</span>
+  bola  = c(-1, -1, +1, +1, -1, -1, +1, +1),   <span class="cmt"># B = -1, T = +1</span>
+  score = c(88, 93, 88, 92, 90, 91, 91, 94)
+)
+
+<span class="cmt"># Efeito principal = média(nível alto) - média(nível baixo)</span>
+efeito &lt;- function(x, y) mean(y[x == +1]) - mean(y[x == -1])
+
+efeito(golfe$taco, golfe$score)                <span class="cmt"># efeito do taco</span>
+<span class="out">## [1] 3.25</span>
+efeito(golfe$bola, golfe$score)                <span class="cmt"># efeito da bola</span>
+<span class="out">## [1] 0.75</span>
+efeito(golfe$taco * golfe$bola, golfe$score)   <span class="cmt"># interação: produto das colunas</span>
+<span class="out">## [1] 0.25</span>
+</code></pre>
+
+<div class="caixa definicao">
+  <span class="rotulo">Repare nesta linha</span>
+  <p>A coluna da interação é o <strong>produto elemento a elemento</strong> das colunas dos dois fatores. Esse fato — que a interação é uma coluna de contraste como qualquer outra, obtida por multiplicação — é a chave algébrica de todo o capítulo 6 e de toda a teoria de fatoriais fracionários do capítulo 8. Vale internalizar agora.</p>
+</div>
+
+<p>E o mesmo resultado sai de uma regressão linear, o que antecipa a ponte entre DOE e regressão (capítulo 10):</p>
+
+<pre><code>m &lt;- lm(score ~ taco * bola, data = golfe)
+coef(m) * 2      <span class="cmt"># coeficientes × 2 = efeitos, na codificação ±1</span>
+<span class="out">## (Intercept)        taco        bola   taco:bola </span>
+<span class="out">##      181.75        3.25        0.75        0.25 </span>
+</code></pre>
+
+<p>O fator 2 aparece porque, com níveis codificados em <math><mo>±</mo><mn>1</mn></math>, o coeficiente da regressão mede a variação por <em>uma</em> unidade de <math><mi>x</mi></math>, enquanto o "efeito" percorre <em>duas</em> unidades (de <math><mo>−</mo><mn>1</mn></math> a <math><mo>+</mo><mn>1</mn></math>). Essa relação <math><mtext>efeito</mtext><mo>=</mo><mn>2</mn><mo>×</mo><mtext>coeficiente</mtext></math> volta no capítulo 6.</p>
+
+
+<h2 id="s5">5. Interação: o conceito central do curso</h2>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Há <strong>interação</strong> (<em class="en">interaction</em>) entre dois fatores quando o efeito de um deles sobre a resposta <em>não é o mesmo</em> nos diferentes níveis do outro.</p>
+</div>
+
+<p>Se você guardar uma única ideia do capítulo 1, guarde esta. A figura abaixo mostra uma interação forte entre tipo de taco e bebida:</p>
+
+<figure>
+  <img src="img/fig-01-03.png" alt="Gráfico de escore contra tipo de bebida, com duas retas de inclinações muito diferentes para taco superdimensionado e taco normal.">
+  <figcaption><b>Figura 1.3</b> — Interação entre tipo de taco e tipo de bebida. Com o taco de tamanho normal, a bebida praticamente não altera o escore (reta quase horizontal). Com o taco superdimensionado, beber água melhora bastante o resultado. <strong>Retas não paralelas = interação.</strong></figcaption>
+</figure>
+
+<p>Agora repare no que isso faz com a estratégia OFAT. Se a linha de base fosse "taco normal", você variaria a bebida, veria a reta horizontal e concluiria: <em>bebida não importa</em>. A conclusão estaria errada — bebida importa muito, mas só numa das configurações do outro fator. E nenhum aumento no número de rodadas ao longo daquela reta horizontal revelaria o problema, porque a informação necessária simplesmente não está ali.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Armadilha profissional</span>
+  <p>Interações são <strong>comuns</strong> em sistemas reais, não excepcionais. Quando ocorrem, o OFAT produz conclusões erradas — não apenas imprecisas, <em>erradas</em>. E é frequente ouvir que OFAT é "o método científico" ou "boa prática de engenharia". Não é. Como Montgomery diz sem meias palavras: experimentos OFAT são <em>sempre</em> menos eficientes do que os métodos baseados em delineamento estatístico.</p>
+</div>
+
+<p>Uma consequência prática que você vai usar a vida toda: <strong>quando há interação significativa entre dois fatores, não faz sentido interpretar os efeitos principais isoladamente.</strong> Dizer "o efeito da temperatura é +5" é vazio se esse efeito é +12 com o catalisador A e −2 com o catalisador B. A resposta correta à pergunta "qual o efeito da temperatura?" passa a ser "depende — e aqui está de quê". Isso reaparece formalmente no capítulo 5.</p>
+
+
+<h2 id="s6">6. Quando o fatorial completo fica grande demais</h2>
+
+<p>A ideia do fatorial se estende naturalmente. Com três fatores em dois níveis, as oito combinações são os vértices de um cubo — o delineamento <math><msup><mn>2</mn><mn>3</mn></msup></math>:</p>
+
+<figure>
+  <img src="img/fig-01-06.png" alt="Cubo cujos oito vértices representam as combinações de taco, bola e bebida.">
+  <figcaption><b>Figura 1.6</b> — Fatorial de três fatores (taco, bola, bebida): as oito execuções são os vértices de um cubo.</figcaption>
+</figure>
+
+<p>Em geral, com <math><mi>k</mi></math> fatores em dois níveis, o fatorial completo exige <math><msup><mn>2</mn><mi>k</mi></msup></math> execuções. E aí está o problema:</p>
+
+<div class="rolagem">
+<table>
+  <caption>O crescimento exponencial do fatorial completo <math><msup><mn>2</mn><mi>k</mi></msup></math>.</caption>
+  <thead><tr><th>Fatores <math><mi>k</mi></math></th><th>2</th><th>3</th><th>4</th><th>5</th><th>7</th><th>10</th></tr></thead>
+  <tbody><tr><td>Execuções <math><msup><mn>2</mn><mi>k</mi></msup></math></td><td>4</td><td>8</td><td>16</td><td>32</td><td>128</td><td>1024</td></tr></tbody>
+</table>
+</div>
+
+<p>Com dez fatores seriam 1024 rodadas de golfe. Inviável — e o caso de dez fatores é rotineiro na indústria.</p>
+
+<p>A saída é a observação, nada óbvia, de que <strong>na presença de muitos fatores quase nunca é necessário executar todas as combinações</strong>. Um <strong>fatorial fracionário</strong> (<em class="en">fractional factorial</em>) usa um subconjunto cuidadosamente escolhido das execuções. Para os quatro fatores do golfe, metade das 16 combinações — 8 execuções — dá boa informação sobre os quatro efeitos principais e alguma informação sobre as interações. Exatamente o orçamento disponível.</p>
+
+<p>Por que isso funciona, e qual o preço a pagar, são as perguntas dos capítulos 8 e 9. O preço tem nome — <em>estrutura de alias</em> — e antecipando: alguns efeitos ficam confundidos entre si, e o trabalho do estatístico é escolher <em>quais</em>, de modo que os confundimentos caiam sobre efeitos que a experiência diz serem desprezíveis.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Aplicação de que você vai ouvir falar</span>
+  <p>Montgomery cita o exemplo do desenho de uma página web com 7 componentes, com 4, 8, 6, 5, 4, 3 e 7 opções cada: <math><mn>4</mn><mo>×</mo><mn>8</mn><mo>×</mo><mn>6</mn><mo>×</mo><mn>5</mn><mo>×</mo><mn>4</mn><mo>×</mo><mn>3</mn><mo>×</mo><mn>7</mn><mo>=</mo><mn>80</mn><mspace width="0.15em"/><mn>640</mn></math> páginas possíveis. Nenhuma empresa testa 80 mil páginas. Testa-se um fracionário com fatores de níveis mistos. Isso é, literalmente, o que empresas de comércio eletrônico fazem hoje — e é o capítulo 9.</p>
+</div>
+
+
+<h2 id="s7">7. Os três princípios básicos</h2>
+
+<p>Aqui está o núcleo conceitual do capítulo. Fisher os formulou nos anos 1920, e eles não mudaram desde então: <strong>aleatorização, replicação e blocagem</strong>. Alguns autores acrescentam o princípio fatorial como quarto.</p>
+
+<h3>7.1 Aleatorização (<em class="en">randomization</em>)</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p><strong>Aleatorizar</strong> é determinar por sorteio tanto a alocação do material experimental aos tratamentos quanto a ordem em que as execuções são realizadas.</p>
+</div>
+
+<p>São <em>duas</em> coisas — alocação e ordem — e as duas importam. A aleatorização faz dois trabalhos distintos:</p>
+
+<p><strong>Trabalho 1 — validar a teoria.</strong> Os métodos estatísticos que vamos usar exigem que os erros sejam variáveis aleatórias independentes. A aleatorização é o que torna essa suposição defensável. Sem ela, você está aplicando uma teoria cujas premissas não valem, e os valores-P que sair não significam o que dizem significar.</p>
+
+<p><strong>Trabalho 2 — diluir o que você não controlou.</strong> Suponha que os corpos de prova do experimento de dureza tenham espessuras ligeiramente diferentes, e que a espessura afete a eficácia da têmpera. Se todos os espécimes grossos forem parar no óleo, há viés sistemático: o resultado favorece um tratamento por um motivo que não é o tratamento. Sortear a alocação distribui as espessuras entre os grupos e transforma um viés sistemático em ruído aleatório — que a estatística sabe tratar.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Sutileza que os softwares escondem</span>
+  <p>Programas de DOE já apresentam as execuções em ordem aleatória, e é fácil achar que a aleatorização foi feita. Não foi: falta <em>você</em> sortear a atribuição das unidades experimentais concretas — quais corpos de prova, quais operadores, quais instrumentos — a cada execução. Essa parte nenhum software faz por você.</p>
+  <p>Há também situações em que aleatorizar plenamente é caro: uma variável difícil de mudar (<em class="en">hard-to-change</em>), como a temperatura de um forno, não pode ser alterada a cada execução. Existem delineamentos próprios para isso — parcelas subdivididas, capítulo 14. O que <em>não</em> se pode é abandonar a aleatorização e analisar como se ela tivesse sido feita.</p>
+</div>
+
+<pre><code><span class="cmt"># Aleatorizar a ordem de 10 execuções: 5 no tratamento A, 5 no B</span>
+set.seed(2026)
+tratamentos &lt;- rep(c("oleo", "salmoura"), each = 5)
+ordem &lt;- sample(length(tratamentos))          <span class="cmt"># permutação aleatória</span>
+plano &lt;- data.frame(
+  execucao   = seq_along(ordem),
+  espécime   = ordem,
+  tratamento = tratamentos[ordem]
+)
+plano
+<span class="out">##    execucao espécime tratamento</span>
+<span class="out">## 1         1        3       oleo</span>
+<span class="out">## 2         2        8   salmoura</span>
+<span class="out">## 3         3        4       oleo</span>
+<span class="out">## ...  (a sua saída difere se mudar a semente)</span>
+</code></pre>
+
+<h3>7.2 Replicação (<em class="en">replication</em>)</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p><strong>Replicar</strong> é repetir, de forma independente, a execução de cada combinação de fatores.</p>
+</div>
+
+<p>A palavra que carrega o peso é <strong>independente</strong>. Voltaremos a ela em um minuto.</p>
+
+<p>A replicação faz duas coisas:</p>
+
+<p><strong>(a) Dá uma estimativa do erro experimental.</strong> Se você executa a mesma condição duas vezes e obtém resultados diferentes, essa diferença mede a variabilidade intrínseca do processo. Sem isso, você não tem régua: não há como julgar se uma diferença entre tratamentos é grande ou pequena. É por isso que sem replicação não existe teste de hipótese — não há denominador.</p>
+
+<p><strong>(b) Aumenta a precisão das médias.</strong> Se <math><msup><mi>σ</mi><mn>2</mn></msup></math> é a variância de uma observação individual e há <math><mi>n</mi></math> réplicas, a variância da média amostral é</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msubsup><mi>σ</mi><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msubsup>
+    <mo>=</mo>
+    <mfrac><msup><mi>σ</mi><mn>2</mn></msup><mi>n</mi></mfrac>
+  </mrow>
+</math>
+</div>
+
+<p>Repare no formato: a variância cai com <math><mi>n</mi></math>, mas o <em>desvio-padrão</em> cai com <math><msqrt><mi>n</mi></msqrt></math>. Para dobrar a precisão, é preciso quadruplicar o esforço. Esse retorno decrescente é o motivo pelo qual, no capítulo 2, veremos que amostras de tamanho 10 a 12 já são quase tão boas quanto amostras muito maiores para muitos propósitos.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Replicação ≠ medidas repetidas — a distinção mais cobrada do capítulo</span>
+  <p>Um bolacha de silício (<em class="en">wafer</em>) é atacada quimicamente <strong>uma vez</strong>, e uma dimensão crítica é medida <strong>três vezes</strong>. Essas três medidas <em>não são réplicas</em>: são <strong>medidas repetidas</strong> (<em class="en">repeated measurements</em>). A variabilidade entre elas reflete o erro do <em>instrumento</em>, não o erro do <em>processo</em>.</p>
+  <p>Mesma coisa com quatro bolachas processadas <em>simultaneamente</em> no mesmo forno: as quatro medidas refletem diferenças entre bolachas dentro daquela batelada, não a variabilidade entre bateladas.</p>
+  <p><strong>Por que importa:</strong> usar medidas repetidas como se fossem réplicas subestima o erro experimental. O denominador do seu teste F fica pequeno demais, e você declara significativos efeitos que não são. É um erro que aparece em artigos publicados — e é o tipo de coisa que um estatístico bem formado detecta em cinco segundos e um analista mal formado nunca vê.</p>
+</div>
+
+<p>Há ainda uma sutileza operacional. Considere estas três execuções consecutivas, já em ordem aleatorizada:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Duas execuções consecutivas com o mesmo nível de pressão.</caption>
+  <thead><tr><th>Execução</th><th>Pressão (psi)</th><th>Temperatura (°C)</th><th>Tempo (min)</th></tr></thead>
+  <tbody>
+    <tr><td><math><mi>i</mi></math></td><td>30</td><td>100</td><td>30</td></tr>
+    <tr><td><math><mi>i</mi><mo>+</mo><mn>1</mn></math></td><td>30</td><td>125</td><td>45</td></tr>
+    <tr><td><math><mi>i</mi><mo>+</mo><mn>2</mn></math></td><td>40</td><td>125</td><td>45</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Entre <math><mi>i</mi></math> e <math><mi>i</mi><mo>+</mo><mn>1</mn></math> a pressão não muda; entre <math><mi>i</mi><mo>+</mo><mn>1</mn></math> e <math><mi>i</mi><mo>+</mo><mn>2</mn></math> não mudam nem temperatura nem tempo. Para obter réplicas <em>de verdade</em>, o experimentador precisa "girar o botão" da pressão para um valor intermediário e trazê-lo de volta a 30 psi. Parece pedantismo, mas não é: <strong>parte do erro experimental é justamente a variabilidade de acertar e sustentar um nível de fator</strong>. Se você não remexe o botão, essa fonte de variação some do seu erro estimado — e você volta ao mesmo problema de subestimar o denominador.</p>
+
+<h3>7.3 Blocagem (<em class="en">blocking</em>)</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Um <strong>bloco</strong> é um conjunto de condições experimentais relativamente homogêneas. <strong>Blocar</strong> é agrupar as execuções em blocos, de modo que as comparações de interesse sejam feitas <em>dentro</em> de cada bloco.</p>
+</div>
+
+<p>A blocagem existe para lidar com <strong>fatores de perturbação</strong> (<em class="en">nuisance factors</em>): variáveis que afetam a resposta mas cujo efeito não interessa. Lotes de matéria-prima, dias, operadores, equipamentos.</p>
+
+<p>O raciocínio: se um experimento exige duas bateladas de matéria-prima e há variação entre fornecedores, a diferença entre bateladas vai contaminar as comparações entre tratamentos. Fazendo de cada batelada um bloco, e garantindo que todos os tratamentos apareçam dentro de cada bloco, a diferença entre bateladas atinge todos os tratamentos igualmente e <em>sai</em> da comparação.</p>
+
+<p>Compare a lógica dos três princípios — vale organizar assim na cabeça:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Os três princípios e o que cada um resolve.</caption>
+  <thead><tr><th>Princípio</th><th>Problema que ataca</th><th>Como</th></tr></thead>
+  <tbody>
+    <tr><td>Aleatorização</td><td>Fatores de perturbação <strong>desconhecidos</strong> ou não mensuráveis</td><td>Converte viés sistemático em ruído aleatório</td></tr>
+    <tr><td>Replicação</td><td>Não se sabe quanto é ruído</td><td>Fornece a estimativa do erro experimental</td></tr>
+    <tr><td>Blocagem</td><td>Fatores de perturbação <strong>conhecidos</strong> e controláveis</td><td>Remove a variação entre blocos da comparação</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">A regra de bolso de Box</span>
+  <p><em>Blocar o que se pode, aleatorizar o que não se pode.</em> Se você conhece a fonte de perturbação e consegue agrupá-la, bloque — é mais eficiente. Se não conhece ou não consegue, aleatorize — é a proteção contra o desconhecido.</p>
+</div>
+
+<p>O exemplo mais simples de blocagem — a comparação pareada — aparece já na seção 2.5, e lá veremos <em>numericamente</em> que blocar reduz o desvio-padrão relevante quase pela metade.</p>
+
+
+<h2 id="s8">8. As sete etapas do planejamento</h2>
+
+<p>Montgomery organiza a condução de um experimento em sete passos. Os três primeiros formam o <strong>planejamento pré-experimental</strong> (<em class="en">pre-experimental planning</em>) e são onde se ganha ou se perde o experimento.</p>
+
+<div class="rolagem">
+<table>
+  <caption>Tabela 1.1 — Diretrizes para planejar um experimento.</caption>
+  <thead><tr><th>#</th><th>Etapa</th><th>Fase</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Reconhecimento e enunciado do problema</td><td rowspan="3">Planejamento<br>pré-experimental</td></tr>
+    <tr><td>2</td><td>Escolha da variável resposta<sup>a</sup></td></tr>
+    <tr><td>3</td><td>Escolha dos fatores, níveis e faixas<sup>a</sup></td></tr>
+    <tr><td>4</td><td>Escolha do delineamento experimental</td><td rowspan="4">Execução<br>e análise</td></tr>
+    <tr><td>5</td><td>Realização do experimento</td></tr>
+    <tr><td>6</td><td>Análise estatística dos dados</td></tr>
+    <tr><td>7</td><td>Conclusões e recomendações</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:0.85rem;color:var(--texto-fraco);margin-top:-0.8rem;"><sup>a</sup> Na prática, os passos 2 e 3 são frequentemente feitos simultaneamente ou na ordem inversa.</p>
+
+<h3>Etapa 1 — Enunciar o problema</h3>
+
+<p>Parece óbvio e não é. Raramente é simples perceber que existe um problema que pede experimentação, e menos ainda formular um enunciado que todos os envolvidos aceitem. Por isso Montgomery insiste no <strong>trabalho em equipe</strong>: engenharia, qualidade, produção, marketing, gerência, cliente — e especialmente os operadores, que costumam ter muita informação e ser sistematicamente ignorados.</p>
+
+<p>Ajuda muito classificar o <em>tipo</em> de objetivo, porque cada tipo gera perguntas diferentes:</p>
+
+<ul>
+  <li><strong>Triagem / caracterização</strong> — sistema novo, muitos fatores, quer-se saber quais importam.</li>
+  <li><strong>Otimização</strong> — os fatores importantes já são conhecidos; busca-se onde ajustá-los. Normalmente vem <em>depois</em> de uma triagem.</li>
+  <li><strong>Confirmação</strong> — verificar se o sistema se comporta conforme a teoria ou a experiência passada (ex.: um material novo é mesmo equivalente ao atual?).</li>
+  <li><strong>Descoberta</strong> — explorar materiais, fatores ou faixas novas. Típico da indústria farmacêutica.</li>
+  <li><strong>Robustez</strong> — sob que condições a resposta se degrada? Como reduzir a variabilidade transmitida por fatores não controláveis?</li>
+</ul>
+
+<h3>Etapa 2 — Escolher a resposta</h3>
+
+<p>A resposta precisa de fato carregar informação sobre o processo. Normalmente é a média ou o desvio-padrão da característica medida — ou ambos. Um ponto que os estatísticos frequentemente esquecem: a <strong>capacidade do sistema de medição</strong>. Se o instrumento é ruim, só efeitos grandes serão detectados, e será preciso mais replicação para compensar. Vale definir <em>antes</em> do experimento como cada resposta será medida e como o instrumento será calibrado e mantido.</p>
+
+<h3>Etapa 3 — Escolher fatores, níveis e faixas</h3>
+
+<p>Esta é a etapa com mais vocabulário, e vale memorizar a taxonomia, porque ela guia decisões práticas o tempo todo:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Classificação dos fatores no planejamento pré-experimental.</caption>
+  <thead><tr><th>Categoria</th><th>Subcategoria</th><th>O que é</th><th>Como se trata</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="3">Fatores de projeto potenciais</td><td>Fatores de projeto</td><td>Os efetivamente escolhidos para estudo</td><td>Variam no experimento</td></tr>
+    <tr><td>Mantidos constantes</td><td>Podem afetar a resposta, mas não interessam agora</td><td>Fixados num nível</td></tr>
+    <tr><td>Deixados variar</td><td>Variação entre unidades experimentais</td><td>Diluídos por aleatorização</td></tr>
+    <tr><td rowspan="3">Fatores de perturbação</td><td>Controláveis</td><td>Lote, dia, operador</td><td><strong>Blocagem</strong></td></tr>
+    <tr><td>Não controláveis, mas mensuráveis</td><td>Umidade ambiente</td><td><strong>Análise de covariância</strong> (cap. 15)</td></tr>
+    <tr><td>Fatores de ruído</td><td>Variam na operação, controláveis no teste</td><td><strong>Projeto robusto</strong> (cap. 12)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Uma ferramenta muito útil para organizar tudo isso é o <strong>diagrama de causa e efeito</strong> (<em class="en">cause-and-effect diagram</em>), também chamado diagrama espinha-de-peixe ou de Ishikawa:</p>
+
+<figure>
+  <img src="img/fig-01-10.png" alt="Diagrama espinha-de-peixe com as espinhas Medição, Materiais, Pessoas, Ambiente, Métodos e Máquinas convergindo para 'carregamento de wafer'.">
+  <figcaption><b>Figura 1.10</b> — Diagrama de causa e efeito para um experimento de ataque químico em semicondutores. A resposta fica na espinha central; as causas potenciais organizam-se nas categorias tradicionais: medição, materiais, pessoas, ambiente, métodos e máquinas.</figcaption>
+</figure>
+
+<p>Note como o diagrama se conecta com a tabela acima: algumas causas viram fatores de projeto (velocidade da roda, fluxo de gás, vácuo), outras precisam de estudo antes de virar fator (procedimentos incorretos), e outras vão ser mantidas constantes ou blocadas (temperatura e umidade).</p>
+
+<p>Quanto às <strong>faixas e níveis</strong>, duas regras práticas:</p>
+
+<ul>
+  <li>Em triagem, <strong>poucos níveis</strong> — dois funcionam muito bem.</li>
+  <li>Em triagem, <strong>faixa larga</strong>. À medida que se aprende quais variáveis importam, a região de interesse dos experimentos seguintes se estreita.</li>
+</ul>
+
+<h3>Etapas 4 a 7 — em resumo</h3>
+
+<p><strong>4. Escolha do delineamento.</strong> Se as etapas 1–3 foram bem feitas, esta é fácil. Envolve tamanho amostral, ordem das execuções e restrições de aleatorização. Envolve também escolher um <em>modelo tentativo</em> — veja a seção seguinte.</p>
+
+<p><strong>5. Realização.</strong> É preciso monitorar. O erro mais comum que Montgomery relata em anos de consultoria: <em>as pessoas que conduzem o experimento simplesmente não ajustam as variáveis nos níveis certos em algumas execuções</em>. Alguém deve conferir cada ajuste antes de cada execução. Execuções-piloto ajudam: dão ideia da consistência do material, checam o sistema de medição, dão uma noção grosseira do erro experimental e permitem rever as decisões de 1 a 4.</p>
+
+<p><strong>6. Análise.</strong> Se o delineamento está correto, os métodos necessários <em>não são elaborados</em>. Métodos gráficos simples têm papel enorme. E há um limite que precisa ficar claro:</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">O que a estatística não faz</span>
+  <p>Métodos estatísticos <strong>não provam</strong> que um fator tem determinado efeito. Eles medem a confiabilidade e a validade dos resultados — permitem quantificar o erro provável de uma conclusão, ou anexar um nível de confiança a uma afirmação. A vantagem principal é acrescentar <strong>objetividade</strong> à decisão. Estatística sem conhecimento do processo e sem bom senso não conclui nada de útil.</p>
+</div>
+
+<p><strong>7. Conclusões e recomendações.</strong> Métodos gráficos são valiosos para comunicar. E execuções de <strong>confirmação</strong> devem ser feitas para validar as conclusões.</p>
+
+
+<h2 id="s9">9. Modelos empíricos</h2>
+
+<p>Escolher o delineamento envolve escolher, provisoriamente, um modelo. Na maioria dos casos um polinômio de baixa ordem serve. O <strong>modelo de primeira ordem</strong> em duas variáveis:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>y</mi><mo>=</mo>
+    <msub><mi>β</mi><mn>0</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>1</mn></msub><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo>
+    <mi>ε</mi>
+  </mrow>
+</math>
+</div>
+
+<p>onde os <math><mi>β</mi></math> são parâmetros desconhecidos a estimar e <math><mi>ε</mi></math> é o termo de erro aleatório, que absorve o erro experimental. Este é o <strong>modelo de efeitos principais</strong> (<em class="en">main effects model</em>), muito usado em triagem.</p>
+
+<p>Como interações são comuns, a extensão natural acrescenta o termo cruzado:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>y</mi><mo>=</mo>
+    <msub><mi>β</mi><mn>0</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>1</mn></msub><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>12</mn></msub><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo>
+    <mi>ε</mi>
+  </mrow>
+</math>
+</div>
+
+<p>Repare: o produto <math><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math> é exatamente a coluna que multiplicamos no código R da seção 4.3. A interação é um termo de produto no modelo — nada mais misterioso que isso.</p>
+
+<p>E o <strong>modelo de segunda ordem</strong>, usado em otimização:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>y</mi><mo>=</mo>
+    <msub><mi>β</mi><mn>0</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>1</mn></msub><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>12</mn></msub><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo>
+    <msub><mi>β</mi><mn>11</mn></msub><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo>
+    <msub><mi>β</mi><mn>22</mn></msub><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo>
+    <mi>ε</mi>
+  </mrow>
+</math>
+</div>
+
+<p>Os termos quadráticos permitem curvatura — logo, permitem que o modelo tenha um máximo ou um mínimo interno. É por isso que só com segunda ordem se pode <em>otimizar</em>. Esse modelo é o coração da metodologia de superfície de resposta:</p>
+
+<figure>
+  <img src="img/fig-01-09.png" alt="Gráfico de contorno do rendimento em função de tempo e temperatura, mostrando o caminho da condição operacional atual até a região de rendimento máximo.">
+  <figcaption><b>Figura 1.9</b> — Gráfico de contorno do rendimento em função do tempo e da temperatura de reação. Parte-se da condição atual (rendimento ≈ 80%) com um fatorial <math><msup><mn>2</mn><mn>2</mn></msup></math>; os resultados apontam a direção de subida; caminha-se nessa direção; e na região do ótimo faz-se um segundo experimento (um <em>delineamento composto central</em>) para ajustar o modelo de segunda ordem. Isso é o capítulo 11.</figcaption>
+</figure>
+
+<p>Observe a estrutura desta figura, porque ela resume a filosofia do livro: <strong>experimenta-se em sequência</strong>. Um fatorial pequeno indica a direção; caminha-se; outro experimento pequeno refina. Nunca um experimento gigante.</p>
+
+
+<h2 id="s10">10. Um pouco de história (e por que ela importa)</h2>
+
+<p>Não é decoração. Saber de onde vem cada família de métodos ajuda a entender por que elas têm a forma que têm.</p>
+
+<ul>
+  <li><strong>Antes de tudo:</strong> James Lind, 1747, a bordo do <em>Salisbury</em>, estudando escorbuto e dieta. Hoje chamaríamos aquilo de delineamento completamente aleatorizado com um fator — exatamente os capítulos 2 e 3.</li>
+
+  <li><strong>A era agrícola (1920–).</strong> <strong>Ronald A. Fisher</strong>, na Estação Experimental de Rothamsted. Fisher percebeu que os defeitos <em>na forma como o experimento fora conduzido</em> atrapalhavam a análise dos dados — e daí formulou os três princípios, o conceito de fatorial e a análise de variância. Contexto importa: em experimentos agrícolas a resposta demora uma safra, então faz sentido planejar um experimento grande e completo.</li>
+
+  <li><strong>A era industrial (1951–).</strong> <strong>George Box</strong> e K. B. Wilson criam a metodologia de superfície de resposta. A percepção decisiva foi que experimentos industriais diferem dos agrícolas em duas coisas: a resposta é observada <em>quase imediatamente</em> e o experimentador <em>aprende rápido</em> com poucas execuções. Box chamou essas duas propriedades de <strong>imediatismo</strong> e <strong>sequencialidade</strong>. Daí vem toda a lógica sequencial da figura 1.9. Nesse período também nascem os delineamentos ótimos, com Kiefer e Wolfowitz.</li>
+
+  <li><strong>A era da qualidade (fim dos 1970–).</strong> <strong>Genichi Taguchi</strong> e o projeto de parâmetros robustos. Os <em>objetivos</em> de engenharia que ele propôs — tornar processos insensíveis a fatores ambientais, produtos insensíveis à variação de componentes, e ajustar a média mantendo a variabilidade baixa — foram reconhecidos como corretos e importantes. Já a <em>estratégia experimental e os métodos de análise</em> que ele propôs foram bastante criticados na revisão por pares dos anos 1980. Saldo: as ideias de engenharia ficaram, os métodos foram substituídos por alternativas melhores (capítulo 12), e o DOE se espalhou por setores que antes o ignoravam.</li>
+
+  <li><strong>A quarta era (atual).</strong> Renovação do interesse acadêmico e prático, software muito melhor, e DOE em educação formal de engenharia. Hoje há aplicações em serviços, finanças, governo — e empresas de comércio eletrônico rodam experimentos on-line continuamente sobre seus usuários.</li>
+</ul>
+
+
+<h2 id="s11">11. Quatro conselhos que valem a carreira</h2>
+
+<p>Montgomery fecha o capítulo com quatro recomendações. Elas parecem genéricas na primeira leitura e ficam mais afiadas com o tempo.</p>
+
+<p><strong>1. Use seu conhecimento não estatístico do problema.</strong> Escolher fatores, definir níveis, decidir quantas réplicas rodar, interpretar os resultados — tudo isso depende de conhecimento do domínio. Um delineamento estatístico não substitui pensar sobre o problema.</p>
+
+<p><strong>2. Mantenha o delineamento e a análise tão simples quanto possível.</strong> Não exagere na sofisticação. Se o planejamento pré-experimental for bem feito, a análise sai quase sozinha — "um experimento bem planejado às vezes praticamente se analisa sozinho". E o contrário também é verdade: se você estragou o planejamento, nenhuma estatística elegante salva.</p>
+
+<p><strong>3. Distinga significância estatística de significância prática.</strong> Um engenheiro pode determinar que uma modificação no sistema de injeção melhora o consumo em 0,1 mi/gal, e que esse resultado é estatisticamente significativo. Se a modificação custa US$ 1000, o resultado é irrelevante. Esse conselho fica ainda mais importante com amostras grandes, onde diferenças minúsculas viram "significativas" — voltaremos a isso no exercício 2.53 do próximo capítulo.</p>
+
+<p><strong>4. Experimentos são iterativos.</strong> Não se deve planejar um experimento grande e abrangente no início de um estudo, porque no início não se sabe quais fatores importam, em que faixas, com quantos níveis. Aprende-se ao longo do caminho.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Regra dos 25%</span>
+  <p>Como regra geral, <strong>não invista mais de 25% dos recursos disponíveis no primeiro experimento</strong>. O resto fica para as etapas seguintes e para os testes de confirmação. Um primeiro experimento é, quase sempre, uma experiência de aprendizado.</p>
+</div>
+
+<p>E uma última frase, que vale como síntese do capítulo: <strong>todos os experimentos são delineados.</strong> A pergunta não é se há delineamento, e sim se ele é bom ou ruim.</p>
+
+
+<h2 id="recall">Cartões de recall ativo</h2>
+
+<p>Tente responder <em>antes</em> de abrir. Se errar, volte à seção correspondente — errar aqui é o objetivo, é assim que se fixa.</p>
+
+<details class="recall">
+  <summary>Por que observar um processo não estabelece causalidade, e o que a experimentação acrescenta?</summary>
+  <div class="resposta">
+    <p>Na observação, os níveis das variáveis são determinados pelo próprio sistema, o que permite que uma característica da unidade influencie ao mesmo tempo o "tratamento" recebido e a resposta — os dois efeitos ficam <strong>confundidos</strong> e nenhuma análise os separa. Ao experimentar, o pesquisador <em>impõe</em> os níveis, tipicamente por sorteio; o nível deixa de depender de qualquer característica da unidade, e a diferença observada passa a ser atribuível ao tratamento.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Defina interação. Por que ela derruba a estratégia OFAT?</summary>
+  <div class="resposta">
+    <p>Há interação quando o efeito de um fator sobre a resposta <em>não é o mesmo</em> nos diferentes níveis de outro fator (retas não paralelas num gráfico de interação).</p>
+    <p>O OFAT varia um fator mantendo os demais fixos numa linha de base. Ele mede, portanto, o efeito de cada fator <em>apenas naquela combinação</em> dos outros. Se há interação, esse efeito não se generaliza — e o experimento não contém nenhuma informação sobre o quanto ele varia. Aumentar o número de observações não resolve: a informação não está nos eixos que o OFAT percorre.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>No fatorial 2² do golfe, como se calcula o efeito de interação a partir dos quatro cantos?</summary>
+  <div class="resposta">
+    <p>Média das duas diagonais de um sentido menos média das diagonais do outro. Com os dados da figura 1.5:</p>
+    <math display="block"><mrow><mfrac><mrow><mn>92</mn><mo>+</mo><mn>94</mn><mo>+</mo><mn>88</mn><mo>+</mo><mn>90</mn></mrow><mn>4</mn></mfrac><mo>−</mo><mfrac><mrow><mn>88</mn><mo>+</mo><mn>91</mn><mo>+</mo><mn>93</mn><mo>+</mo><mn>91</mn></mrow><mn>4</mn></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>25</mn></mrow></math>
+    <p>Equivalentemente: crie a coluna de sinais como <strong>produto</strong> das colunas dos dois fatores e aplique a mesma fórmula "média dos + menos média dos −".</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual é a propriedade que torna o fatorial mais eficiente que qualquer alternativa?</summary>
+  <div class="resposta">
+    <p>Todas as observações são usadas no cálculo de <em>todos</em> os efeitos. No exemplo do golfe, as mesmas oito rodadas fornecem o efeito do taco, o efeito da bola e a interação — cada uma com quatro observações de cada lado da comparação. É a <em>replicação oculta</em>: cada execução trabalha simultaneamente para vários efeitos.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Enuncie os três princípios básicos e diga qual problema cada um resolve.</summary>
+  <div class="resposta">
+    <ul>
+      <li><strong>Aleatorização</strong> — protege contra fatores de perturbação <em>desconhecidos</em>; converte viés sistemático em ruído aleatório e valida a suposição de erros independentes.</li>
+      <li><strong>Replicação</strong> — fornece a estimativa do erro experimental (sem a qual não há teste) e aumenta a precisão das médias, com <math><msubsup><mi>σ</mi><mover><mi>y</mi><mo>¯</mo></mover><mn>2</mn></msubsup><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mi>n</mi></math>.</li>
+      <li><strong>Blocagem</strong> — remove a variação devida a fatores de perturbação <em>conhecidos e controláveis</em>, fazendo as comparações dentro de blocos homogêneos.</li>
+    </ul>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Diferencie replicação de medidas repetidas. Qual é a consequência prática de confundi-las?</summary>
+  <div class="resposta">
+    <p><strong>Réplica</strong> é uma execução independente da combinação de fatores: o processo é rodado outra vez, do começo, com os botões reajustados. <strong>Medida repetida</strong> é medir várias vezes o <em>mesmo</em> resultado de uma única execução.</p>
+    <p>Medidas repetidas capturam apenas o erro do sistema de medição (e eventual variação dentro da unidade), não a variabilidade do processo entre execuções. Tratá-las como réplicas <strong>subestima o erro experimental</strong>, o que infla o valor de F, deprime o valor-P e faz declarar significativos efeitos que não são.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que aleatorizar a ordem das execuções não basta, mesmo quando o software já entrega a lista embaralhada?</summary>
+  <div class="resposta">
+    <p>Porque a aleatorização tem <em>duas</em> componentes: a ordem das execuções <strong>e</strong> a alocação do material experimental. O software embaralha a ordem, mas quem decide qual corpo de prova, qual operador, qual instrumento vai para cada execução é o experimentador. Se essa atribuição for feita por conveniência (os espécimes que estavam por cima, o operador do turno da manhã), o viés entra por ali.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Um fator de perturbação é <em>não controlável</em> mas <em>mensurável</em>. Blocagem serve?</summary>
+  <div class="resposta">
+    <p>Não. Blocagem exige que se possa <em>fixar</em> o nível do fator para agrupar as execuções. Se o fator não é controlável mas pode ser medido (umidade relativa, por exemplo), o tratamento adequado é usá-lo como <strong>covariável</strong> e aplicar <strong>análise de covariância</strong> (capítulo 15). Se o fator varia naturalmente na operação mas pode ser controlado <em>durante o teste</em>, chama-se <strong>fator de ruído</strong> e leva a um estudo de robustez (capítulo 12).</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Quantas execuções exige um fatorial completo com <math><mi>k</mi></math> fatores em dois níveis? E qual a saída quando esse número explode?</summary>
+  <div class="resposta">
+    <p><math><msup><mn>2</mn><mi>k</mi></msup></math> execuções — 16 para <math><mi>k</mi><mo>=</mo><mn>4</mn></math>, 1024 para <math><mi>k</mi><mo>=</mo><mn>10</mn></math>.</p>
+    <p>A saída é o <strong>fatorial fracionário</strong>: executar um subconjunto escolhido (por exemplo, uma <em>meia fração</em>, <math><msup><mn>2</mn><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msup></math>). Obtém-se boa informação sobre os efeitos principais e alguma sobre interações. O preço é que certos efeitos ficam confundidos entre si (estrutura de alias) — a arte está em escolher o fracionamento para que os confundimentos recaiam sobre efeitos presumidamente desprezíveis.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que não se deve gastar todo o orçamento no primeiro experimento?</summary>
+  <div class="resposta">
+    <p>Porque no início não se sabe quais fatores importam, em que faixas variá-los, quantos níveis usar, nem as unidades de medida adequadas. Um experimento único e abrangente exige acertar todas essas respostas de antemão; errar significa desperdiçar tudo sem responder à pergunta original. A experimentação é iterativa: regra prática é <strong>não investir mais de 25% dos recursos no primeiro experimento</strong>, reservando o resto para refinamento e confirmação.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>O que a análise estatística <em>não</em> pode fazer?</summary>
+  <div class="resposta">
+    <p>Não pode <strong>provar</strong> que um fator tem um efeito. Métodos estatísticos permitem quantificar o erro provável de uma conclusão e anexar um nível de confiança a uma afirmação — acrescentam objetividade à decisão. Também não consertam um experimento mal planejado: se os efeitos estão confundidos pelo delineamento, nenhuma análise os separa.</p>
+  </div>
+</details>
+
+
+<h2 id="exercicios">Exercícios resolvidos</h2>
+
+<p>O capítulo 1 não tem exercícios numéricos — todos são conceituais ou de planejamento. Isso é proposital: nesta altura o que se treina é o <em>raciocínio de delineamento</em>. Selecionei os que mais rendem.</p>
+
+<div class="exercicio">
+  <h3>Exercício 1.1 — Pipoca</h3>
+  <div class="enunciado">
+    <p>Suponha que você queira delinear um experimento para estudar a proporção de grãos de pipoca não estourados. Complete as etapas 1 a 3 das diretrizes da seção 1.4. Há fontes importantes de variação que seriam difíceis de controlar?</p>
+  </div>
+
+  <h4>Etapa 1 — Reconhecimento e enunciado do problema</h4>
+  <p>Grãos não estourados representam perda de produto e insatisfação do consumidor. O objetivo é de <strong>caracterização/triagem</strong>: identificar quais fatores do preparo influenciam a proporção de grãos não estourados e em que direção ajustá-los. Não é otimização ainda — não sabemos quais fatores importam.</p>
+  <p>Perguntas específicas: o método de preparo (micro-ondas × panela × pipoqueira de ar quente) altera a proporção? O tempo de preparo? A marca do milho? A quantidade de grãos por lote?</p>
+
+  <h4>Etapa 2 — Escolha da variável resposta</h4>
+  <p>A resposta natural é</p>
+  <math display="block"><mrow><mi>y</mi><mo>=</mo><mfrac><mtext>número de grãos não estourados</mtext><mtext>número total de grãos no lote</mtext></mfrac></mrow></math>
+  <p>Duas observações que separam uma resposta boa de uma ruim:</p>
+  <ul>
+    <li>Usar a <strong>proporção</strong>, não a contagem bruta, para que lotes de tamanhos diferentes sejam comparáveis. Melhor ainda: padronizar a massa de milho por execução, o que elimina essa fonte de variação de vez.</li>
+    <li>Proporções têm variância dependente da média — se as proporções se aproximarem de 0 ou 1, a suposição de variância constante falha. Uma transformação (arco-seno da raiz, por exemplo) pode ser necessária. Isso é tratado no capítulo 15 e é exatamente o tipo de antecipação que se espera de um estatístico na etapa 2.</li>
+  </ul>
+  <p>Uma segunda resposta relevante seria a proporção de grãos <em>queimados</em>, já que os dois defeitos se opõem: aumentar o tempo reduz um e aumenta o outro. Vale medir as duas.</p>
+
+  <h4>Etapa 3 — Fatores, níveis e faixas</h4>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th>Classificação</th><th>Variável</th><th>Níveis / tratamento</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="4">Fatores de projeto</td><td>Método de preparo</td><td>micro-ondas · panela · ar quente</td></tr>
+      <tr><td>Tempo de preparo</td><td>2 níveis (ex.: 2,5 e 4,0 min)</td></tr>
+      <tr><td>Marca do milho</td><td>2 marcas</td></tr>
+      <tr><td>Potência / temperatura</td><td>2 níveis</td></tr>
+      <tr><td rowspan="2">Mantidos constantes</td><td>Massa de milho por execução</td><td>fixada (ex.: 100 g)</td></tr>
+      <tr><td>Tipo e quantidade de óleo</td><td>fixados</td></tr>
+      <tr><td>Perturbação (blocar)</td><td>Lote/embalagem de milho</td><td>cada embalagem = um bloco</td></tr>
+      <tr><td rowspan="2">Difíceis de controlar</td><td>Teor de umidade do grão</td><td>—</td></tr>
+      <tr><td>Distribuição de tamanho dos grãos</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>Fontes de variação difíceis de controlar — a parte que a pergunta quer</h4>
+  <p>Esta é a resposta que separa uma solução superficial de uma boa:</p>
+  <ul>
+    <li><strong>Teor de umidade do grão.</strong> É a variável fisicamente decisiva — é o vapor da água interna que estoura o grão. Varia com a safra, a embalagem e o tempo/condições de armazenamento. Não se controla no supermercado, e provavelmente domina o erro experimental.</li>
+    <li><strong>Variação grão a grão</strong> em tamanho, espessura de pericarpo e integridade. Impossível de controlar; entra como parte do erro.</li>
+    <li><strong>Uniformidade de aquecimento</strong> dentro do aparelho — micro-ondas têm pontos frios; a posição do saco importa.</li>
+    <li><strong>Idade do lote / condições de estoque</strong> antes da compra, desconhecidas.</li>
+  </ul>
+  <p><strong>Como lidar:</strong> a umidade e a variação entre embalagens são fatores de perturbação controláveis <em>por agrupamento</em> — comprar todo o milho do mesmo lote de fabricação e usar cada embalagem como <strong>bloco</strong>. O que sobrar (variação grão a grão, pontos frios) fica para a <strong>aleatorização</strong> diluir. Se a umidade puder ser medida, vira <strong>covariável</strong>.</p>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.7 — Consumo de combustível</h3>
+  <div class="enunciado">
+    <p>Construa um diagrama de causa e efeito identificando os fatores que potencialmente influenciam o consumo de combustível do seu carro. Como você conduziria um experimento para determinar quais desses fatores realmente afetam o consumo?</p>
+  </div>
+
+  <h4>O diagrama</h4>
+  <p>Organizando pelas seis categorias tradicionais, com a resposta (km/L) na espinha central:</p>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th>Categoria</th><th>Causas potenciais</th></tr></thead>
+    <tbody>
+      <tr><td>Pessoas (condutor)</td><td>estilo de condução (agressivo × suave), uso do ar-condicionado, velocidade de cruzeiro</td></tr>
+      <tr><td>Máquina (veículo)</td><td>pressão dos pneus, tipo de pneu, estado do filtro de ar, velas, alinhamento, carga transportada</td></tr>
+      <tr><td>Materiais</td><td>marca/tipo de combustível (comum × aditivada, gasolina × etanol), tipo de óleo lubrificante</td></tr>
+      <tr><td>Métodos</td><td>rota (cidade × rodovia), horário (trânsito), uso de piloto automático</td></tr>
+      <tr><td>Ambiente</td><td>temperatura, chuva, vento, relevo, altitude</td></tr>
+      <tr><td>Medição</td><td>como se mede o consumo: computador de bordo × tanque cheio-a-cheio; erro do odômetro; critério de "tanque cheio"</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>O experimento</h4>
+  <p><strong>Resposta:</strong> km/L medido pelo método tanque cheio-a-cheio, sempre na mesma bomba do mesmo posto e com o mesmo critério de desligamento automático. (O computador de bordo é conveniente mas tem viés próprio; se for usado, é preciso ao menos verificar a concordância com o método direto.)</p>
+
+  <p><strong>Fatores de projeto (2 níveis cada), num fatorial <math><msup><mn>2</mn><mn>3</mn></msup></math>:</strong></p>
+  <ul>
+    <li>Pressão dos pneus: recomendada pelo fabricante × +15%</li>
+    <li>Tipo de combustível: comum × aditivada</li>
+    <li>Velocidade de cruzeiro: 90 km/h × 110 km/h</li>
+  </ul>
+
+  <p><strong>Mantidos constantes:</strong> mesmo motorista, mesma rota, mesma carga no porta-malas, ar-condicionado sempre desligado (ou sempre ligado na mesma temperatura).</p>
+
+  <p><strong>Blocagem:</strong> a rota é um candidato natural a bloco se quisermos generalizar para mais de um trajeto — rodar o fatorial completo em cada rota. Alternativamente, blocar por semana, se houver deriva ao longo do tempo (desgaste, estação do ano).</p>
+
+  <p><strong>Aleatorização:</strong> a ordem dos oito tratamentos deve ser sorteada, e não executada em sequência conveniente. Isso é essencial aqui, porque as condições ambientais (temperatura, vento, trânsito) mudam ao longo do estudo e são exatamente os fatores não controláveis que a aleatorização protege contra.</p>
+
+  <p><strong>Replicação:</strong> pelo menos duas réplicas de cada tratamento, o que dá 16 tanques. Sem elas não há estimativa do erro — e o erro aqui é grande, dominado por trânsito e vento.</p>
+
+  <p><strong>Análise:</strong> efeitos principais e interações pelo método do capítulo 6. Antecipe a interação: o ganho da pressão mais alta pode ser maior a 110 km/h do que a 90 km/h, porque a resistência ao rolamento pesa diferente em cada regime. É exatamente o tipo de coisa que o OFAT não veria.</p>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.8 — Replicação × medidas repetidas</h3>
+  <div class="enunciado">
+    <p>O que é replicação? Por que precisamos de replicação num experimento? Apresente um exemplo que ilustre a diferença entre replicação e medidas repetidas.</p>
+  </div>
+
+  <p><strong>O que é.</strong> Replicação é a repetição <em>independente</em> da execução de cada combinação de fatores. Cada réplica é uma nova realização completa do processo naquela condição, com os fatores reajustados aos seus níveis.</p>
+
+  <p><strong>Por que precisamos.</strong> Duas razões distintas:</p>
+  <ol>
+    <li><strong>Estimar o erro experimental.</strong> A variação entre réplicas da <em>mesma</em> condição é a régua contra a qual se julga a variação <em>entre</em> condições. Sem essa régua, uma diferença observada entre dois tratamentos não pode ser avaliada — não há como saber se é grande ou pequena. Formalmente: sem replicação não há denominador para o teste F.</li>
+    <li><strong>Aumentar a precisão.</strong> Com <math><mi>n</mi></math> réplicas, <math><mi>V</mi><mo stretchy="false">(</mo><mover><mi>y</mi><mo>¯</mo></mover><mo stretchy="false">)</mo><mo>=</mo><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mi>n</mi></math>. Mais réplicas, médias mais estáveis, efeitos menores detectáveis.</li>
+  </ol>
+
+  <p><strong>Exemplo da diferença.</strong> Um processo de moldagem por injeção é rodado a 200 °C para produzir uma peça plástica.</p>
+  <ul>
+    <li><strong>Medidas repetidas:</strong> produz-se <em>uma</em> peça e mede-se a espessura em três pontos com o mesmo paquímetro. As três leituras diferem por causa do erro do instrumento e da variação de espessura ao longo da peça. Elas <em>não</em> informam nada sobre a variabilidade do processo de moldagem.</li>
+    <li><strong>Replicação:</strong> a máquina é desligada, a temperatura é levada a outro valor e trazida de volta a 200 °C, os parâmetros são reajustados, e produz-se outra peça — três vezes. Agora as três medidas refletem tudo: variação do material, do ajuste de temperatura, do ciclo da máquina, e também do instrumento.</li>
+  </ul>
+
+  <p><strong>A consequência de confundir.</strong> O desvio-padrão das medidas repetidas é <em>muito menor</em> que o das réplicas verdadeiras, porque não inclui a variação entre execuções. Se você usar aquele valor como estimativa do erro experimental:</p>
+  <math display="block"><mrow><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><mfrac><msub><mtext>QM</mtext><mtext>tratamentos</mtext></msub><msub><mtext>QM</mtext><mtext>erro</mtext></msub></mfrac></mrow></math>
+  <p>o denominador fica artificialmente pequeno, <math><msub><mi>F</mi><mn>0</mn></msub></math> fica grande, o valor-P fica minúsculo — e você declara significativos efeitos que são apenas ruído do processo. É um erro grave e comum.</p>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.9 — Por que aleatorizar?</h3>
+  <div class="enunciado">
+    <p>Por que a aleatorização é importante num experimento?</p>
+  </div>
+
+  <p>Por duas razões independentes, e vale saber separá-las:</p>
+
+  <p><strong>1. Sustenta a validade da teoria estatística.</strong> Os procedimentos que usaremos (teste t, ANOVA, intervalos de confiança) pressupõem que as observações — ou os erros — sejam variáveis aleatórias <em>independentes</em>. Sortear a ordem e a alocação é o mecanismo que torna essa suposição plausível. Sem aleatorização, execuções vizinhas no tempo tendem a se parecer (deriva térmica, aquecimento da máquina, cansaço do operador), os erros ficam correlacionados, e as distribuições de referência usadas para calcular valores-P deixam de valer. O número que sai do software continua sendo calculado, mas não significa o que se pensa.</p>
+
+  <p>Existe ainda uma justificativa mais profunda: a <strong>teoria dos testes de aleatorização</strong>. Se os tratamentos não têm efeito algum, todas as <math><mn>20</mn><mo>!</mo><mo>/</mo><mo stretchy="false">(</mo><mn>10</mn><mo>!</mo><mspace width="0.1em"/><mn>10</mn><mo>!</mo><mo stretchy="false">)</mo><mo>=</mo><mn>184</mn><mspace width="0.15em"/><mn>756</mn></math> maneiras de repartir 20 observações em dois grupos de 10 são igualmente prováveis. Comparar o valor observado da estatística com essa distribuição de referência dá um teste válido <em>sem nenhuma suposição sobre a forma da distribuição</em>. Como se mostra que o teste t aproxima bem o teste de aleatorização, ganhamos robustez à não normalidade — mas isso só é verdade <em>se a aleatorização foi feita</em>. Ela é literalmente o que paga a conta.</p>
+
+  <p><strong>2. Protege contra fatores de perturbação desconhecidos.</strong> Sempre existem variáveis que afetam a resposta e que você não conhece, não mediu ou não pode controlar. Se a atribuição dos tratamentos for feita por conveniência, essas variáveis podem se alinhar sistematicamente com os tratamentos, e o efeito estimado passa a ser uma mistura inseparável dos dois. Exemplo do capítulo: se todos os corpos de prova mais espessos forem para a têmpera em óleo e a espessura afeta a dureza, o resultado da comparação está viciado. O sorteio distribui as espessuras entre os grupos, transformando um viés sistemático em ruído aleatório — que a estatística sabe tratar e que a replicação sabe medir.</p>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Note a assimetria</span>
+    <p>Blocagem só protege contra o que você <em>conhece</em>. Aleatorização protege contra o que você <em>não conhece</em> — inclusive contra o que você nem imagina que existe. É por isso que ela é chamada de pedra angular (<em class="en">cornerstone</em>) do uso de métodos estatísticos em delineamento experimental, e por isso não há situação em que ela seja dispensável.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.10 — Um experimento grande × abordagem sequencial</h3>
+  <div class="enunciado">
+    <p>Quais são os riscos potenciais de um único experimento grande e abrangente, em contraste com uma abordagem sequencial?</p>
+  </div>
+
+  <p><strong>O risco central:</strong> um experimento único e abrangente exige que o experimentador <em>já saiba</em> as respostas a um conjunto de perguntas que normalmente só se aprende experimentando:</p>
+  <ul>
+    <li>Quais são os fatores importantes?</li>
+    <li>Em que faixas devem ser variados?</li>
+    <li>Quantos níveis usar de cada um?</li>
+    <li>Quais as unidades de medida e os métodos adequados?</li>
+  </ul>
+
+  <p><strong>Consequências de errar qualquer uma delas:</strong></p>
+  <ul>
+    <li><strong>Faixa estreita demais:</strong> o fator é realmente importante, mas a variação imposta é pequena e o efeito fica submerso no erro experimental. Conclui-se que não importa — um falso negativo caríssimo.</li>
+    <li><strong>Faixa larga demais / fora da região viável:</strong> execuções produzem resultados inúteis ou o processo nem opera naquelas condições.</li>
+    <li><strong>Fator importante omitido:</strong> ele passa a variar livremente e infla o erro, ou pior, varia de forma correlacionada com os tratamentos.</li>
+    <li><strong>Fatores irrelevantes incluídos:</strong> desperdício de execuções que poderiam ter estudado outra coisa.</li>
+    <li><strong>Resposta mal escolhida:</strong> o experimento inteiro mede a coisa errada — o erro mais caro de todos, porque não há conserto.</li>
+  </ul>
+
+  <p><strong>Riscos operacionais adicionais:</strong> quanto mais longo o experimento, maior a chance de falha de equipamento, mudança de operador, esgotamento de matéria-prima do mesmo lote, ou de o experimento ser interrompido por prioridades da empresa. Um experimento grande interrompido pela metade pode não render análise nenhuma; uma sequência de experimentos pequenos interrompida rende tudo o que já foi feito.</p>
+
+  <p><strong>Por que a abordagem sequencial resolve:</strong> cada experimento pequeno tem um objetivo específico (triar, depois subir a superfície, depois otimizar, depois confirmar), e cada um <em>informa o próximo</em> — quais fatores manter, que faixas usar, em que direção caminhar. É a lógica da figura 1.9. E ainda deixa recursos disponíveis para os testes de confirmação, que são obrigatórios.</p>
+
+  <p><strong>A regra prática:</strong> não investir mais de <strong>25%</strong> dos recursos disponíveis no primeiro experimento.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Ressalva honesta</span>
+    <p>Há situações em que o experimento abrangente é apropriado: quando cada execução é lentíssima ou caríssima (ensaios de campo agrícolas com uma safra por ano, ensaios clínicos), a sequencialidade custa anos e o experimento grande e bem planejado passa a ser a escolha racional. Não por acaso, foi nesse contexto — Rothamsted, era agrícola — que a tradição de experimentos completos e grandes se formou. A ênfase sequencial vem da era industrial, onde a resposta é imediata.</p>
+  </div>
+</div>
+
+
+<div class="nota">
+  <p><strong>Fonte:</strong> Montgomery, D. C. <em>Design and Analysis of Experiments</em>, 9ª ed., Wiley, 2017 — capítulo 1, págs. 1–22. Figuras 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.9 e 1.10 reproduzidas do original.</p>
+</div>
+
+<nav class="nav-rodape">
+  <span><a href="../index.html">← Percurso</a></span>
+  <span><a href="../cap02/02-00-experimentos-comparativos.html">Cap. 2 — Experimentos Comparativos Simples →</a></span>
+</nav>
+
+</div>
+<script>
+/* Fecha a aba lateral ao escolher uma seção. O menu funciona sem isto —
+   é só conveniência; nada aqui depende de rede ou de biblioteca externa. */
+document.querySelectorAll(".menu-lateral .painel a").forEach(function (a) {
+  a.addEventListener("click", function () {
+    var d = a.closest("details");
+    if (d) d.open = false;
+  });
+});
+</script>
+</body>
+</html>

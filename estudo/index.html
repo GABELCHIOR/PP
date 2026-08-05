@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Montgomery, Wiley) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Delineamento e Análise de Experimentos — percurso de estudo</title>
+<link rel="stylesheet" href="assets/tema.css?v=3">
+<link rel="stylesheet" href="assets/estilo.css?v=3">
+</head>
+<body>
+
+<details class="menu-lateral">
+  <summary>Ir para</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Aulas prontas</p>
+    <ol>
+      <li><a href="cap01/01-00-introducao.html">Cap. 1 — Introdução</a></li>
+      <li><a href="cap02/02-00-experimentos-comparativos.html">Cap. 2 — Experimentos Comparativos</a></li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="#percurso">Percurso completo</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha">Montgomery · <em>Design and Analysis of Experiments</em> · 9ª ed., Wiley, 2017</p>
+  <h1>Delineamento e Análise de Experimentos</h1>
+  <p class="subtitulo">Percurso linear do capítulo 1 ao 15. Aulas em português, com o código em R e exercícios resolvidos.</p>
+</header>
+
+<div class="caixa objetivo">
+  <span class="rotulo">Como usar estas páginas</span>
+  <p>Cada aula segue a mesma estrutura: <strong>objetivo</strong> → <strong>conceito com a derivação matemática</strong> → <strong>figuras do livro</strong> → <strong>exemplo resolvido passo a passo, à mão e em R</strong> → <strong>cartões de recall ativo</strong> → <strong>exercícios resolvidos</strong>.</p>
+  <p>Os cartões de recall são a parte que mais rende. Tente responder <em>antes</em> de abrir a resposta — a dificuldade de lembrar é o que fixa o conteúdo, não a leitura. Errar ali é o objetivo, não o fracasso.</p>
+  <p>O código em R está pronto para copiar e rodar. Se você ainda não tem o R instalado, baixe em <span style="font-family:var(--mono);font-size:0.9em">cran.r-project.org</span> — não é necessário para acompanhar a leitura, mas é para fazer os exercícios com autonomia.</p>
+</div>
+
+<h2>Aulas disponíveis</h2>
+
+<div class="cartoes">
+
+  <a class="cartao" href="cap01/01-00-introducao.html">
+    <span class="cap">Capítulo 1 · págs. 1–22</span>
+    <p class="tit">Introdução ao Delineamento de Experimentos</p>
+    <p class="desc">Observar × experimentar. Efeitos principais e interação, com as contas do experimento fatorial 2². Por que "um fator de cada vez" falha. Aleatorização, replicação e blocagem. As sete etapas do planejamento.</p>
+  </a>
+
+  <a class="cartao" href="cap02/02-00-experimentos-comparativos.html">
+    <span class="cap">Capítulo 2 · págs. 23–64</span>
+    <p class="tit">Experimentos Comparativos Simples</p>
+    <p class="desc">Esperança e variância. Estimadores não viesados e graus de liberdade. As quatro distribuições amostrais. Teste <em>t</em>, valor-P, intervalos de confiança, poder e tamanho amostral. O teste pareado como primeira blocagem.</p>
+  </a>
+
+</div>
+
+<h2 id="percurso">Percurso completo</h2>
+
+<div class="rolagem">
+<table>
+  <caption>Página do livro e página do PDF (offset: PDF = livro + 15).</caption>
+  <thead>
+    <tr><th>Cap.</th><th>Título</th><th>Livro</th><th>PDF</th><th>Situação</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><a href="cap01/01-00-introducao.html">Introdução</a></td><td>1</td><td>16</td><td>✅ pronto</td></tr>
+    <tr><td>2</td><td><a href="cap02/02-00-experimentos-comparativos.html">Experimentos Comparativos Simples</a></td><td>23</td><td>38</td><td>✅ pronto</td></tr>
+    <tr><td>3</td><td>Experimentos com um Único Fator: ANOVA</td><td>65</td><td>80</td><td>—</td></tr>
+    <tr><td>4</td><td>Blocos Aleatorizados, Quadrados Latinos</td><td>135</td><td>150</td><td>—</td></tr>
+    <tr><td>5</td><td>Introdução aos Delineamentos Fatoriais</td><td>179</td><td>194</td><td>—</td></tr>
+    <tr><td>6</td><td>O Delineamento Fatorial 2<sup>k</sup></td><td>230</td><td>245</td><td>—</td></tr>
+    <tr><td>7</td><td>Blocagem e Confundimento no 2<sup>k</sup></td><td>308</td><td>323</td><td>—</td></tr>
+    <tr><td>8</td><td>Fatoriais Fracionários de Dois Níveis</td><td>328</td><td>343</td><td>—</td></tr>
+    <tr><td>9</td><td>Tópicos Adicionais em Fatoriais</td><td>406</td><td>421</td><td>—</td></tr>
+    <tr><td>10</td><td>Ajuste de Modelos de Regressão</td><td>460</td><td>475</td><td>—</td></tr>
+    <tr><td>11</td><td>Metodologia de Superfície de Resposta</td><td>489</td><td>504</td><td>—</td></tr>
+    <tr><td>12</td><td>Projeto Robusto de Parâmetros</td><td>569</td><td>584</td><td>—</td></tr>
+    <tr><td>13</td><td>Experimentos com Fatores Aleatórios</td><td>589</td><td>604</td><td>—</td></tr>
+    <tr><td>14</td><td>Delineamentos Hierárquicos e em Parcelas Subdivididas</td><td>618</td><td>633</td><td>—</td></tr>
+    <tr><td>15</td><td>Outros Tópicos de Delineamento e Análise</td><td>657</td><td>672</td><td>—</td></tr>
+    <tr><td>—</td><td>Apêndice: Tabelas I–VII</td><td>697</td><td>712</td><td>referência</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Onde o curso está indo</span>
+  <p>Os capítulos <strong>1 e 2</strong> montam a base: os princípios de delineamento e toda a maquinaria de inferência para <em>dois</em> tratamentos.</p>
+  <p>O capítulo <strong>3</strong> resolve a limitação óbvia — comparar <em>vários</em> tratamentos de uma vez, com a análise de variância. Os capítulos <strong>4 a 9</strong> constroem os delineamentos propriamente ditos: blocos, fatoriais, fracionários. Os capítulos <strong>10 a 12</strong> tratam de modelagem e otimização. Os capítulos <strong>13 a 15</strong> cobrem estruturas de erro mais complexas e tópicos especiais.</p>
+</div>
+
+<div class="nota">
+  <p>Material de estudo produzido a partir de Montgomery, D. C., <em>Design and Analysis of Experiments</em>, 9ª edição, Wiley, 2017. Figuras e tabelas reproduzidas do original para fins de estudo pessoal.</p>
+</div>
+
+</div>
+<script>
+/* Fecha a aba lateral ao escolher uma seção. O menu funciona sem isto —
+   é só conveniência; nada aqui depende de rede ou de biblioteca externa. */
+document.querySelectorAll(".menu-lateral .painel a").forEach(function (a) {
+  a.addEventListener("click", function () {
+    var d = a.closest("details");
+    if (d) d.open = false;
+  });
+});
+</script>
+</body>
+</html>

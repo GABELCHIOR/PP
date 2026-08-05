@@ -1,0 +1,10 @@
+# Caderno de estudo pessoal. As páginas reproduzem figuras e trechos de obra
+# protegida (Montgomery, "Design and Analysis of Experiments", Wiley) para uso
+# próprio — não devem ser rastreadas, indexadas nem arquivadas.
+#
+# Cada página traz também <meta name="robots" content="noindex, nofollow">,
+# que é o que buscadores de fato obedecem para não indexar. O Disallow abaixo
+# é mais amplo: pede que nada seja sequer baixado.
+
+User-agent: *
+Disallow: /

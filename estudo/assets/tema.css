@@ -1,0 +1,69 @@
+/* ==========================================================================
+   PP_estudo — tema "terracota"
+   --------------------------------------------------------------------------
+   Este arquivo é a ÚNICA fonte de cores, fontes e medidas do projeto.
+   `estilo.css` cuida só de estrutura e nunca traz cor literal — sempre
+   var(--…) declarada aqui. (Única exceção: a regra @media print, que força
+   fundo branco porque papel é branco.)
+
+   Para trocar de tema:
+     1. copie este arquivo para assets/temas/<nome>.css
+     2. mude os valores lá
+     3. troque o href do primeiro <link> das páginas para o novo arquivo
+   Nenhuma outra alteração é necessária: estilo.css continua igual.
+   ========================================================================== */
+
+:root {
+  /* ---- superfícies e texto ---- */
+  --fundo:        #fbfaf7;
+  --fundo-caixa:  #ffffff;
+  --texto:        #1c1c1a;
+  --texto-fraco:  #55534d;
+  --linha:        #ddd9d0;
+
+  /* ---- cores semânticas ---- */
+  --realce:       #7a2f1d;   /* terracota — títulos, links e destaques */
+  --realce-fraco: #f2e9e4;
+  --azul:         #1f4e6b;   /* definições e saída do R */
+  --azul-fraco:   #e8f0f4;
+  --verde:        #2c5c3f;   /* código R / respostas */
+  --verde-fraco:  #e7f0e9;
+  --ambar:        #7a5a17;   /* avisos e armadilhas */
+  --ambar-fraco:  #faf1dc;
+
+  /* ---- cores de peças específicas ---- */
+  --menu-texto:   #ffffff;   /* texto sobre a aba lateral (fundo --realce) */
+  --fundo-figura: #ffffff;   /* recortes do PDF são digitalizações em branco */
+
+  /* ---- tipografia ---- */
+  --serif:  Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --sans:   "Segoe UI", -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:   "Cascadia Mono", Consolas, "SF Mono", "Liberation Mono", monospace;
+  --corpo-tamanho: 18px;
+  --corpo-altura:  1.72;
+
+  /* ---- medidas da grade (ver estilo.css) ---- */
+  --largura-leitura: 46rem;   /* coluna de prosa */
+  --largura-sangria: 10rem;   /* quanto figuras/tabelas avançam para cada lado */
+  --faixa-aba:       3.25rem; /* espaço reservado à aba lateral fixa */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo:        #16161a;
+    --fundo-caixa:  #1e1e23;
+    --texto:        #e6e3dd;
+    --texto-fraco:  #a5a199;
+    --linha:        #34343c;
+    --realce:       #e0917a;
+    --realce-fraco: #2e211c;
+    --azul:         #8fc4e0;
+    --azul-fraco:   #1a2830;
+    --verde:        #93c9a6;
+    --verde-fraco:  #1a2620;
+    --ambar:        #d9b968;
+    --ambar-fraco:  #2a2415;
+    --menu-texto:   #1c1c1a;   /* o realce clareia no escuro: texto escuro sobre ele */
+    /* --fundo-figura continua branco: as figuras vêm do PDF com fundo branco */
+  }
+}
